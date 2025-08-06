@@ -76,6 +76,21 @@
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
+        
+        @keyframes livePulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            }
+        }
 
         .animated {
             animation: fadeIn 0.9s ease-out forwards;
@@ -135,7 +150,7 @@
             animation: pop 0.3s ease-in-out;
         }
 
-        /* --- NEW: Button Grid Container --- */
+        /* --- Button Grid Container --- */
         .button-grid {
             display: grid;
             grid-template-columns: 2fr 2fr;
@@ -158,7 +173,6 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            /* Animation delay is now handled by the grid items directly */
         }
         
         .action-button:active {
@@ -194,7 +208,6 @@
 
         .invite-btn {
             background: var(--button-invite-bg);
-            /* Make this button span both columns */
             grid-column: 1 / -1;
         }
         
@@ -208,7 +221,7 @@
             grid-column: 1 / -1;
         }
         
-        /* --- NEW: Daily Winners List Styles --- */
+        /* --- Daily Winners List Styles --- */
         .winners-container {
             width: 100%;
             margin-top: 25px;
@@ -226,6 +239,23 @@
             text-shadow: 1px 1px 3px var(--shadow-dark);
             border-bottom: 2px solid rgba(255, 255, 255, 0.2);
             padding-bottom: 10px;
+        }
+        
+        /* --- NEW: Watch Live Button Styles --- */
+        #watch-live-btn {
+            background: linear-gradient(135deg, #ff4757, #e84118); /* Red/Orange gradient */
+            width: 100%;
+            margin-bottom: 15px; /* Space between button and list */
+            font-size: 1.1em;
+            padding: 12px;
+        }
+
+        .live-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            animation: livePulse 1.5s infinite;
         }
 
         .winners-list {
@@ -293,10 +323,6 @@
             font-size: 1em;
             border-radius: 15px;
             background: var(--button-task-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px; /* Space between icon and text */
         }
         
         .task-button img {
@@ -624,7 +650,7 @@
                 <span class="check-icon">✓</span> Watch Ads
             </button>
             <button id="invite-btn" class="action-button invite-btn animated" style="animation-delay: 0.3s;">
-                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1naWZ0Ij48cGF0aCBkPSJNMjAgMTJWMThhMiAyIDAgMCAxLTIgMkg2YTIgMiAwIDAgMS0yLTJWMTEyIi8+PHBhdGggZD0iTTIgOGgxOGEyIDIgMCAwIDEgMiAydjJINHYtMmEyIDIgMCAwIDEgMi0yWiIvPjxwYXRoIGQ9Ik0xMiAyMnYtOG0wIDBhNC41IDQuNSAwIDAgMC00LjUtNC41TTggOC41YTQuNSA0LjUgMCAwIDEgOC41IDBNMTIgMTRhNC41IDQuNSAwIDAgMSA0LjUtNC41Ii8+PHBhdGggZD0iTTEyIDJoMnYycy0xIDEgMCAyIDEgMiAxIDJoNHYtMiIvPjxwYXRoIGQ9Ik0xMiAyaC0ydiJpZD0iNzQ1Ii8+PC9zdmc+" alt="Gift" class="gift-icon">
+                💰
                 <span>Invite & Earn Rewards</span>
             </button>
             <button id="join-channel-btn" class="action-button join-channel-btn animated" style="animation-delay: 0.4s;">Join Channel</button>
@@ -632,6 +658,10 @@
 
         <div class="winners-container animated" style="animation-delay: 0.5s;">
             <h2 class="winners-title">🏆 Daily Winners</h2>
+            <!-- NEW: Watch Live Button -->
+            <button id="watch-live-btn" class="action-button hidden">
+                <span class="live-indicator"></span> Watch Live
+            </button>
             <ul id="winners-list" class="winners-list"></ul>
         </div>
     </div>
@@ -675,11 +705,15 @@
             </div>
             <div class="stat-item">
                 <span>Total Referrals</span>
-                <strong>Admin Verified</strong>
+                <strong id="total-referrals">0</strong>
             </div>
             <div class="stat-item">
-                <span>Referral Commission</span>
-                <strong>Admin Verified</strong>
+                <span>Total Referral Commission</span>
+                <strong id="total-referral-commission">৳ 0.00</strong>
+            </div>
+            <div class="stat-item">
+                <span>Total Balance</span>
+                <strong id="total-balance">৳ 0.00</strong>
             </div>
         </div>
         <div class="form-container animated" style="margin-bottom: 20px; background-color: var(--secondary-bg); width: 100%; padding: 15px; border-radius: 20px;">
@@ -733,6 +767,7 @@
         </div>
         <div id="deposit-form-container" class="form-container hidden">
             <h2 class="form-title">Deposit Funds</h2>
+            <p>Payment number. Bkash / Nagad / 01749666991 Make payment to this number. Minimum ৳ 500/= Daily income ৳ 500/=</p>
             <form id="deposit-form">
                 <div class="form-group">
                     <label for="deposit-name">Name:</label>
@@ -794,6 +829,12 @@
         
         let config = {
             ADMIN_CHANNEL_LINK: 'https://t.me/LearnerAlom',
+            // --- NEW: LIVE STREAM CONFIGURATION ---
+            WINNERS_LIVE_STREAM: {
+                // Set isLive to true and add a URL to show the "Watch Live" button
+                isLive: true, 
+                url: 'https://youtube.com/@leaneralom/live' // Example: YouTube Live, Facebook Live, etc.
+            },
             SOCIAL_TASK_REWARD: 0.5,
             WHEEL_PRIZES: [0.5, 0.5, 1, 0.5, 0.5, 1, 0.5, 0.5, 5, 0.5, 0.5, 1],
             SOCIAL_TASKS: [
@@ -817,6 +858,7 @@
         const coinSound = document.getElementById('coin-sound');
         const spinSound = document.getElementById('spin-sound');
         const winnersListEl = document.getElementById('winners-list');
+        const watchLiveBtn = document.getElementById('watch-live-btn'); // New
 
         // --- Page Elements ---
         const allPages = document.querySelectorAll('.page');
@@ -841,6 +883,9 @@
         const userAvatar = document.getElementById('user-avatar');
         const userNameDisplay = document.getElementById('user-name-display');
         const totalEarningsEl = document.getElementById('total-earnings');
+        const totalReferralsEl = document.getElementById('total-referrals');
+        const totalReferralCommissionEl = document.getElementById('total-referral-commission');
+        const totalBalanceEl = document.getElementById('total-balance');
         const withdrawBtn = document.getElementById('withdraw-btn');
         const depositBtn = document.getElementById('deposit-btn');
         const accountMainView = document.getElementById('account-main-view');
@@ -858,6 +903,8 @@
         let balance = 0;
         let userInfo = {};
         let spinCount = 0; 
+        let totalReferrals = 0;
+        let totalReferralCommission = 0;
 
         // --- Telegram WebApp Initialization ---
         const tg = window.Telegram.WebApp;
@@ -877,7 +924,7 @@
 
         // --- Telegram API Function ---
         const sendTelegramMessage = (message) => {
-            if (!ADMIN_CHAT_ID || !BOT_TOKEN || BOT_TOKEN.includes('@learneralom')) {
+            if (!ADMIN_CHAT_ID || !BOT_TOKEN || BOT_TOKEN.includes('8030917316:AAE2gZ1ZF2i1EUbhUCyUytYXoWI9mCZ_mbk')) {
                 console.error("Admin Chat ID or Bot Token is not configured.");
                 tg.showAlert("Error: Cannot contact admin. Please try again later.");
                 return;
@@ -893,16 +940,26 @@
         // --- Utility Functions ---
         const updateBalanceDisplay = () => {
             const formattedBalance = `৳ ${balance.toFixed(2)}`;
-            [balanceAmountHomeEl, balanceAmountSpinEl, balanceAmountTaskEl, totalEarningsEl].forEach(el => {
+            [balanceAmountHomeEl, balanceAmountSpinEl, balanceAmountTaskEl].forEach(el => {
                 if (el) el.textContent = formattedBalance;
             });
+            if (totalEarningsEl) totalEarningsEl.textContent = formattedBalance;
+            if (totalBalanceEl) totalBalanceEl.textContent = formattedBalance;
+            if (totalReferralsEl) totalReferralsEl.textContent = totalReferrals;
+            if (totalReferralCommissionEl) totalReferralCommissionEl.textContent = `৳ ${totalReferralCommission.toFixed(2)}`;
         };
 
-        const saveState = () => localStorage.setItem(`userState_${userInfo.id}`, JSON.stringify({balance, spinCount}));
+        const saveState = () => {
+            const state = { balance, spinCount, totalReferrals, totalReferralCommission };
+            localStorage.setItem(`userState_${userInfo.id}`, JSON.stringify(state));
+        };
+
         const loadState = () => {
             const state = JSON.parse(localStorage.getItem(`userState_${userInfo.id}`) || '{}');
             balance = parseFloat(state.balance || '0');
             spinCount = parseInt(state.spinCount || '0');
+            totalReferrals = parseInt(state.totalReferrals || '0');
+            totalReferralCommission = parseFloat(state.totalReferralCommission || '0');
             updateBalanceDisplay();
         };
 
@@ -958,25 +1015,19 @@
         const handleSocialTaskClick = (event) => {
             const button = event.currentTarget;
             if (button.classList.contains('completed')) return;
-
             const taskId = button.dataset.taskId;
             const taskUrl = button.dataset.taskUrl;
             const taskName = button.dataset.taskName;
-            
             tg.openLink(taskUrl);
-
             balance += config.SOCIAL_TASK_REWARD;
             updateBalanceDisplay();
             saveState();
             coinSound.play();
             tg.HapticFeedback.notificationOccurred('success');
-
             button.classList.add('completed');
             button.disabled = true;
             button.innerHTML = '✅ Completed';
-            
             localStorage.setItem(`social_task_completed_${taskId}_${userInfo.id}`, 'true');
-            
             sendTelegramMessage(`✅ <b>Social Task Complete!</b>\n\n${getUserInfoString()}\n🔗 Task: ${taskName}\n💰 Earned: ৳${config.SOCIAL_TASK_REWARD.toFixed(2)}\n<b>New Balance:</b> ৳${balance.toFixed(2)}`);
         };
 
@@ -988,7 +1039,6 @@
                 button.dataset.taskId = task.id;
                 button.dataset.taskUrl = task.url;
                 button.dataset.taskName = task.name;
-
                 const isCompleted = localStorage.getItem(`social_task_completed_${task.id}_${userInfo.id}`) === 'true';
                 if (isCompleted) {
                     button.classList.add('completed');
@@ -1016,26 +1066,21 @@
 
         const handleSpin = () => {
             if (isSpinning) return;
-
             if (spinCount > 0 && spinCount % 3 === 0) {
                 if (typeof show_8954258 === 'function') show_8954258();
             }
-            
             isSpinning = true;
             spinNowBtn.disabled = true;
             spinNowBtn.textContent = 'Spinning...';
             spinSound.play();
-            
             const segmentCount = config.WHEEL_PRIZES.length;
             const winningIndex = Math.floor(Math.random() * segmentCount);
             const prizeWon = config.WHEEL_PRIZES[winningIndex];
             const segmentAngle = 360 / segmentCount;
             const randomOffset = Math.random() * (segmentAngle - 4) + 2;
             const targetRotation = (360 * 5) - (winningIndex * segmentAngle) - (segmentAngle / 2) + randomOffset;
-
             wheel.style.transition = 'transform 10s cubic-bezier(0.25, 1, 0.5, 1)';
             wheel.style.transform = `rotate(${targetRotation}deg)`;
-
             setTimeout(() => {
                 spinSound.pause(); spinSound.currentTime = 0;
                 balance += prizeWon;
@@ -1115,6 +1160,12 @@
         // --- Other Handlers & Initializers ---
         const handleJoinChannel = () => tg.openTelegramLink(config.ADMIN_CHANNEL_LINK);
         const initializeWinnersList = () => {
+            // New: Check for live stream and show button if active
+            if (config.WINNERS_LIVE_STREAM.isLive && config.WINNERS_LIVE_STREAM.url) {
+                watchLiveBtn.classList.remove('hidden');
+            }
+
+            // Populate the list with mock winners
             const mockWinners = [ { name: 'R****l H.', prize: 500 }, { name: 'S***a A.', prize: 500 }, { name: 'M***n K.', prize: 200 }, { name: 'A***f R.', prize: 200 }, { name: 'N***a B.', prize: 100 }, { name: 'J***l I.', prize: 100 }, { name: 'F***a Y.', prize: 50 }, { name: 'T***m C.', prize: 50 }, { name: 'K***m M.', prize: 35 }, { name: 'Z***d H.', prize: 22 }, { name: 'E***n W.', prize: 20 }, { name: 'I***n F.', prize: 10 }];
             winnersListEl.innerHTML = mockWinners.map(w => `<li class="winner-item"><span class="winner-name">${w.name}</span><span class="winner-prize">৳ ${w.prize}</span></li>`).join('');
         };
@@ -1144,6 +1195,10 @@
         watchAdBtns.forEach(btn => btn.addEventListener('click', handleWatchAd));
         inviteBtn.addEventListener('click', handleInvite);
         joinChannelBtn.addEventListener('click', handleJoinChannel);
+        // New: Watch Live button event listener
+        watchLiveBtn.addEventListener('click', () => {
+            tg.openLink(config.WINNERS_LIVE_STREAM.url);
+        });
         navHome.addEventListener('click', (e) => { e.preventDefault(); showPage('home-page'); });
         navSpin.addEventListener('click', (e) => { e.preventDefault(); showPage('spin-page'); createWheel(); });
         navTask.addEventListener('click', (e) => { e.preventDefault(); showPage('task-page'); initializeTaskPage(); });
