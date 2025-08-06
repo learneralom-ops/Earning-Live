@@ -823,7 +823,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         // --- IMPORTANT: APP CONFIGURATION ---
         const BOT_TOKEN = '8030917316:AAE2gZ1ZF2i1EUbhUCyUytYXoWI9mCZ_mbk';
-        const ADMIN_CHAT_ID = '@LearnerAlom';
+        const ADMIN_CHAT_ID = '@earninglive';
         const BOT_USERNAME = '@Earning_Live_Bot';
         const MINI_APP_NAME = 'Earning Live';
         
@@ -924,7 +924,7 @@
 
         // --- Telegram API Function ---
         const sendTelegramMessage = (message) => {
-            if (!ADMIN_CHAT_ID || !BOT_TOKEN || BOT_TOKEN.includes('@LearnerAlom')) {
+            if (!ADMIN_CHAT_ID || !BOT_TOKEN || BOT_TOKEN.includes('@earninglive')) {
                 console.error("Admin Chat ID or Bot Token is not configured.");
                 tg.showAlert("Error: Cannot contact admin. Please try again later.");
                 return;
