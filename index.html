@@ -760,55 +760,6 @@
         </div>
     </div>
 
-    <!-- ADMIN PANEL (visible only to admins) -->
-    <div id="admin-page" class="page hidden">
-        <h1 class="page-title">Admin Control Panel</h1>
-
-        <div class="form-container" style="width:100%; margin-bottom: 20px;">
-            <h2 class="form-title" style="font-size: 1.5em;">Global Settings</h2>
-            <p>Changes here are saved to your browser. Use 'Generate Code' to update the app for all users.</p>
-            <div class="form-group">
-                <label for="admin-channel-link">Admin Channel Link:</label>
-                <input type="text" id="admin-channel-link">
-            </div>
-            <div class="form-group">
-                <label for="admin-social-reward">Social Task Reward:</label>
-                <input type="number" step="0.1" id="admin-social-reward">
-            </div>
-            <div class="form-group">
-                <label for="admin-wheel-prizes">Spin Wheel Prizes (JSON Array):</label>
-                <textarea id="admin-wheel-prizes" rows="4"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="admin-social-tasks">Social Tasks (JSON Array of Objects):</label>
-                <textarea id="admin-social-tasks" rows="6"></textarea>
-            </div>
-            <button id="admin-save-settings" class="action-button submit-btn">Test & Save Locally</button>
-            <button id="admin-generate-code" class="action-button">Generate Code for Update</button>
-            <div id="admin-code-output-container" class="hidden" style="margin-top: 15px; text-align: left;">
-                <label>Copy this code and replace the constants at the top of the script:</label>
-                <pre style="background: #2c0b4d; padding: 10px; border-radius: 5px; white-space: pre-wrap; word-break: break-all; font-family: monospace; font-size: 0.8em; max-height: 200px; overflow-y: auto;"><code id="admin-code-output"></code></pre>
-            </div>
-        </div>
-
-        <div class="form-container" style="width:100%;">
-            <h2 class="form-title" style="font-size: 1.5em;">User Management</h2>
-            <p>Actions here send a command to the admin chat for processing.</p>
-            <div class="form-group">
-                <label for="admin-user-id">Enter User Telegram ID:</label>
-                <input type="number" id="admin-user-id" placeholder="e.g., 123456789">
-            </div>
-            <div class="form-group">
-                <label for="admin-user-balance">Set New Balance / Bonus Amount:</label>
-                <input type="number" step="0.01" id="admin-user-value" placeholder="e.g., 500 or 10">
-            </div>
-            <button id="admin-update-balance" class="action-button">Update User Balance</button>
-            <button id="admin-add-bonus" class="action-button submit-btn">Add Bonus to User</button>
-            <button id="admin-reset-daily" class="action-button back-btn">Reset User's Daily Task</button>
-        </div>
-    </div>
-
-
     <!-- Bottom Navigation Bar -->
     <nav class="bottom-nav">
         <a href="#" id="nav-home" class="nav-item active">
@@ -827,10 +778,6 @@
             <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXVzZXItY2lyY2xlIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTAiIHI9IjMiLz48cGF0aCBkPSJtNyAxOC43IDUuNDE3LTEuMTY0QTIgMiAwIDAgMSA3IDE4LjdaTTE3IDE4LjdMIDE3IDE4LjdhIDIgMiAwIDAgMCAtMS4xNjQgMS4xNjRMMTcgMTguN1oiLz48L3N2Zz4=" alt="Account">
             <span>Account</span>
         </a>
-        <a href="#" id="nav-admin" class="nav-item hidden">
-            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXNoaWVsZC1iYW4iPjxwYXRoIGQ9Ik0xMiAyMmM1LjE4IDAgOS40LTQuMjIgOS40LTkuNFMxNy4xOCAyLjYgMTIgMi42IDIgNy4wMiAyIDExLjQxIDYuODIgMjIgMTIgMjJaIi8+PHBhdGggZD0ibTQuOSAzLjkgMTQuMiAxNC4yIi8+PC9zdmc+">
-            <span>Admin</span>
-        </a>
     </nav>
 
 <audio id="coin-sound" src="data:audio/mpeg;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA" preload="auto"></audio>
@@ -839,17 +786,12 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- IMPORTANT: ADMIN & APP CONFIGURATION ---
-        // 1. ADD YOUR TELEGRAM USER ID HERE TO GET ADMIN ACCESS
-        const ADMIN_IDS = ['5812860406']; // <-- REPLACE '123456789' WITH YOUR ID
-        // 2. CONFIGURE YOUR BOT AND CHANNEL
+        // --- IMPORTANT: APP CONFIGURATION ---
         const BOT_TOKEN = '8030917316:AAE2gZ1ZF2i1EUbhUCyUytYXoWI9mCZ_mbk';
         const ADMIN_CHAT_ID = '@LearnerAlom';
         const BOT_USERNAME = '@Earning_Live_Bot';
         const MINI_APP_NAME = 'Earning Live';
         
-        // 3. THESE SETTINGS CAN BE CHANGED FROM THE ADMIN PANEL
-        // To update for all users, use the 'Generate Code' button in the admin panel and replace these values.
         let config = {
             ADMIN_CHANNEL_LINK: 'https://t.me/LearnerAlom',
             SOCIAL_TASK_REWARD: 0.5,
@@ -882,12 +824,10 @@
         const spinPage = document.getElementById('spin-page');
         const taskPage = document.getElementById('task-page');
         const accountPage = document.getElementById('account-page');
-        const adminPage = document.getElementById('admin-page');
         const navHome = document.getElementById('nav-home');
         const navSpin = document.getElementById('nav-spin');
         const navTask = document.getElementById('nav-task');
         const navAccount = document.getElementById('nav-account');
-        const navAdmin = document.getElementById('nav-admin');
 
         // --- Task Page Elements ---
         const taskListContainer = document.querySelector('#task-page .task-list');
@@ -918,14 +858,12 @@
         let balance = 0;
         let userInfo = {};
         let spinCount = 0; 
-        let isAdmin = false;
 
         // --- Telegram WebApp Initialization ---
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
         userInfo = tg.initDataUnsafe.user || { first_name: 'Guest', last_name: 'User', id: '0000' };
-        isAdmin = ADMIN_IDS.includes(userInfo.id.toString());
         
         // --- Page Navigation ---
         const showPage = (pageId) => {
@@ -1183,117 +1121,9 @@
         document.getElementById('referral-code').addEventListener('click', () => {
             navigator.clipboard.writeText(userInfo.id).then(() => tg.showAlert('Referral Code copied!'));
         });
-
-
-        // =================================================================
-        // --- ADMIN PANEL LOGIC ---
-        // =================================================================
-        const adminPanelInit = () => {
-            if (!isAdmin) return;
-            navAdmin.classList.remove('hidden');
-
-            const adminChannelLinkInput = document.getElementById('admin-channel-link');
-            const adminSocialRewardInput = document.getElementById('admin-social-reward');
-            const adminWheelPrizesInput = document.getElementById('admin-wheel-prizes');
-            const adminSocialTasksInput = document.getElementById('admin-social-tasks');
-            const adminSaveSettingsBtn = document.getElementById('admin-save-settings');
-            const adminGenerateCodeBtn = document.getElementById('admin-generate-code');
-            const adminCodeOutputContainer = document.getElementById('admin-code-output-container');
-            const adminCodeOutput = document.getElementById('admin-code-output');
-            
-            const adminUserIdInput = document.getElementById('admin-user-id');
-            const adminUserValueInput = document.getElementById('admin-user-value');
-            const adminUpdateBalanceBtn = document.getElementById('admin-update-balance');
-            const adminAddBonusBtn = document.getElementById('admin-add-bonus');
-            const adminResetDailyBtn = document.getElementById('admin-reset-daily');
-
-            // Load saved admin settings or use defaults
-            const loadAdminSettings = () => {
-                const savedConfig = JSON.parse(localStorage.getItem('admin_config') || '{}');
-                const currentConfig = {...config, ...savedConfig}; // Merge, saved overrides default
-                
-                adminChannelLinkInput.value = currentConfig.ADMIN_CHANNEL_LINK;
-                adminSocialRewardInput.value = currentConfig.SOCIAL_TASK_REWARD;
-                adminWheelPrizesInput.value = JSON.stringify(currentConfig.WHEEL_PRIZES, null, 2);
-                adminSocialTasksInput.value = JSON.stringify(currentConfig.SOCIAL_TASKS, null, 2);
-                return currentConfig;
-            };
-
-            const saveAdminSettings = () => {
-                try {
-                    const newConfig = {
-                        ADMIN_CHANNEL_LINK: adminChannelLinkInput.value,
-                        SOCIAL_TASK_REWARD: parseFloat(adminSocialRewardInput.value),
-                        WHEEL_PRIZES: JSON.parse(adminWheelPrizesInput.value),
-                        SOCIAL_TASKS: JSON.parse(adminSocialTasksInput.value)
-                    };
-                    localStorage.setItem('admin_config', JSON.stringify(newConfig));
-                    // Apply settings for the admin's session for testing
-                    config = {...config, ...newConfig};
-                    tg.showPopup({ title: 'Saved!', message: 'Settings saved locally for testing. Your view of the app now uses these settings.', buttons: [{type: 'ok'}]});
-                } catch(e) {
-                    tg.showAlert(`Error saving settings: ${e.message}. Make sure JSON is valid.`);
-                }
-            };
-            
-            const generateCodeForUpdate = () => {
-                 try {
-                    // Validate JSON before generating code
-                    JSON.parse(adminWheelPrizesInput.value);
-                    JSON.parse(adminSocialTasksInput.value);
-
-                    const code = `
-let config = {
-    ADMIN_CHANNEL_LINK: '${adminChannelLinkInput.value}',
-    SOCIAL_TASK_REWARD: ${parseFloat(adminSocialRewardInput.value)},
-    WHEEL_PRIZES: ${adminWheelPrizesInput.value.trim()},
-    SOCIAL_TASKS: ${adminSocialTasksInput.value.trim()}
-};`;
-                    adminCodeOutput.textContent = code;
-                    adminCodeOutputContainer.classList.remove('hidden');
-                    tg.showAlert('Code generated. Please copy it and update the script in your bot\'s HTML file.');
-                } catch(e) {
-                    tg.showAlert(`Error generating code: ${e.message}. Please fix the JSON format.`);
-                }
-            };
-
-            const handleAdminUserAction = (command) => {
-                const userId = adminUserIdInput.value;
-                const value = adminUserValueInput.value;
-
-                if (!userId) {
-                    tg.showAlert('Please enter a User Telegram ID.');
-                    return;
-                }
-
-                let message = `⚙️ <b>ADMIN COMMAND</b> ⚙️\n\n`;
-                message += `<b>Command:</b> <code>${command}</code>\n`;
-                message += `<b>Target User ID:</b> <code>${userId}</code>\n`;
-                if(value && (command === 'update_balance' || command === 'add_bonus')) {
-                   message += `<b>Value:</b> <code>${value}</code>\n`;
-                }
-                message += `\n<i>Initiated by Admin: ${userInfo.first_name} (${userInfo.id})</i>`;
-
-                sendTelegramMessage(message);
-                tg.showPopup({ title: 'Command Sent!', message: 'Admin command was sent to the bot for logging and processing.', buttons: [{type: 'ok'}] });
-            };
-
-            navAdmin.addEventListener('click', (e) => { e.preventDefault(); showPage('admin-page'); loadAdminSettings(); });
-            adminSaveSettingsBtn.addEventListener('click', saveAdminSettings);
-            adminGenerateCodeBtn.addEventListener('click', generateCodeForUpdate);
-            adminUpdateBalanceBtn.addEventListener('click', () => handleAdminUserAction('update_balance'));
-            adminAddBonusBtn.addEventListener('click', () => handleAdminUserAction('add_bonus'));
-            adminResetDailyBtn.addEventListener('click', () => handleAdminUserAction('reset_daily_task'));
-        };
         
         // --- App Initialization ---
         const initializeApp = () => {
-            // If admin has saved settings, let them override defaults for their session
-            if (isAdmin) {
-                const savedConfig = JSON.parse(localStorage.getItem('admin_config') || '{}');
-                config = {...config, ...savedConfig};
-            }
-
             loadState();
             processReferral();
             checkDailyTask();
@@ -1301,7 +1131,6 @@ let config = {
             initializeTaskPage();
             initializeAccountPage();
             initializeWinnersList();
-            adminPanelInit(); // Set up admin panel if user is admin
             showPage('home-page');
             
             if (!localStorage.getItem(`userVisited_${userInfo.id}`)) {
