@@ -924,7 +924,7 @@
 
         // --- Telegram API Function ---
         const sendTelegramMessage = (message) => {
-            if (!ADMIN_CHAT_ID || !BOT_TOKEN || BOT_TOKEN.includes('8030917316:AAE2gZ1ZF2i1EUbhUCyUytYXoWI9mCZ_mbk')) {
+            if (!ADMIN_CHAT_ID || !BOT_TOKEN || BOT_TOKEN.includes('@LearnerAlom')) {
                 console.error("Admin Chat ID or Bot Token is not configured.");
                 tg.showAlert("Error: Cannot contact admin. Please try again later.");
                 return;
