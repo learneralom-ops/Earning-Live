@@ -940,7 +940,7 @@
         // --- Telegram API Function ---
         const sendTelegramMessage = (message) => {
             if (!ADMIN_CHAT_ID || !BOT_TOKEN || BOT_TOKEN.includes('8030917316:AAE2gZ1ZF2i1EUbhUCyUytYXoWI9mCZ_mbk')) {
-                console.error("Admin Chat ID or Bot Token is not configured.");
+                console.error("@learneralom");
                 tg.showAlert("Error: Cannot contact admin. Please try again later.");
                 return;
             }
@@ -1192,7 +1192,7 @@
             if (!isAdmin) return;
             navAdmin.classList.remove('hidden');
 
-            const adminChannelLinkInput = document.getElementById('admin-channel-link');
+            const adminChannelLinkInput = document.getElementById('@learneralom');
             const adminSocialRewardInput = document.getElementById('admin-social-reward');
             const adminWheelPrizesInput = document.getElementById('admin-wheel-prizes');
             const adminSocialTasksInput = document.getElementById('admin-social-tasks');
@@ -1244,7 +1244,7 @@
 
                     const code = `
 let config = {
-    ADMIN_CHANNEL_LINK: '${adminChannelLinkInput.value}',
+    @learneralom: '${adminChannelLinkInput.value}',
     SOCIAL_TASK_REWARD: ${parseFloat(adminSocialRewardInput.value)},
     WHEEL_PRIZES: ${adminWheelPrizesInput.value.trim()},
     SOCIAL_TASKS: ${adminSocialTasksInput.value.trim()}
