@@ -73,7 +73,7 @@
         
         @keyframes pop {
             0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.1); }
             100% { transform: scale(1); }
         }
         
@@ -241,7 +241,6 @@
             padding-bottom: 10px;
         }
         
-        /* --- NEW: Watch Live Button Styles --- */
         #watch-live-btn {
             background: linear-gradient(135deg, #ff4757, #e84118); /* Red/Orange gradient */
             width: 100%;
@@ -302,8 +301,8 @@
             font-weight: 700;
             color: #fdd835; /* A gold-like color for the prize */
         }
-
-        /* --- Task Page Styles --- */
+        
+        /* --- NEW & UPDATED Task Page Styles --- */
         .page-title {
             font-size: 2em;
             font-weight: 700;
@@ -312,27 +311,71 @@
         }
 
         .task-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
             width: 100%;
         }
 
-        .task-button {
-            padding: 20px 10px;
-            font-size: 1em;
+        .social-task-item {
+            display: flex;
+            align-items: center;
+            background-color: var(--secondary-bg);
+            padding: 10px 15px;
             border-radius: 15px;
-            background: var(--button-task-bg);
-        }
-        
-        .task-button img {
-            width: 24px;
-            height: 24px;
+            transition: background-color 0.3s, opacity 0.3s;
+            box-shadow: 0 4px 8px var(--shadow-dark);
         }
 
-        .task-button.completed {
-             background: var(--disabled-bg);
-             cursor: not-allowed;
+        .social-task-item.completed {
+            background-color: var(--disabled-bg);
+            opacity: 0.7;
+        }
+
+        .task-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+        }
+
+        .task-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .task-name {
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        .task-reward {
+            font-size: 0.9em;
+            color: #fdd835;
+            font-weight: bold;
+        }
+
+        .task-go-btn {
+            padding: 8px 24px;
+            border: none;
+            border-radius: 10px;
+            background: var(--button-task-bg);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            white-space: nowrap;
+        }
+
+        .task-go-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .task-go-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
         }
 
 
@@ -347,7 +390,7 @@
             align-items: center;
         }
         
-        spin-pointer {
+        .spin-pointer {
             position: absolute;
             top: -15px;
             left: 50%;
@@ -509,6 +552,12 @@
             background: linear-gradient(135deg, #2ecc71, #27ae60);
         }
 
+        #admin-chat-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9); /* Blue Gradient */
+            grid-column: 1 / -1; /* Make it full width */
+            text-decoration: none;
+        }
+
 
         /* Form Styles */
         .form-container {
@@ -629,8 +678,6 @@
 </head>
 <body>
 
-    
-
     <!-- HOME PAGE -->
     <div id="home-page" class="page">
         <div class="coin-icon">৳</div>
@@ -660,7 +707,6 @@
 
         <div class="winners-container animated" style="animation-delay: 0.5s;">
             <h2 class="winners-title">🏆 Daily Winners</h2>
-            <!-- NEW: Watch Live Button -->
             <button id="watch-live-btn" class="action-button hidden">
                 <span class="live-indicator"></span> Watch Live
             </button>
@@ -691,6 +737,7 @@
             <span>Balance : </span>
             <span class="balance-amount" id="balance-amount-task">৳ 00</span>
         </div>
+        <!-- The container for the new task list -->
         <div class="task-list animated" style="animation-delay: 0.2s;"></div>
     </div>
 
@@ -733,6 +780,7 @@
              <div class="account-actions animated">
                 <button id="withdraw-btn" class="action-button">Withdraw</button>
                 <button id="deposit-btn" class="action-button">Deposit</button>
+                <a href="https://t.me/Alom6991" target="_blank" class="action-button" id="admin-chat-btn">Admin Chat</a>
             </div>
         </div>
         <div id="withdraw-form-container" class="form-container hidden">
@@ -831,21 +879,24 @@
         
         let config = {
             ADMIN_CHANNEL_LINK: 'https://t.me/LearnerAlom',
-            // --- NEW: LIVE STREAM CONFIGURATION ---
             WINNERS_LIVE_STREAM: {
-                // Set isLive to true and add a URL to show the "Watch Live" button
                 isLive: true, 
-                url: 'https://otieu.com/4/9276685' // Example: YouTube Live, Facebook Live, etc.
+                url: 'https://otieu.com/4/9276685'
             },
-            SOCIAL_TASK_REWARD: 0.5,
+            SOCIAL_TASK_REWARD: 0.5, // Reward for each social task
             WHEEL_PRIZES: [0.5, 0.5, 1, 0.5, 0.5, 1, 0.5, 0.5, 5, 0.5, 0.5, 1],
+            // --- NEW: 10 Social Tasks with Icons and Links ---
             SOCIAL_TASKS: [
-                { id: 'facebook', name: 'Join Facebook', url: 'https://www.facebook.com/LearnerALOM' },
-                { id: 'instagram', name: 'Join Instagram', url: 'https://www.instagram.com/learneralom' },
-                { id: 'twitter', name: 'Join X', url: 'https://x.com/alomtamay' },
-                { id: 'medium', name: 'Join Medium', url: 'https://medium.com/@alom1' },
-                { id: 'youtube', name: 'Join YouTube', url: 'https://youtube.com/@leaneralom' },
-                { id: 'blogspot', name: 'Join Blog', url: 'https://learneralom.blogspot.com' }
+                { id: 'facebook', name: 'Follow on Facebook', url: 'https://www.facebook.com/LearnerALOM', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWZhY2Vib29rIj48cGF0aCBkPSJNMTggMnYxNmgyVjJIMTh6IiBmaWxsPSIjZmZmIj48L3BhdGg+PHBhdGggZD0iTTggNkgzdjRoNVY0aC0yejAgOGg1djRoLTZWMjBoNnYtNGg0di00aC00di00SDh6IiBmaWxsPSIjZmZmIj48L3BhdGg+PHBhdGggZD0iTTE4IDJoNm0tNCAwdjJtLTIgMFYyIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMS41Ij48L3BhdGg+PHBhdGggZD0iTTE4IDJoLTZ2OGg2WiIgZmlsbD0iIzE4NzdmMiI+PC9wYXRoPjxwYXRoIGQ9Ik0xOCAycy0xLjUgMC0xLjUgMS41VjZoM1Y0LjVjMC0xLjUtMS41LTEuNS0xLjUtMS41ek0xNSA5LjVoMyIvPjwvc3ZnPg==' },
+                { id: 'instagram', name: 'Follow on Instagram', url: 'https://www.instagram.com/learneralom', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgeD0iMiIgeT0iMiIgcng9IjUiIHJ5PSI1IiBmaWxsPSIjZmZmIj48L3JlY3Q+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iNCIgZmlsbD0iIzE4NzdmMiI+PC9jaXJjbGU+PGxpbmUgeDE9IjE2LjUiIHkxPSI3LjUiIHgyPSIxNi41IiB5Mj0iNy41IiBmaWxsPSJjdXJyZW50Q29sb3IiIHN0cm9rZT0iIzE4NzdmMiI+PC9saW5lPjwvc3ZnPg==' },
+                { id: 'x-twitter', name: 'Follow on X', url: 'https://x.com/alomtamay', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMiA0IDExIDEzIDIgNCAyMiA0eiIgZmlsbD0iIzMzMyI+PC9wYXRoPjxwYXRoIGQ9Ik0yIDIwIDExIDExIDIwIDIwSDJ6IiBmaWxsPSIjMzMzIj48L3BhdGg+PC9zdmc+' },
+                { id: 'youtube', name: 'Subscribe on YouTube', url: 'https://youtube.com/@leaneralom', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yLjUgNS4yNUMyLjUgMy40NTUgMy45NTUgMiA1Ljc1IDJoMTIuNUMyMC4wNDUgMiAyMS41IDMuNDU1IDIxLjUgNS4yNXYxMy41YzAgMS43OTUtMS40NTUgMy4yNS0zLjI1IDMuMjVINS43NWMtMS43OTUgMC0zLjI1LTEuNDU1LTMuMjUtMy4yNVY1LjI1eiIgZmlsbD0iI0ZGMDAwMCI+PC9wYXRoPjxwYXRoIGQ9Ik05LjUgMTUuNVY4LjVsNiAzaC02eiIgZmlsbD0iI2ZmZiI+PC9wYXRoPjwvc3ZnPg==' },
+                { id: 'telegram', name: 'Join Telegram Channel', url: 'https://t.me/LearnerAlom', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMiAyIDExIDEzIDIgOSAyMiAyeiIgZmlsbD0iIzJBOEFFOCI+PC9wYXRoPjxwYXRoIGQ9Ik0yIDIwIDEzIDExIDkgMjIgMiAyMHoiIGZpbGw9IiMyQTlDRTgiPjwvcGF0aD48L3N2Zz4=' },
+                { id: 'tiktok', name: 'Follow on TikTok', url: 'https://www.tiktok.com/@learneralom', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiAydjEwbTAtMTBDOS4zMyAyIDcgNCA3IDZzMi4zMyA0IDUgNG00IDhjMi42NyAwIDUgLTEuMzMgNS00cy0yLjMzLTQtNS00VjJNMjIgMTRjLTIuNzYgMC01IDIuMjQtNSA1czIuMjQgNSA1IDUtNS0yLjI0LTUtNSIgZmlsbD0iIzFFMUUxRSIgc3Ryb2tlPSIjRkYwMDVCIiBzdHJva2Utd2lkdGg9IjEuNSI+PC9wYXRoPjwvc3ZnPg==' },
+                { id: 'linkedin', name: 'Connect on LinkedIn', url: 'https://www.linkedin.com/in/learneralom', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xNiA4YTYgNiAwIDAgMSAxMiAwVjIwSDZWN2MwLTEuNjU3IDEuMzQzLTMgMy0zaDQiIGZpbGw9IiMwMDc3QjUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiPjwvcGF0aD48cmVjdCB4PSIyIiB5PSI5IiB3aWR0aD0iNCIgaGVpZ2h0PSIxMiIgZmlsbD0iIzAwNzdCNSI+PC9yZWN0PjxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIyIiBmaWxsPSIjMDA3N0I1Ij48L2NpcmNsZT48L3N2Zz4=' },
+                { id: 'pinterest', name: 'Follow on Pinterest', url: 'https://pinterest.com/learneralom', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiAyQzYuNDc3IDIgMiA2LjQ3NyAyIDEyczQuNDc3IDEwIDEwIDEwYzIuNjEgMCA0Ljk0LTEuMDA4IDYuNzEtMi42NDRsMy4zNSA1LjgwNkwyMiA2LjVjLTEuOTMzIDUtNS4xNSA4LjUtOS4yOSA4LjVDNS44MiAyMCAzIDE0Ljg4IDMgOS4yOSAzIDUuMjY1IDYuMjc5IDIgMTAuNSAyeiIgZmlsbD0iI0JEMDgyNyI+PC9wYXRoPjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iMi41IiBmaWxsPSIjRkZGIj48L2NpcmNsZT48L3N2Zz4=' },
+                { id: 'reddit', name: 'Join Reddit Community', url: 'https://www.reddit.com/user/learneralom', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiAyYTEwIDEwIDAgMCAwLTEwIDEwYzAgNC40MiAzLjU4IDggOCA4czgtMy41OCA4LThhMTAgMTAgMCAwIDAtMTAtMTB6TTcgMTBoMTBtLTIgNGg0IiBmaWxsPSIjRkY0NTAwIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMS41Ij48L3BhdGg+PGNpcmNsZSBjeD0iOS41IiBjeT0iMTIiIHI9IjEuNSIgZmlsbD0iI2ZmZiI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMTQuNSIgY3k9IjEyIiByPSIxLjUiIGZpbGw9IiNmZmYiPjwvY2lyY2xlPjxwYXRoIGQ9Ik0xNS41IDUuNWwxLjUtMS41IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMS41Ij48L3BhdGg+PC9zdmc+' },
+                { id: 'discord', name: 'Join Discord Server', url: 'https://discord.gg/learneralom', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik01LjgyOCAxNy4xNzJBMy41IDMuNSAwIDAgMSAyIDE0VjEwYTMuNSAzLjUgMCAwIDEgMy44MjgtMy4xNzJBNi4wMDIgNi4wMDIgMCAwIDEgMTIgNGMyLjI4MiAwIDQuMzk2IDEuMDYgNS42NzIgMi44MjhhMy41IDMuNSAwIDAgMSA0LjMyOC4xNzJWMTRhMy41IDMuNSAwIDAgMS0zLjgyOCAzLjE3MkE2LjAwMiA2LjAwMiAwIDAgMSAxMiAyMGMtMi4yODIgMC00LjM5Ni0xLjA2LTUuNjcyLTIuODI4WiIgZmlsbD0iIzcyODlEQSI+PC9wYXRoPjxjaXJjbGUgY3g9IjguNSIgY3k9IjEyLjUiIHI9IjEuNSIgZmlsbD0iI2ZmZiI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMTUuNSIgY3k9IjEyLjUiIHI9IjEuNSIgZmlsbD0iI2ZmZiI+PC9jaXJjbGU+PC9zdmc+' }
             ]
         };
 
@@ -860,7 +911,7 @@
         const coinSound = document.getElementById('coin-sound');
         const spinSound = document.getElementById('spin-sound');
         const winnersListEl = document.getElementById('winners-list');
-        const watchLiveBtn = document.getElementById('watch-live-btn'); // New
+        const watchLiveBtn = document.getElementById('watch-live-btn');
 
         // --- Page Elements ---
         const allPages = document.querySelectorAll('.page');
@@ -918,7 +969,6 @@
         const showPage = (pageId) => {
             allPages.forEach(p => p.classList.add('hidden'));
             document.getElementById(pageId).classList.remove('hidden');
-
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             const activeNav = document.getElementById(`nav-${pageId.replace('-page', '')}`);
             if(activeNav) activeNav.classList.add('active');
@@ -926,7 +976,7 @@
 
         // --- Telegram API Function ---
         const sendTelegramMessage = (message) => {
-            if (!ADMIN_CHAT_ID || !BOT_TOKEN || BOT_TOKEN.includes('@earninglive')) {
+            if (!ADMIN_CHAT_ID || !BOT_TOKEN) {
                 console.error("Admin Chat ID or Bot Token is not configured.");
                 tg.showAlert("Error: Cannot contact admin. Please try again later.");
                 return;
@@ -943,7 +993,11 @@
         const updateBalanceDisplay = () => {
             const formattedBalance = `৳ ${balance.toFixed(2)}`;
             [balanceAmountHomeEl, balanceAmountSpinEl, balanceAmountTaskEl].forEach(el => {
-                if (el) el.textContent = formattedBalance;
+                if (el) {
+                    el.textContent = formattedBalance;
+                    el.classList.add('pop');
+                    setTimeout(() => el.classList.remove('pop'), 300);
+                }
             });
             if (totalEarningsEl) totalEarningsEl.textContent = formattedBalance;
             if (totalBalanceEl) totalBalanceEl.textContent = formattedBalance;
@@ -962,7 +1016,9 @@
             spinCount = parseInt(state.spinCount || '0');
             totalReferrals = parseInt(state.totalReferrals || '0');
             totalReferralCommission = parseFloat(state.totalReferralCommission || '0');
-            updateBalanceDisplay();
+            // Initial display update without animation
+            const formattedBalance = `৳ ${balance.toFixed(2)}`;
+             [balanceAmountHomeEl, balanceAmountSpinEl, balanceAmountTaskEl].forEach(el => { if (el) el.textContent = formattedBalance; });
         };
 
         const getUserInfoString = () => {
@@ -971,16 +1027,6 @@
         };
 
         // --- Daily Task Logic ---
-        const checkDailyTask = () => {
-            const lastClaimed = localStorage.getItem(`dailyTaskLastClaimed_${userInfo.id}`);
-            if (lastClaimed && (Date.now() - parseInt(lastClaimed)) / 3600000 < 24) {
-                dailyTaskBtn.disabled = true;
-                dailyTaskBtn.textContent = 'Claimed Today';
-            } else {
-                 dailyTaskBtn.disabled = false;
-                 dailyTaskBtn.textContent = 'Daily Task';
-            }
-        };
         const handleDailyTask = () => {
             dailyTaskBtn.disabled = true;
             balance += 1;
@@ -992,7 +1038,7 @@
             tg.showPopup({ title: 'Success!', message: 'You have claimed your daily ৳1.00 reward!', buttons: [{type: 'ok'}] });
             sendTelegramMessage(`🎉 <b>Daily Reward!</b>\n\n${getUserInfoString()}\n💰 Earned: ৳1.00\n<b>New Balance:</b> ৳${balance.toFixed(2)}`);
         };
-
+        
         // --- Watch Ads Logic ---
         const handleWatchAd = (e) => {
             const button = e.currentTarget;
@@ -1013,59 +1059,82 @@
             }, 4000);
         };
 
-        // --- Social Task Page Logic ---
+        // --- NEW Social Task Page Logic ---
         const handleSocialTaskClick = (event) => {
             const button = event.currentTarget;
-            if (button.classList.contains('completed')) return;
+            if (button.disabled) return;
+            
             const taskId = button.dataset.taskId;
             const taskUrl = button.dataset.taskUrl;
             const taskName = button.dataset.taskName;
+            const taskItem = button.closest('.social-task-item');
+
+            button.disabled = true; // Disable immediately
+
+            // 1. Show Monetag Ad
+            if (typeof show_8954258 === 'function') {
+                show_8954258();
+            } else {
+                console.log("Monetag ad function not found, skipping ad.");
+            }
+
+            // 2. Open Link
             tg.openLink(taskUrl);
+            
+            // 3. Add Balance
             balance += config.SOCIAL_TASK_REWARD;
             updateBalanceDisplay();
-            saveState();
+            
+            // 4. Play Sound & Give Feedback
             coinSound.play();
             tg.HapticFeedback.notificationOccurred('success');
-            button.classList.add('completed');
-            button.disabled = true;
-            button.innerHTML = '✅ Completed';
+
+            // 5. Update UI for this specific task
+            taskItem.classList.add('completed');
+            button.textContent = 'Done';
+            
+            // 6. Save State
             localStorage.setItem(`social_task_completed_${taskId}_${userInfo.id}`, 'true');
+            saveState();
+
+            // 7. Send Telegram Message
             sendTelegramMessage(`✅ <b>Social Task Complete!</b>\n\n${getUserInfoString()}\n🔗 Task: ${taskName}\n💰 Earned: ৳${config.SOCIAL_TASK_REWARD.toFixed(2)}\n<b>New Balance:</b> ৳${balance.toFixed(2)}`);
         };
 
         const initializeTaskPage = () => {
-            taskListContainer.innerHTML = '';
+            if (!taskListContainer) return;
+            taskListContainer.innerHTML = ''; // Clear previous tasks
+            
             config.SOCIAL_TASKS.forEach(task => {
-                const button = document.createElement('button');
-                button.classList.add('action-button', 'task-button');
-                button.dataset.taskId = task.id;
-                button.dataset.taskUrl = task.url;
-                button.dataset.taskName = task.name;
                 const isCompleted = localStorage.getItem(`social_task_completed_${task.id}_${userInfo.id}`) === 'true';
+
+                const taskItem = document.createElement('div');
+                taskItem.className = 'social-task-item';
                 if (isCompleted) {
-                    button.classList.add('completed');
-                    button.disabled = true;
-                    button.innerHTML = '✅ Completed';
-                } else {
-                    button.textContent = task.name;
+                    taskItem.classList.add('completed');
                 }
-                button.addEventListener('click', handleSocialTaskClick);
-                taskListContainer.appendChild(button);
+
+                taskItem.innerHTML = `
+                    <img class="task-icon" src="${task.icon}" alt="${task.name} icon">
+                    <div class="task-details">
+                        <span class="task-name">${task.name}</span>
+                        <span class="task-reward">+ ৳${config.SOCIAL_TASK_REWARD.toFixed(2)}</span>
+                    </div>
+                    <button class="task-go-btn" data-task-id="${task.id}" data-task-url="${task.url}" data-task-name="${task.name}" ${isCompleted ? 'disabled' : ''}>
+                        ${isCompleted ? 'Done' : 'Go'}
+                    </button>
+                `;
+                
+                const goButton = taskItem.querySelector('.task-go-btn');
+                if (!isCompleted) {
+                    goButton.addEventListener('click', handleSocialTaskClick);
+                }
+
+                taskListContainer.appendChild(taskItem);
             });
         };
         
         // --- Spin Wheel Logic ---
-        const createWheel = () => {
-            wheel.innerHTML = '<div class="wheel-center">🛞</div>';
-            config.WHEEL_PRIZES.forEach((prize, i) => {
-                const label = document.createElement('div');
-                label.className = 'segment-label';
-                label.style.setProperty('--i', i);
-                label.innerHTML = `<span>৳ ${prize}</span>`;
-                wheel.appendChild(label);
-            });
-        };
-
         const handleSpin = () => {
             if (isSpinning) return;
             if (spinCount > 0 && spinCount % 3 === 0) {
@@ -1099,21 +1168,33 @@
             }, 8000); 
         };
 
-        // --- Account Page Logic ---
-        const showAccountSubPage = (subPageToShow) => {
-            accountMainView.classList.toggle('hidden', !!subPageToShow);
-            withdrawFormContainer.classList.toggle('hidden', subPageToShow !== 'withdraw-form-container');
-            depositFormContainer.classList.toggle('hidden', subPageToShow !== 'deposit-form-container');
-        };
+        // --- Account Page & Forms Logic ---
         const initializeAccountPage = () => {
             const name = `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim();
             const initials = ((userInfo.first_name?.[0] || '') + (userInfo.last_name?.[0] || '')).toUpperCase();
             userNameDisplay.textContent = name || 'Telegram User';
             userAvatar.textContent = initials || 'U';
             [withdrawNameInput, depositNameInput].forEach(input => input.value = name);
-            updateBalanceDisplay();
             document.getElementById('referral-code').value = userInfo.id;
         };
+
+        const createWheel = () => {
+            wheel.innerHTML = '<div class="wheel-center">🛞</div>';
+            config.WHEEL_PRIZES.forEach((prize, i) => {
+                const label = document.createElement('div');
+                label.className = 'segment-label';
+                label.style.setProperty('--i', i);
+                label.innerHTML = `<span>৳ ${prize}</span>`;
+                wheel.appendChild(label);
+            });
+        };
+        
+        const showAccountSubPage = (subPageToShow) => {
+            accountMainView.classList.toggle('hidden', !!subPageToShow);
+            withdrawFormContainer.classList.toggle('hidden', subPageToShow !== 'withdraw-form-container');
+            depositFormContainer.classList.toggle('hidden', subPageToShow !== 'deposit-form-container');
+        };
+
         const handleWithdrawSubmit = (e) => {
             e.preventDefault();
             const amount = parseFloat(withdrawAmountInput.value);
@@ -1131,6 +1212,7 @@
             withdrawForm.reset();
             withdrawNameInput.value = `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim();
         };
+
         const handleDepositSubmit = (e) => {
             e.preventDefault();
             const formData = new FormData(depositForm);
@@ -1141,49 +1223,21 @@
             depositForm.reset();
             depositNameInput.value = `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim();
         };
-        
-        // --- Referral Logic ---
-        const handleInvite = () => {
-            const referralLink = `https://t.me/${BOT_USERNAME.replace('@','')}/${MINI_APP_NAME}?startapp=${userInfo.id}`;
-            const shareText = `💰 Join this awesome app and earn money with me! Click the link to get started.`;
-            tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareText)}`);
-        };
 
-        const processReferral = () => {
-            const referrerId = tg.initDataUnsafe.start_param;
-            if (referrerId && referrerId !== userInfo.id.toString() && !localStorage.getItem(`referral_processed_${userInfo.id}`)) {
-                localStorage.setItem(`referral_processed_${userInfo.id}`, 'true');
-                const message = `🎉 <b>New Referral!</b>\n\n${getUserInfoString()}\nwas referred by User ID: <code>${referrerId}</code>\n\nPlease verify and credit the referrer.`;
-                sendTelegramMessage(message);
-                tg.showPopup({ title: 'Welcome!', message: 'You have joined via a referral link! Thank you!', buttons: [{type: 'ok'}] });
-            }
-        };
-        
-        // --- Other Handlers & Initializers ---
-        const handleJoinChannel = () => tg.openTelegramLink(config.ADMIN_CHANNEL_LINK);
+        // --- App Initialization & Other Handlers ---
         const initializeWinnersList = () => {
-            // New: Check for live stream and show button if active
             if (config.WINNERS_LIVE_STREAM.isLive && config.WINNERS_LIVE_STREAM.url) {
                 watchLiveBtn.classList.remove('hidden');
             }
-
-            // Populate the list with mock winners
             const mockWinners = [ { name: 'A****l H.', prize: 700 }, { name: 'R****l H.', prize: 500 }, { name: 'S***a A.', prize: 1000 }, { name: 'M***n K.', prize: 820 }, { name: 'A***f R.', prize: 2000 }, { name: 'N***a B.', prize: 1050 }, { name: 'J***l I.', prize: 3090 }, { name: 'F***a Y.', prize: 800 }, { name: 'T***m C.', prize: 1150 }, { name: 'K***m M.', prize: 635 }, { name: 'Z***d H.', prize: 922 }, { name: 'E***n W.', prize: 720 }, { name: 'I***n F.', prize: 810 }];
             winnersListEl.innerHTML = mockWinners.map(w => `<li class="winner-item"><span class="winner-name">${w.name}</span><span class="winner-prize">৳ ${w.prize}</span></li>`).join('');
         };
-        document.getElementById('referral-code').addEventListener('click', () => {
-            navigator.clipboard.writeText(userInfo.id).then(() => tg.showAlert('Referral Code copied!'));
-        });
         
-        // --- App Initialization ---
         const initializeApp = () => {
             loadState();
-            processReferral();
-            checkDailyTask();
-            createWheel(); 
-            initializeTaskPage();
-            initializeAccountPage();
+            updateBalanceDisplay();
             initializeWinnersList();
+            initializeAccountPage();
             showPage('home-page');
             
             if (!localStorage.getItem(`userVisited_${userInfo.id}`)) {
@@ -1195,16 +1249,14 @@
         // --- Event Listeners ---
         dailyTaskBtn.addEventListener('click', handleDailyTask);
         watchAdBtns.forEach(btn => btn.addEventListener('click', handleWatchAd));
-        inviteBtn.addEventListener('click', handleInvite);
-        joinChannelBtn.addEventListener('click', handleJoinChannel);
-        // New: Watch Live button event listener
-        watchLiveBtn.addEventListener('click', () => {
-            tg.openLink(config.WINNERS_LIVE_STREAM.url);
-        });
+        joinChannelBtn.addEventListener('click', () => tg.openTelegramLink(config.ADMIN_CHANNEL_LINK));
+        watchLiveBtn.addEventListener('click', () => tg.openLink(config.WINNERS_LIVE_STREAM.url));
+        
         navHome.addEventListener('click', (e) => { e.preventDefault(); showPage('home-page'); });
-        navSpin.addEventListener('click', (e) => { e.preventDefault(); showPage('spin-page'); createWheel(); });
+        navSpin.addEventListener('click', (e) => { e.preventDefault(); showPage('spin-page'); if(!wheel.innerHTML.includes('wheel-center')) createWheel(); });
         navTask.addEventListener('click', (e) => { e.preventDefault(); showPage('task-page'); initializeTaskPage(); });
-        navAccount.addEventListener('click', (e) => { e.preventDefault(); showPage('account-page'); initializeAccountPage(); showAccountSubPage(null); });
+        navAccount.addEventListener('click', (e) => { e.preventDefault(); showPage('account-page'); showAccountSubPage(null); });
+        
         spinNowBtn.addEventListener('click', handleSpin);
         withdrawBtn.addEventListener('click', () => showAccountSubPage('withdraw-form-container'));
         depositBtn.addEventListener('click', () => showAccountSubPage('deposit-form-container'));
