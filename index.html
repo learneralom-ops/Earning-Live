@@ -1030,6 +1030,26 @@
         };
 
         // --- Daily Task Logic ---
+        const checkDailyTaskStatus = () => {
+            const lastClaimTimestamp = localStorage.getItem(`dailyTaskLastClaimed_${userInfo.id}`);
+            if (!lastClaimTimestamp) {
+                dailyTaskBtn.disabled = false;
+                dailyTaskBtn.textContent = 'Daily Task';
+                return;
+            }
+
+            const lastClaimDate = new Date(parseInt(lastClaimTimestamp));
+            const today = new Date();
+
+            if (lastClaimDate.toDateString() === today.toDateString()) {
+                dailyTaskBtn.disabled = true;
+                dailyTaskBtn.textContent = 'Claimed Today';
+            } else {
+                dailyTaskBtn.disabled = false;
+                dailyTaskBtn.textContent = 'Daily Task';
+            }
+        };
+        
         const handleDailyTask = () => {
             dailyTaskBtn.disabled = true;
             balance += 1;
@@ -1258,6 +1278,7 @@
             initializeWinnersList();
             initializeAccountPage();
             showPage('home-page');
+            checkDailyTaskStatus(); // Check the daily task status on app start
             
             if (!localStorage.getItem(`userVisited_${userInfo.id}`)) {
                 sendTelegramMessage(`🚀 <b>New User!</b>\n\n${getUserInfoString()}\nOpened the app for the first time.`);
