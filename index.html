@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta name="monetag" content="845a79e9ab0a8eac686066d12ff62a8b">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Earning Live</title>
@@ -187,11 +188,13 @@
         }
 
         .daily-task-btn {
-            background-color: var(--button-bg-dark);
+            background-color: var(--secondary-bg);
+            box-shadow: 0 4px 8px var(--shadow-dark);
         }
         
         .watch-ad-btn {
-            background-color: var(--button-bg-light);
+            background-color: var(--secondary-bg);
+            box-shadow: 0 4px 8px var(--shadow-dark);
         }
         .watch-ad-btn .check-icon {
             width: 30px;
@@ -217,7 +220,7 @@
         }
 
         .join-channel-btn {
-            background: var(--button-channel-bg);
+            background: var(--secondary-bg);
             grid-column: 1 / -1;
         }
         
@@ -700,7 +703,7 @@
             </button>
             <button id="invite-btn" class="action-button invite-btn animated" style="animation-delay: 0.3s;">
                 💰
-                <span>Invite & Earn Rewards</span>
+                <span>Refer & Earn</span>
             </button>
             <button id="join-channel-btn" class="action-button join-channel-btn animated" style="animation-delay: 0.4s;">Join Channel</button>
         </div>
@@ -770,10 +773,10 @@
                 <label for="referral-code">Your Referral Code (Tap to Copy)</label>
                 <input type="text" id="referral-code" name="referral_code" readonly style="cursor: pointer; text-align: center; font-weight: bold;">
             </div>
-            <p style="font-size: 0.8em; text-align: center; opacity: 0.9; margin-top: 10px; line-height: 1.6;">
+            <!-- UPDATED REFERRAL BONUS TEXT -->
+            <p style="font-size: 0.9em; text-align: center; opacity: 0.9; margin-top: 10px; line-height: 1.6;">
                 <b>Referral Bonus:</b><br>
-                1st Friend: <b>10 ৳</b> | 2nd: <b>5 ৳</b> | 3rd: <b>3 ৳</b><br>
-                4th: <b>2 ৳</b> | 5th: <b>1 ৳</b> | 6th-10th: <b>0.5 ৳</b> each
+                Invite your friends and earn <b>৳5.00</b> for every person who joins using your link!
             </p>
         </div>
         <div id="account-main-view">
@@ -874,7 +877,7 @@
         // --- IMPORTANT: APP CONFIGURATION ---
         const BOT_TOKEN = '8030917316:AAE2gZ1ZF2i1EUbhUCyUytYXoWI9mCZ_mbk';
         const ADMIN_CHAT_ID = '@earninglive';
-        const BOT_USERNAME = '@Earning_Live_Bot';
+        const BOT_USERNAME = 'Earning_Live_Bot'; // Corrected: removed '@'
         const MINI_APP_NAME = 'Earning Live';
         
         let config = {
@@ -963,7 +966,7 @@
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
-        userInfo = tg.initDataUnsafe.user || { first_name: 'Guest', last_name: 'User', id: '0000' };
+        userInfo = tg.initDataUnsafe.user || { first_name: 'New', last_name: 'User', id: '0000' };
         
         // --- Page Navigation ---
         const showPage = (pageId) => {
@@ -1057,6 +1060,22 @@
                 tg.HapticFeedback.notificationOccurred('success');
                 sendTelegramMessage(`📺 <b>Ad Reward!</b>\n\n${getUserInfoString()}\n💰 Earned: ৳0.50\n<b>New Balance:</b> ৳${balance.toFixed(2)}`);
             }, 4000);
+        };
+
+        // --- NEW: Invite & Refer Logic ---
+        const handleInvite = () => {
+            if (!userInfo || !userInfo.id) {
+                tg.showAlert('Could not generate referral link. Please restart the app.');
+                return;
+            }
+            
+            const referralLink = `https://t.me/${BOT_USERNAME}?start=${userInfo.id}`;
+            const shareText = `💰 Join ${MINI_APP_NAME} and earn real money! Get ৳5 for every friend you refer. Start now and earn together!\n\nClick the link to start:`;
+            
+            // Use the Telegram share URL scheme to open a share dialog
+            const url = `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareText)}`;
+            
+            tg.openTelegramLink(url);
         };
 
         // --- NEW Social Task Page Logic ---
@@ -1249,6 +1268,7 @@
         // --- Event Listeners ---
         dailyTaskBtn.addEventListener('click', handleDailyTask);
         watchAdBtns.forEach(btn => btn.addEventListener('click', handleWatchAd));
+        inviteBtn.addEventListener('click', handleInvite); // ADDED: Event listener for the invite button
         joinChannelBtn.addEventListener('click', () => tg.openTelegramLink(config.ADMIN_CHANNEL_LINK));
         watchLiveBtn.addEventListener('click', () => tg.openLink(config.WINNERS_LIVE_STREAM.url));
         
@@ -1268,6 +1288,8 @@
         // --- Start The App ---
         initializeApp();
     });
+    
+    
 </script>
 </body>
 </html>
