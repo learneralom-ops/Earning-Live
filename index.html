@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta name="monetag" content="845a79e9ab0a8eac686066d12ff62a8b">
@@ -28,6 +28,11 @@
             --shadow-light: rgba(255, 255, 255, 0.1);
             --shadow-dark: rgba(0, 0, 0, 0.2);
             --disabled-bg: #574b6b;
+            --gold-color: #fdd835;
+            --ads-page-bg: #4a148c;
+            --ads-card-bg: #6a1b9a;
+            --ads-text-dark: #fff;
+            --ads-text-light: #f1f2f6;
         }
 
         * {
@@ -38,7 +43,7 @@
         }
 
         body {
-            background: #45036f; /* Solid purple from image */
+            background: var(--primary-bg);
             color: var(--text-color);
             display: flex;
             flex-direction: column;
@@ -46,6 +51,7 @@
             min-height: 100vh;
             padding: 20px 20px 100px 20px;
             overflow-x: hidden;
+            transition: background-color 0.3s ease;
         }
 
         .page {
@@ -151,10 +157,128 @@
             animation: pop 0.3s ease-in-out;
         }
 
+        /* --- NEW: Daily Check-in Bonus Styles --- */
+        .daily-checkin-container {
+            width: 100%;
+            background: linear-gradient(160deg, var(--secondary-bg), var(--primary-bg));
+            padding: 15px 10px;
+            border-radius: 20px;
+            margin: 15px 0 0 0;
+            box-shadow: 0 8px 15px var(--shadow-dark);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .checkin-title {
+            font-size: 1.5em; /* 24px */
+            font-weight: 700;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .checkin-subtitle {
+            font-size: 0.9em; /* 14.4px */
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-top: -10px;
+        }
+
+        .checkin-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .checkin-day {
+            background-color: linear-gradient(160deg, var(--secondary-bg), var(--primary-bg));
+            border-radius: 12px;
+            padding: 10px 8px;
+            width: calc(25% - 10px);
+            max-width: 75px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: all 0.3s ease;
+            min-height: 60px;
+            box-shadow: 0 5px 10px var(--shadow-dark);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .checkin-icon {
+            height: 18px;
+            width: 18px;
+            margin-bottom: 5px;
+        }
+
+        .checkin-day-text {
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1;
+        }
+
+        .checkin-reward {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .checkin-day.active {
+            border-color: var(--gold-color);
+            box-shadow: 0 0 15px rgba(253, 216, 53, 0.3);
+            transform: scale(1.05);
+        }
+
+        .checkin-day.claimed {
+            opacity: 0.7;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        
+        .checkin-day.locked {
+            opacity: 0.8;
+        }
+
+        .checkin-progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .checkin-progress-bar {
+            height: 100%;
+            width: 0%; /* Will be set by JS */
+            background: linear-gradient(90deg, #fdd835, #ffb300);
+            border-radius: 10px;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .claim-bonus-btn {
+            background: var(--primary-bg);
+            border: 1px solid rgba(255,255,255,0.2);
+            font-size: 1.2em;
+            font-weight: 600;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .claim-bonus-btn .claim-icon {
+            width: 28px;
+            height: 28px;
+        }
+
         /* --- Button Grid Container --- */
         .button-grid {
             display: grid;
-            grid-template-columns: 2fr 2fr;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 15px;
             width: 100%;
         }
@@ -187,11 +311,6 @@
             opacity: 0.7;
         }
 
-        .daily-task-btn {
-            background-color: var(--secondary-bg);
-            box-shadow: 0 4px 8px var(--shadow-dark);
-        }
-        
         .watch-ad-btn {
             background-color: var(--secondary-bg);
             box-shadow: 0 4px 8px var(--shadow-dark);
@@ -302,10 +421,10 @@
 
         .winner-prize {
             font-weight: 700;
-            color: #fdd835; /* A gold-like color for the prize */
+            color: var(--gold-color);
         }
         
-        /* --- NEW & UPDATED Task Page Styles --- */
+        /* --- General Page Styles --- */
         .page-title {
             font-size: 2em;
             font-weight: 700;
@@ -313,6 +432,7 @@
             text-shadow: 2px 2px 5px var(--shadow-dark);
         }
 
+        /* --- Social Task Page Styles --- */
         .task-list {
             display: flex;
             flex-direction: column;
@@ -356,7 +476,7 @@
 
         .task-reward {
             font-size: 0.9em;
-            color: #fdd835;
+            color: var(--gold-color);
             font-weight: bold;
         }
 
@@ -380,109 +500,105 @@
             background: #6c757d;
             cursor: not-allowed;
         }
-
-
-        /* --- Spin Page Styles --- */
-        .spin-container {
-            position: relative;
-            width: 320px;
-            height: 320px;
-            margin: 15px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        
+        /* --- UPDATED: Ads Task Page Styles --- */
+        #ads-task-page {
+            background: var(--primary-bg);
+            color: var(--ads-text-dark);
+            /* Removed absolute positioning to allow natural flow */
         }
         
-        spin-pointer {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 25px solid transparent;
-            border-right: 25px solid transparent;
-            border-top: 35px solid white;
-            z-index: 10;
-            filter: drop-shadow(0 -2px 2px rgba(0,0,0,0.3));
+        /* Override page title color for this specific page */
+        #ads-task-page .page-title {
+            color: #fff;
+            text-shadow: none;
+            font-size: 1.8em;
+        }
+        
+        /* Override balance card style for this specific page */
+        #ads-task-page .balance-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #e0e6f3;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            max-width: 320px;
         }
 
-        .wheel {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            position: relative;
-            overflow: hidden;
-            border: 8px solid #E0E0E0;
-            box-shadow: 0 0 25px rgba(0,0,0,0.5), inset 0 0 15px rgba(0,0,0,0.4);
-            background: conic-gradient(
-                #d32f2f 0deg 30deg,     /* Red */
-                #f57c00 30deg 60deg,    /* Orange */
-                #fbc02d 60deg 90deg,    /* Yellow */
-                #689f38 90deg 120deg,   /* Light Green */
-                #1976d2 120deg 150deg,  /* Dark Blue */
-                #d32f2f 150deg 180deg,  /* Red */
-                #f57c00 180deg 210deg,  /* Orange */
-                #fbc02d 210deg 240deg,  /* Yellow */
-                #388e3c 240deg 270deg,  /* Green */
-                #1976d2 270deg 300deg,  /* Dark Blue */
-                #c2185b 300deg 330deg,  /* Magenta */
-                #7b1fa2 330deg 360deg   /* Purple */
-            );
-            transition: transform 10s cubic-bezier(0.25, 1, 0.5, 1);
+        .ads-stats-grid {
+            display: grid;
+            /* UPDATED: This makes the grid responsive */
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            width: 100%;
         }
 
-        .wheel-center {
-            position: absolute;
-            width: 90px;
-            height: 90px;
-            background: var(--primary-bg);
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .stat-card {
+            background-color: var(--ads-card-bg);
+            color: var(--ads-text-dark);
+            padding: 15px;
+            border-radius: 16px;
+            text-align: center;
+             
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2.5em;
-            font-weight: 700;
-            z-index: 5;
-            border: 6px solid #E0E0E0;
-            text-shadow: 0 0 5px rgba(0,0,0,0.5);
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100px;
+            box-shadow: 0 5px 12px var(--shadow-dark);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation-delay: 0.5s;
         }
 
-        .segment-label {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 150px;
-            height: 1px;
-            transform-origin: 0% 0%;
-            transform: rotate(calc(15deg + 30deg * var(--i)));
-        }
-
-        .segment-label span {
-            display: inline-block;
-            position: absolute;
-            right: 15px;
-            color: white;
-            font-size: 1.1rem;
+        .stat-card h3 {
+            font-size: 1em;
             font-weight: 600;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-            transform: translateY(-50%) rotate(90deg);
+            color: var(--ads-text-light);
+            margin-bottom: 8px;
+            /* REMOVED fixed height for responsiveness */
         }
 
-        #spin-now-btn {
-            background: linear-gradient(135deg, #2196f3, #0d47a1);
-            width: 80%;
-            padding: 20px;
+        .stat-card .value {
             font-size: 1.5em;
-            margin-top: 15px;
-            border-radius: 50px;
+            font-weight: 700;
+            color: var(--ads-text-dark);
+            line-height: 1;
+            margin-bottom: 10px;
         }
 
+        .stat-card .limit {
+            font-size: 0.8em;
+            color: #fff;
+            margin-top: 5px; 
+        }
+
+        .progress-bar-container {
+            width: 100%; /* Changed to 100% to fill card width */
+            height: 8px;
+            background-color: #999;
+            border-radius: 3px;
+            margin: 5px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #5b86e5, #36d1dc);
+            border-radius: 3px;
+            transition: width 0.3s ease-in-out;
+        }
+
+        #start-task-btn {
+            background: linear-gradient(135deg, #4e73df, #36f1dc);
+            width: 100%; /* Changed to 100% */
+            max-width: 400px;
+            padding: 10px;
+            font-size: 1.3em;
+            font-weight: 700;
+            border-radius: 12px;
+            margin-top: 15px; /* Added margin for spacing */
+            /* REMOVED fixed positioning properties */
+        }
+        
         /* --- Account Page Styles --- */
         .account-user-info {
             display: flex;
@@ -649,6 +765,7 @@
             box-shadow: 0 -5px 15px var(--shadow-dark);
             border-top-left-radius: 20px;
             border-top-right-radius: 20px;
+            z-index: 1000;
         }
 
         .nav-item {
@@ -690,8 +807,24 @@
             <span class="balance-amount" id="balance-amount-home">৳ 00</span>
         </div>
         
+        <!-- NEW: Daily Check-in Bonus Section -->
+        <div class="daily-checkin-container animated" style="animation-delay: 0.3s;">
+            <h2 class="checkin-title">Daily Check-in Bonus</h2>
+            <p class="checkin-subtitle">Claim your daily reward and keep your streak!</p>
+            <div id="checkin-grid" class="checkin-grid">
+                <!-- Days will be generated by JavaScript -->
+            </div>
+            <div class="checkin-progress-container">
+                <div id="checkin-progress-bar" class="checkin-progress-bar"></div>
+            </div>
+            <button id="claim-bonus-btn" class="action-button claim-bonus-btn" disabled>
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACcUlEQVR4nO2Zv2sUQRTHPzNiyEbESjwQBBs7rwQfwUaw8b+wsBErQSwULDR2AhsLEQRBsLDRQrBQ0A9bC4kYKEhYWFhYGCEgkkjiLu/s3W7v3t29D7wHw+zsm++b2Tdv9gKCgoKCgpLBqYBqYAj4BlwDdwA+Ae+BGeAT8CkwkP9F4CTwHDgJ9AB2gwPgi8iXbOAZcBzYAnQ2x94Dr4EPQCvQ/W7jY+AlUC9cEwBNgN3gR+BrUAYsA28Al4Er4I+QBU4DJ4D5QA4wYxL4DjwO7ACJz9L9T5ZAhvA1sAncB34D8z/5eQj8CFwD/l3C0wEIgP8kSgWvSnQBRoA54JNI/ZqS0lXpAF4BPoH0c+U+kG8gQk1zBbgT+K8kYg8wU+Jz4BfA8eAvYBXQ1XxgEvgK/AwcBTYA3wMHgTfA58C7wDlw3oQSwGngHPC7yF0B5kDbwE2Q1C5wA1gCVoE7QEfA0UJeVWAIsACsAN+B10B9w3p6gNnAy8i3+gJ3QVmQW+B3YD8I/E9hM0h+i9y9YBPYCGwC+QC8CXwGvgyRBdrAZWD6U3JvgWfAHvD8U3K/wH+BXz/k7BbwAfgI3AJ6QdK9B+y2SNoK4E2QvAMeAReBLSAWBAkhfA9cB3YDm0AiQWwIGgFrgGvAG+AicA04BswA94GZwA9gE/AN8B6YBD4A7wHvgBvAj8Ab4DswA9wDngDfgVvAIeCjwGfAU+ApsB64BhwEDgIfAh+Bt8B84BnwX+QLCgoKCgu/5At0u1gR6i418gAAAABJRU5ErkJggg==" alt="gift" class="claim-icon">
+                <span id="claim-bonus-btn-text">Loading...</span>
+            </button>
+        </div>
+        
         <div class="button-grid">
-            <button id="daily-task-btn" class="action-button daily-task-btn animated" style="animation-delay: 0.2s;">Daily Task</button>
+            <!-- Removed Daily Task Button -->
             <button class="action-button watch-ad-btn animated" style="animation-delay: 0.2s;">
                 <span class="check-icon">✓</span> Watch Ads
             </button>
@@ -717,19 +850,46 @@
         </div>
     </div>
 
-    <!-- SPIN PAGE -->
-    <div id="spin-page" class="page hidden">
-        <div class="coin-icon">৳</div>
+    <!-- UPDATED ADS TASK PAGE -->
+    <div id="ads-task-page" class="page hidden">
+        <h1 class="page-title animated">Ads Task Overview</h1>
+        
+        <!-- NEW: Balance Card Added Here -->
         <div class="balance-card animated">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACvUlEQVR4nO2Yy2sTURDHJ1GDfoAgiHhR8aLgQXARxIMiHoTgwYsX8S/Qgx70oIeiB0Hw4EUEvfgfBA8iCEgPehMFFVwUPXhRIaKi0UmiY1pP4slkMtk5s2fSkw8GmcnO/DPzfvPNzEwCkUgkEolEIlGqCvwN/AV+AZ+BV8D/e/AEfAH2gR+As0B3AI8D54GdwE/gA3AcGAJ2gX5gwTqPASeBR4BzwAegK/AduARsAQ+B92Al0K0A74FvwG5gE3gO3AF6gRPAIeAGsAR8BvYCrYD3wDfgG+AGsA04B3wENgOfgF3AfeARsAmYBlYDLyKz1QMeA48DG4FpwDSwh4R1nAZ+A58Am4ENwGZgBXC1gIuA68C2223RjAFHgSeA0/h8VwD7gYfAsqC/rS4g7jK9mQh8BXZZ4BdwEXgG/AEuAxvh+531gGfAdoD/L/C3AdyCtwE7kF+a0e70DngI/K/D2wfW9z41S4DFwG+gqQY8BD4BbwMbgY3AUsD9gJ/ASeCj9L6zDjgGrAJ3gY1AAv+rXgq0DbwH/kF+aZbJb3UBOA8cAm7j8x0GngE3gY3ADuA6cBfYAVwGDgD3gX8l/26o9wMHgWPAUeAPcBC4CdwD7gIHgbPAWeAIcB84ABwFPgDb3e+e4w0wDRwADgD7gGfAXuAQ+Bt8V1gN7FdgB3AWuMh6/wM+Am8DX4H9gLvAFWAXcAX4BtwGfgMbgZ91+Q78ARy0fFkJ1gGngA3AY2AXcBzYDtza+1/gLhD/wF4C7gPXgc3AduAW+N/C7wNOARuBF8ClH5zPBp4BN/P57oF3wGfgA9DPK2Af8Dlw0Wd98wTwA/ge+M3CqgfW/30b+G7p/WcT+An8Dnyd+g9wA3gE/I7/N/C1gL/B+/gN+A38DHyf/kEkEolEJBJ/5A/vMhV+cALN8wAAAABJRU5ErkJggg==" alt="Money Bag" class="money-bag-icon">
             <span>Balance : </span>
-            <span class="balance-amount" id="balance-amount-spin">৳ 00</span>
+            <span class="balance-amount" id="balance-amount-ads">৳ 00</span>
         </div>
-        <div class="spin-container">
-            <div class="spin-pointer"></div>
-            <div class="wheel" id="wheel"></div>
+        
+        <div class="ads-stats-grid animated">
+            <div class="stat-card">
+                <h3>Daily Tasks Completed</h3>
+                <span class="value" id="daily-tasks-completed">0</span>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="daily-tasks-progress"></div>
+                </div>
+                <span class="limit">Limit: 500 tasks/day</span>
+            </div>
+            <div class="stat-card">
+                <h3>Hourly Tasks Completed</h3>
+                <span class="value" id="hourly-tasks-completed">0</span>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="hourly-tasks-progress"></div>
+                </div>
+                <span class="limit">Limit: 100 tasks/hour</span>
+            </div>
+            <div class="stat-card">
+                <h3>Lifetime Completed</h3>
+                <span class="value" id="lifetime-tasks-completed">0</span>
+                <span class="limit" style="visibility: hidden;">placeholder</span> <!-- to maintain alignment -->
+            </div>
+            <div class="stat-card">
+                <h3>Total Earnings</h3>
+                <span class="value" id="total-task-earnings">৳ 0.00</span>
+                <span class="limit" style="visibility: hidden;">placeholder</span> <!-- to maintain alignment -->
+            </div>
         </div>
-        <button id="spin-now-btn" class="action-button">Spin Now</button>
+        <button id="start-task-btn" class="action-button animated">Start Task</button>
     </div>
     
     <!-- TASK PAGE -->
@@ -854,9 +1014,9 @@
             <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWhvbWUiPjxwYXRoIGQ9Im0zIDkgOS03IDkgN3YxMWEyIDIgMCAwIDEtMiAyaC0xNGEyIDIgMCAwIDEtMi0yWiIvPjxwb2x5bGluZSBwb2ludHM9IjkgMjIgOSAxMiAxNSAxMiAxNSAyMiIvPjwvc3ZnPg==" alt="Home">
             <span>Home</span>
         </a>
-        <a href="#" id="nav-spin" class="nav-item">
-             <img class="nav-icon" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhcRbcTmnTx3MixR37rxz5musvECimFdAuZduY0URB1R4bUhDdKU8oEcZix1xOmXF8EaOmEaEk7ekmtFcdeOsKbM5mcm3hpUW5r2ajrl4dVW77L2pXto3peDKzCdLdWXUzD3CpCmkVSQuss_odp-G4wAQREzFNYaOlJsQXLKWNNb1iNdI4-Yb3vI4Kot3o/s447/Screenshot_2025-08-04-14-06-36-59_99c04817c0de5652397fc8b56c3b3817.png" alt="Spin">
-            <span>Spin</span>
+        <a href="#" id="nav-ads-task" class="nav-item">
+            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWxpc3QtY2hlY2tzIj48cGF0aCBkPSJtMyAxNyAyIDIgNC00Ii8+PHBhdGggZD0ibTMgNyAyIDIgNC00Ii8+PHBhdGggZD0iTTEzIDZoOCIvPjxwYXRoIGQ9Ik0xMyAxMmg4Ii8+PHBhdGggZD0iTTEzIDE4aDgiLz48L3N2Zz4=" alt="Ads Task">
+            <span>Ads Task</span>
         </a>
         <a href="#" id="nav-task" class="nav-item">
             <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNoZWNrLWNpcmNsZS0yIj48cGF0aCBkPSJtOSAxMiAyIDIgNCA0Ii8+PHBhdGggZD0iTTEyIDIyYTEwIDEwIDAgMSAwIDAtMjAgMTAgMTAgMCAwIDAgMCAyMFoiLz48L3N2Zz4=" alt="Task">
@@ -886,9 +1046,11 @@
                 isLive: true, 
                 url: 'https://otieu.com/4/9276685'
             },
-            SOCIAL_TASK_REWARD: 0.5, // Reward for each social task
-            WHEEL_PRIZES: [0.5, 0.5, 05, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
-            // --- NEW: 10 Social Tasks with Icons and Links ---
+            SOCIAL_TASK_REWARD: 0.5,
+            ADS_TASK_REWARD: 0.5,
+            DAILY_TASK_LIMIT: 500,
+            HOURLY_TASK_LIMIT: 100,
+            DAILY_CHECKIN_REWARDS: [0.02, 0.04, 0.06, 0.08, 0.11, 0.13, 0.15],
             SOCIAL_TASKS: [
                 { id: 'facebook', name: 'Follow on Facebook', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWZhY2Vib29rIj48cGF0aCBkPSJNMTggMnYxNmgyVjJIMTh6IiBmaWxsPSIjZmZmIj48L3BhdGg+PHBhdGggZD0iTTggNkgzdjRoNVY0aC0yejAgOGg1djRoLTZWMjBoNnYtNGg0di00aC00di00SDh6IiBmaWxsPSIjZmZmIj48L3BhdGg+PHBhdGggZD0iTTE4IDJoNm0tNCAwdjJtLTIgMFYyIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMS41Ij48L3BhdGg+PHBhdGggZD0iTTE4IDJoLTZ2OGg2WiIgZmlsbD0iIzE4NzdmMiI+PC9wYXRoPjxwYXRoIGQ9Ik0xOCAycy0xLjUgMC0xLjUgMS41VjZoM1Y0LjVjMC0xLjUtMS41LTEuNS0xLjUtMS41ek0xNSA5LjVoMyIvPjwvc3ZnPg==' },
                 { id: 'instagram', name: 'Follow on Instagram', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgeD0iMiIgeT0iMiIgcng9IjUiIHJ5PSI1IiBmaWxsPSIjZmZmIj48L3JlY3Q+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iNCIgZmlsbD0iIzE4NzdmMiI+PC9jaXJjbGU+PGxpbmUgeDE9IjE2LjUiIHkxPSI3LjUiIHgyPSIxNi41IiB5Mj0iNy41IiBmaWxsPSJjdXJyZW50Q29sb3IiIHN0cm9rZT0iIzE4NzdmMiI+PC9saW5lPjwvc3ZnPg==' },
@@ -905,37 +1067,48 @@
 
         // --- DOM Elements ---
         const balanceAmountHomeEl = document.getElementById('balance-amount-home');
-        const balanceAmountSpinEl = document.getElementById('balance-amount-spin');
+        const balanceAmountAdsEl = document.getElementById('balance-amount-ads'); // Added for Ads Page
         const balanceAmountTaskEl = document.getElementById('balance-amount-task');
-        const dailyTaskBtn = document.getElementById('daily-task-btn');
         const watchAdBtns = document.querySelectorAll('.watch-ad-btn');
         const inviteBtn = document.getElementById('invite-btn');
         const joinChannelBtn = document.getElementById('join-channel-btn');
         const coinSound = document.getElementById('coin-sound');
-        const spinSound = document.getElementById('spin-sound');
         const winnersListEl = document.getElementById('winners-list');
         const watchLiveBtn = document.getElementById('watch-live-btn');
 
-        // --- Page Elements ---
+        // Check-in Bonus Elements
+        const checkinGrid = document.getElementById('checkin-grid');
+        const checkinProgressBar = document.getElementById('checkin-progress-bar');
+        const claimBonusBtn = document.getElementById('claim-bonus-btn');
+        const claimBonusBtnText = document.getElementById('claim-bonus-btn-text');
+        const iconStar = `<img class="checkin-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmRkODM1IiBzdHJva2U9IiNmRkM3MDAiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWdvbiBwb2ludHM9IjEyIDIgMTUgOSA5IDkgMTIgMiI+PC9wb2x5Z29uPjxwb2x5Z29uIHBvaW50cz0iMTIgMiAxNS4wOSA4LjI2IDIyIDkuMjcgMTcgMTQuMTQgMTguMTggMjEgMTIgMTcuNzcgNS44MiAyMSAxNyAxNC4xNCAyIDkuMjcgOC45MSA4LjI2IDEyIDIiPjwvcG9seWdvbj48L3N2Zz4=" alt="Star">`;
+        const iconLock = `<img class="checkin-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNjZTkzZDgiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIyIiB5PSI4IiB3aWR0aD0iMjAiIGhlaWdodD0iMTIiIHJ4PSIyIj48L3JlY3Q+PHBhdGggZD0iTTcgOHYtM2ExLjUgMS41IDAgMCAxIDEuNS0xLjVoN2ExLjUgMS41IDAgMCAxIDEuNSAxLjV2M20tOSAwdi0uNSI+PC9wYXRoPjwvc3ZnPg==" alt="Lock">`;
+        const iconCheck = `<img class="checkin-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNFRUVFRUUiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJtNiAxMiA0IDQgOC04Ij48L3BhdGg+PC9zdmc+" alt="Check">`;
+        
+        // Page Elements
         const allPages = document.querySelectorAll('.page');
         const homePage = document.getElementById('home-page');
-        const spinPage = document.getElementById('spin-page');
+        const adsTaskPage = document.getElementById('ads-task-page');
         const taskPage = document.getElementById('task-page');
         const accountPage = document.getElementById('account-page');
         const navHome = document.getElementById('nav-home');
-        const navSpin = document.getElementById('nav-spin');
+        const navAdsTask = document.getElementById('nav-ads-task');
         const navTask = document.getElementById('nav-task');
         const navAccount = document.getElementById('nav-account');
 
-        // --- Task Page Elements ---
+        // Ads Task Page Elements
+        const dailyTasksCompletedEl = document.getElementById('daily-tasks-completed');
+        const hourlyTasksCompletedEl = document.getElementById('hourly-tasks-completed');
+        const lifetimeTasksCompletedEl = document.getElementById('lifetime-tasks-completed');
+        const totalTaskEarningsEl = document.getElementById('total-task-earnings');
+        const dailyTasksProgressEl = document.getElementById('daily-tasks-progress');
+        const hourlyTasksProgressEl = document.getElementById('hourly-tasks-progress');
+        const startTaskBtn = document.getElementById('start-task-btn');
+
+        // Task Page Elements
         const taskListContainer = document.querySelector('#task-page .task-list');
 
-        // --- Spin Wheel Elements ---
-        const wheel = document.getElementById('wheel');
-        const spinNowBtn = document.getElementById('spin-now-btn');
-        let isSpinning = false;
-
-        // --- Account Page Elements ---
+        // Account Page Elements
         const userAvatar = document.getElementById('user-avatar');
         const userNameDisplay = document.getElementById('user-name-display');
         const totalEarningsEl = document.getElementById('total-earnings');
@@ -955,29 +1128,46 @@
         const depositNameInput = document.getElementById('deposit-name');
         const depositBackBtn = document.getElementById('deposit-back-btn');
         
-        // --- State Management ---
+        // State Management
         let balance = 0;
         let userInfo = {};
-        let spinCount = 0; 
         let totalReferrals = 0;
         let totalReferralCommission = 0;
+        let userCheckinState = { streak: 0, lastClaim: null };
+        let adsTaskState = {
+            daily: 0, hourly: 0, lifetime: 0, earnings: 0,
+            lastDailyReset: new Date().setHours(0,0,0,0),
+            lastHourlyReset: new Date().setMinutes(0,0,0)
+        };
 
-        // --- Telegram WebApp Initialization ---
+        // Telegram WebApp Initialization
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
         userInfo = tg.initDataUnsafe.user || { first_name: 'New', last_name: 'User', id: '0000' };
         
-        // --- Page Navigation ---
+        // Page Navigation
         const showPage = (pageId) => {
             allPages.forEach(p => p.classList.add('hidden'));
             document.getElementById(pageId).classList.remove('hidden');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            const activeNav = document.getElementById(`nav-${pageId.replace('-page', '')}`);
+            
+            let navId;
+            if (pageId === 'ads-task-page') navId = 'nav-ads-task';
+            else navId = `nav-${pageId.replace('-page', '')}`;
+            
+            const activeNav = document.getElementById(navId);
             if(activeNav) activeNav.classList.add('active');
+            
+            // Adjust body background based on page using CSS variables for cleaner control
+            if (pageId === 'ads-task-page') {
+                document.body.style.backgroundColor = 'var(--ads-page-bg)';
+            } else {
+                document.body.style.backgroundColor = 'var(--primary-bg)';
+            }
         };
 
-        // --- Telegram API Function ---
+        // Telegram API Function
         const sendTelegramMessage = (message) => {
             if (!ADMIN_CHAT_ID || !BOT_TOKEN) {
                 console.error("Admin Chat ID or Bot Token is not configured.");
@@ -992,10 +1182,11 @@
             }).catch(error => console.error('Error sending message to Telegram:', error));
         };
 
-        // --- Utility Functions ---
+        // Utility Functions
         const updateBalanceDisplay = () => {
             const formattedBalance = `৳ ${balance.toFixed(2)}`;
-            [balanceAmountHomeEl, balanceAmountSpinEl, balanceAmountTaskEl].forEach(el => {
+            // UPDATED: Now includes the new balance element for the ads page
+            [balanceAmountHomeEl, balanceAmountTaskEl, balanceAmountAdsEl].forEach(el => {
                 if (el) {
                     el.textContent = formattedBalance;
                     el.classList.add('pop');
@@ -1009,19 +1200,19 @@
         };
 
         const saveState = () => {
-            const state = { balance, spinCount, totalReferrals, totalReferralCommission };
-            localStorage.setItem(`userState_${userInfo.id}`, JSON.stringify(state));
+            const state = { balance, totalReferrals, totalReferralCommission, userCheckinState, adsTaskState };
+            localStorage.setItem(`userState_v3_${userInfo.id}`, JSON.stringify(state));
         };
 
         const loadState = () => {
-            const state = JSON.parse(localStorage.getItem(`userState_${userInfo.id}`) || '{}');
+            const state = JSON.parse(localStorage.getItem(`userState_v3_${userInfo.id}`) || '{}');
             balance = parseFloat(state.balance || '0');
-            spinCount = parseInt(state.spinCount || '0');
             totalReferrals = parseInt(state.totalReferrals || '0');
             totalReferralCommission = parseFloat(state.totalReferralCommission || '0');
-            // Initial display update without animation
-            const formattedBalance = `৳ ${balance.toFixed(2)}`;
-             [balanceAmountHomeEl, balanceAmountSpinEl, balanceAmountTaskEl].forEach(el => { if (el) el.textContent = formattedBalance; });
+            userCheckinState = state.userCheckinState || { streak: 0, lastClaim: null };
+            adsTaskState = state.adsTaskState || { daily: 0, hourly: 0, lifetime: 0, earnings: 0, lastDailyReset: new Date().setHours(0,0,0,0), lastHourlyReset: new Date().setMinutes(0,0,0) };
+            
+            // No initial text setting here, updateBalanceDisplay will handle it
         };
 
         const getUserInfoString = () => {
@@ -1029,40 +1220,64 @@
             return `👤 <b>User:</b> <a href="tg://user?id=${userInfo.id}">${name}</a> (ID: <code>${userInfo.id}</code>)`;
         };
 
-        // --- Daily Task Logic ---
-        const checkDailyTaskStatus = () => {
-            const lastClaimTimestamp = localStorage.getItem(`dailyTaskLastClaimed_${userInfo.id}`);
-            if (!lastClaimTimestamp) {
-                dailyTaskBtn.disabled = false;
-                dailyTaskBtn.textContent = 'Daily Task';
-                return;
+        // Daily Check-in Logic
+        const initializeCheckinBonus = () => {
+            checkinGrid.innerHTML = '';
+            if (userCheckinState.lastClaim) {
+                const lastClaimDate = new Date(userCheckinState.lastClaim);
+                const today = new Date();
+                lastClaimDate.setHours(0, 0, 0, 0);
+                today.setHours(0, 0, 0, 0);
+                const diffTime = today.getTime() - lastClaimDate.getTime();
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                if (diffDays > 1) userCheckinState.streak = 0;
             }
-
-            const lastClaimDate = new Date(parseInt(lastClaimTimestamp));
-            const today = new Date();
-
-            if (lastClaimDate.toDateString() === today.toDateString()) {
-                dailyTaskBtn.disabled = true;
-                dailyTaskBtn.textContent = 'Claimed Today';
-            } else {
-                dailyTaskBtn.disabled = false;
-                dailyTaskBtn.textContent = 'Daily Task';
+            if (userCheckinState.streak >= 7) {
+                 const lastClaimDate = new Date(userCheckinState.lastClaim);
+                 const weekAgo = new Date();
+                 weekAgo.setDate(weekAgo.getDate() - 7);
+                 if(lastClaimDate < weekAgo) userCheckinState.streak = 0;
             }
+            const currentStreak = userCheckinState.streak;
+            let canClaimToday = userCheckinState.lastClaim ? new Date(userCheckinState.lastClaim).toDateString() !== new Date().toDateString() : true;
+            
+            config.DAILY_CHECKIN_REWARDS.forEach((reward, index) => {
+                const dayEl = document.createElement('div');
+                dayEl.classList.add('checkin-day');
+                let iconHtml = '', stateClass = '';
+                if (index < currentStreak) { stateClass = 'claimed'; iconHtml = iconCheck; } 
+                else if (index === currentStreak && currentStreak < 7) { stateClass = canClaimToday ? 'active' : 'claimed'; iconHtml = canClaimToday ? iconStar : iconCheck; } 
+                else { stateClass = 'locked'; iconHtml = iconLock; }
+                dayEl.classList.add(stateClass);
+                dayEl.innerHTML = `${iconHtml}<span class="checkin-day-text">Day ${index + 1}</span><span class="checkin-reward">৳${reward.toFixed(2)}</span>`;
+                checkinGrid.appendChild(dayEl);
+            });
+            
+            checkinProgressBar.style.width = `${Math.min((currentStreak / 7) * 100, 100)}%`;
+            if (currentStreak < 7 && canClaimToday) { claimBonusBtn.disabled = false; claimBonusBtnText.textContent = `Claim ৳${config.DAILY_CHECKIN_REWARDS[currentStreak].toFixed(2)}`; } 
+            else if (currentStreak >= 7) { claimBonusBtn.disabled = true; claimBonusBtnText.textContent = `Streak Complete!`; } 
+            else { claimBonusBtn.disabled = true; claimBonusBtnText.textContent = `Claim Tomorrow`; }
         };
-        
-        const handleDailyTask = () => {
-            dailyTaskBtn.disabled = true;
-            balance += 1;
+
+        const handleClaimCheckin = () => {
+            if (claimBonusBtn.disabled) return;
+            const currentStreak = userCheckinState.streak;
+            if (currentStreak >= config.DAILY_CHECKIN_REWARDS.length) { tg.showAlert('You have completed the 7-day streak!'); return; }
+            claimBonusBtn.disabled = true;
+            const reward = config.DAILY_CHECKIN_REWARDS[currentStreak];
+            balance += reward;
+            userCheckinState.streak++;
+            userCheckinState.lastClaim = new Date().getTime();
             updateBalanceDisplay();
             saveState();
-            localStorage.setItem(`dailyTaskLastClaimed_${userInfo.id}`, Date.now().toString());
-            dailyTaskBtn.textContent = 'Claimed!';
             coinSound.play();
-            tg.showPopup({ title: 'Success!', message: 'You have claimed your daily ৳1.00 reward!', buttons: [{type: 'ok'}] });
-            sendTelegramMessage(`🎉 <b>Daily Reward!</b>\n\n${getUserInfoString()}\n💰 Earned: ৳1.00\n<b>New Balance:</b> ৳${balance.toFixed(2)}`);
+            tg.HapticFeedback.notificationOccurred('success');
+            tg.showPopup({ title: 'Reward Claimed!', message: `You earned ৳${reward.toFixed(2)} for Day ${userCheckinState.streak}!`, buttons: [{type: 'ok'}] });
+            sendTelegramMessage(`🎉 <b>Daily Check-in!</b>\n\n${getUserInfoString()}\n✅ Claimed Day ${userCheckinState.streak} for ৳${reward.toFixed(2)}\n<b>New Balance:</b> ৳${balance.toFixed(2)}`);
+            initializeCheckinBonus();
         };
-        
-        // --- Watch Ads Logic ---
+
+        // Watch Ads Logic
         const handleWatchAd = (e) => {
             const button = e.currentTarget;
             button.disabled = true;
@@ -1082,77 +1297,113 @@
             }, 4000);
         };
 
-        // --- NEW: Invite & Refer Logic ---
+        // Invite & Refer Logic
         const handleInvite = () => {
-            if (!userInfo || !userInfo.id) {
-                tg.showAlert('Could not generate referral link. Please restart the app.');
-                return;
-            }
-            
+            if (!userInfo || !userInfo.id) { tg.showAlert('Could not generate referral link.'); return; }
             const referralLink = `https://t.me/${BOT_USERNAME}?start=${userInfo.id}`;
-            const shareText = `💰 Join ${MINI_APP_NAME} and earn real money! Get ৳5 for every friend you refer. Start now and earn together!\n\nClick the link to start:`;
-            
-            // Use the Telegram share URL scheme to open a share dialog
-            const url = `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareText)}`;
-            
-            tg.openTelegramLink(url);
+            const shareText = `💰 Join ${MINI_APP_NAME} and earn real money! Get ৳5 for every friend you refer. Start now!\n\nClick the link to start:`;
+            tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareText)}`);
+        };
+        
+        // --- NEW Ads Task Page Logic ---
+        const updateAdsTaskUI = () => {
+            dailyTasksCompletedEl.textContent = adsTaskState.daily;
+            hourlyTasksCompletedEl.textContent = adsTaskState.hourly;
+            lifetimeTasksCompletedEl.textContent = adsTaskState.lifetime;
+            totalTaskEarningsEl.textContent = `৳ ${adsTaskState.earnings.toFixed(2)}`;
+            dailyTasksProgressEl.style.width = `${(adsTaskState.daily / config.DAILY_TASK_LIMIT) * 100}%`;
+            hourlyTasksProgressEl.style.width = `${(adsTaskState.hourly / config.HOURLY_TASK_LIMIT) * 100}%`;
         };
 
-        // --- NEW Social Task Page Logic ---
+        const checkAndResetAdsCounters = () => {
+            const now = new Date();
+            const today = new Date(now).setHours(0,0,0,0);
+            const thisHour = new Date(now).setMinutes(0,0,0);
+
+            let stateChanged = false;
+            if (adsTaskState.lastDailyReset < today) {
+                adsTaskState.daily = 0;
+                adsTaskState.lastDailyReset = today;
+                stateChanged = true;
+            }
+            if (adsTaskState.lastHourlyReset < thisHour) {
+                adsTaskState.hourly = 0;
+                adsTaskState.lastHourlyReset = thisHour;
+                stateChanged = true;
+            }
+
+            startTaskBtn.disabled = (adsTaskState.daily >= config.DAILY_TASK_LIMIT || adsTaskState.hourly >= config.HOURLY_TASK_LIMIT);
+
+            if (stateChanged) {
+                saveState();
+                updateAdsTaskUI();
+            }
+        };
+
+        const handleStartTaskClick = () => {
+            checkAndResetAdsCounters();
+
+            if (adsTaskState.daily >= config.DAILY_TASK_LIMIT) {
+                tg.showAlert(`You have reached the daily limit of ${config.DAILY_TASK_LIMIT} tasks. Please try again tomorrow.`);
+                startTaskBtn.disabled = true;
+                return;
+            }
+            if (adsTaskState.hourly >= config.HOURLY_TASK_LIMIT) {
+                tg.showAlert(`You have reached the hourly limit of ${config.HOURLY_TASK_LIMIT} tasks. Please try again later.`);
+                startTaskBtn.disabled = true;
+                return;
+            }
+
+            if (typeof show_8954258 === 'function') {
+                show_8954258();
+            }
+
+            const reward = config.ADS_TASK_REWARD;
+            balance += reward;
+            adsTaskState.earnings += reward;
+            adsTaskState.daily++;
+            adsTaskState.hourly++;
+            adsTaskState.lifetime++;
+
+            updateBalanceDisplay();
+            updateAdsTaskUI();
+            saveState();
+
+            coinSound.play();
+            tg.HapticFeedback.notificationOccurred('success');
+            sendTelegramMessage(`💸 <b>Ads Task Earning!</b>\n\n${getUserInfoString()}\n💰 Earned: ৳${reward.toFixed(2)}\n<b>New Balance:</b> ৳${balance.toFixed(2)}`);
+        };
+
+
+        // --- Social Task Page Logic ---
         const handleSocialTaskClick = (event) => {
             const button = event.currentTarget;
             if (button.disabled) return;
-            
-            const taskId = button.dataset.taskId;
-            const taskUrl = button.dataset.taskUrl;
-            const taskName = button.dataset.taskName;
-            const taskItem = button.closest('.social-task-item');
+            button.disabled = true;
 
-            button.disabled = true; // Disable immediately
+            if (typeof show_8954258 === 'function') show_8954258();
 
-            // 1. Show Monetag Ad
-            if (typeof show_8954258 === 'function') {
-                show_8954258();
-            } else {
-                console.log("Monetag ad function not found, skipping ad.");
-            }
-
-            // 2. Open Link
-            tg.openLink(taskUrl);
-            
-            // 3. Add Balance
+            tg.openLink(button.dataset.taskUrl);
             balance += config.SOCIAL_TASK_REWARD;
             updateBalanceDisplay();
-            
-            // 4. Play Sound & Give Feedback
             coinSound.play();
             tg.HapticFeedback.notificationOccurred('success');
-
-            // 5. Update UI for this specific task
-            taskItem.classList.add('completed');
+            
+            button.closest('.social-task-item').classList.add('completed');
             button.textContent = 'Done';
             
-            // 6. Save State
-            localStorage.setItem(`social_task_completed_${taskId}_${userInfo.id}`, 'true');
+            localStorage.setItem(`social_task_completed_${button.dataset.taskId}_${userInfo.id}`, 'true');
             saveState();
-
-            // 7. Send Telegram Message
-            sendTelegramMessage(`✅ <b>Social Task Complete!</b>\n\n${getUserInfoString()}\n🔗 Task: ${taskName}\n💰 Earned: ৳${config.SOCIAL_TASK_REWARD.toFixed(2)}\n<b>New Balance:</b> ৳${balance.toFixed(2)}`);
+            sendTelegramMessage(`✅ <b>Social Task Complete!</b>\n\n${getUserInfoString()}\n🔗 Task: ${button.dataset.taskName}\n💰 Earned: ৳${config.SOCIAL_TASK_REWARD.toFixed(2)}\n<b>New Balance:</b> ৳${balance.toFixed(2)}`);
         };
 
         const initializeTaskPage = () => {
             if (!taskListContainer) return;
-            taskListContainer.innerHTML = ''; // Clear previous tasks
-            
+            taskListContainer.innerHTML = '';
             config.SOCIAL_TASKS.forEach(task => {
                 const isCompleted = localStorage.getItem(`social_task_completed_${task.id}_${userInfo.id}`) === 'true';
-
                 const taskItem = document.createElement('div');
-                taskItem.className = 'social-task-item';
-                if (isCompleted) {
-                    taskItem.classList.add('completed');
-                }
-
+                taskItem.className = 'social-task-item' + (isCompleted ? ' completed' : '');
                 taskItem.innerHTML = `
                     <img class="task-icon" src="${task.icon}" alt="${task.name} icon">
                     <div class="task-details">
@@ -1163,50 +1414,13 @@
                         ${isCompleted ? 'Done' : 'Go'}
                     </button>
                 `;
-                
-                const goButton = taskItem.querySelector('.task-go-btn');
                 if (!isCompleted) {
-                    goButton.addEventListener('click', handleSocialTaskClick);
+                    taskItem.querySelector('.task-go-btn').addEventListener('click', handleSocialTaskClick);
                 }
-
                 taskListContainer.appendChild(taskItem);
             });
         };
         
-        // --- Spin Wheel Logic ---
-        const handleSpin = () => {
-            if (isSpinning) return;
-            if (spinCount > 0 && spinCount % 3 === 0) {
-                if (typeof show_8954258 === 'function') show_8954258();
-            }
-            isSpinning = true;
-            spinNowBtn.disabled = true;
-            spinNowBtn.textContent = 'Spinning...';
-            spinSound.play();
-            const segmentCount = config.WHEEL_PRIZES.length;
-            const winningIndex = Math.floor(Math.random() * segmentCount);
-            const prizeWon = config.WHEEL_PRIZES[winningIndex];
-            const segmentAngle = 360 / segmentCount;
-            const randomOffset = Math.random() * (segmentAngle - 4) + 2;
-            const targetRotation = (360 * 5) - (winningIndex * segmentAngle) - (segmentAngle / 2) + randomOffset;
-            wheel.style.transition = 'transform 10s cubic-bezier(0.25, 1, 0.5, 1)';
-            wheel.style.transform = `rotate(${targetRotation}deg)`;
-            setTimeout(() => {
-                spinSound.pause(); spinSound.currentTime = 0;
-                balance += prizeWon;
-                spinCount++;
-                updateBalanceDisplay();
-                saveState();
-                coinSound.play();
-                tg.HapticFeedback.notificationOccurred('success');
-                tg.showPopup({ title: 'Congratulations!', message: `You won ৳${prizeWon.toFixed(2)}!`, buttons: [{type: 'ok'}] });
-                sendTelegramMessage(`🎡 <b>Spin Win!</b>\n\n${getUserInfoString()}\n💰 Won: ৳${prizeWon.toFixed(2)}\n<b>New Balance:</b> ৳${balance.toFixed(2)}`);
-                isSpinning = false;
-                spinNowBtn.disabled = false;
-                spinNowBtn.textContent = 'Spin Now';
-            }, 8000); 
-        };
-
         // --- Account Page & Forms Logic ---
         const initializeAccountPage = () => {
             const name = `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim();
@@ -1215,17 +1429,6 @@
             userAvatar.textContent = initials || 'U';
             [withdrawNameInput, depositNameInput].forEach(input => input.value = name);
             document.getElementById('referral-code').value = userInfo.id;
-        };
-
-        const createWheel = () => {
-            wheel.innerHTML = '<div class="wheel-center">🛞</div>';
-            config.WHEEL_PRIZES.forEach((prize, i) => {
-                const label = document.createElement('div');
-                label.className = 'segment-label';
-                label.style.setProperty('--i', i);
-                label.innerHTML = `<span>৳ ${prize}</span>`;
-                wheel.appendChild(label);
-            });
         };
         
         const showAccountSubPage = (subPageToShow) => {
@@ -1237,16 +1440,12 @@
         const handleWithdrawSubmit = (e) => {
             e.preventDefault();
             const amount = parseFloat(withdrawAmountInput.value);
-            if (amount < 500) {
-                tg.showAlert('Minimum withdrawal amount is 500 Taka.'); return;
-            }
-            if (amount > balance) {
-                tg.showAlert('You do not have enough balance for this withdrawal.'); return;
-            }
+            if (amount < 500) { tg.showAlert('Minimum withdrawal is 500 Taka.'); return; }
+            if (amount > balance) { tg.showAlert('Insufficient balance.'); return; }
             const formData = new FormData(withdrawForm);
             const details = `🚨 <b>New Withdraw Request</b> 🚨\n\n${getUserInfoString()}\n\n<b>Request Details:</b>\n--------------------------\n💰 <b>Amount:</b> ${formData.get('amount')} Taka\n💳 <b>Method:</b> ${formData.get('method')}\n📞 <b>Details:</b> <code>${formData.get('details')}</code>\n📄 <b>TRX ID:</b> ${formData.get('trx_id') || 'N/A'}\n--------------------------\n<b>Current Balance:</b> ৳${balance.toFixed(2)}`;
             sendTelegramMessage(details);
-            tg.showPopup({ title: 'Request Sent!', message: 'Your withdrawal request has been sent. It will be processed soon.', buttons: [{type: 'ok'}] });
+            tg.showPopup({ title: 'Request Sent!', message: 'Your withdrawal request has been sent.', buttons: [{type: 'ok'}] });
             showAccountSubPage(null);
             withdrawForm.reset();
             withdrawNameInput.value = `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim();
@@ -1255,9 +1454,9 @@
         const handleDepositSubmit = (e) => {
             e.preventDefault();
             const formData = new FormData(depositForm);
-            const details = `💰 <b>New Deposit Submitted</b> 💰\n\n${getUserInfoString()}\n\n<b>Deposit Details:</b>\n--------------------------\n💵 <b>Amount:</b> ${formData.get('amount')} Taka\n💳 <b>Method:</b> ${formData.get('method')}\n📄 <b>TRX ID:</b> <code>${formData.get('trx_id')}</code>\n--------------------------\nPlease verify and update the user's balance.`;
+            const details = `💰 <b>New Deposit Submitted</b> 💰\n\n${getUserInfoString()}\n\n<b>Deposit Details:</b>\n--------------------------\n💵 <b>Amount:</b> ${formData.get('amount')} Taka\n💳 <b>Method:</b> ${formData.get('method')}\n📄 <b>TRX ID:</b> <code>${formData.get('trx_id')}</code>\n--------------------------\nPlease verify and update balance.`;
             sendTelegramMessage(details);
-            tg.showPopup({ title: 'Submitted!', message: 'Your deposit information has been sent for verification.', buttons: [{type: 'ok'}] });
+            tg.showPopup({ title: 'Submitted!', message: 'Deposit information sent for verification.', buttons: [{type: 'ok'}] });
             showAccountSubPage(null);
             depositForm.reset();
             depositNameInput.value = `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim();
@@ -1277,8 +1476,10 @@
             updateBalanceDisplay();
             initializeWinnersList();
             initializeAccountPage();
+            initializeCheckinBonus();
+            checkAndResetAdsCounters(); // Initial check for counters
+            updateAdsTaskUI(); // Initial UI update for task page
             showPage('home-page');
-            checkDailyTaskStatus(); // Check the daily task status on app start
             
             if (!localStorage.getItem(`userVisited_${userInfo.id}`)) {
                 sendTelegramMessage(`🚀 <b>New User!</b>\n\n${getUserInfoString()}\nOpened the app for the first time.`);
@@ -1287,18 +1488,18 @@
         };
 
         // --- Event Listeners ---
-        dailyTaskBtn.addEventListener('click', handleDailyTask);
+        claimBonusBtn.addEventListener('click', handleClaimCheckin);
         watchAdBtns.forEach(btn => btn.addEventListener('click', handleWatchAd));
-        inviteBtn.addEventListener('click', handleInvite); // ADDED: Event listener for the invite button
+        inviteBtn.addEventListener('click', handleInvite);
         joinChannelBtn.addEventListener('click', () => tg.openTelegramLink(config.ADMIN_CHANNEL_LINK));
         watchLiveBtn.addEventListener('click', () => tg.openLink(config.WINNERS_LIVE_STREAM.url));
         
         navHome.addEventListener('click', (e) => { e.preventDefault(); showPage('home-page'); });
-        navSpin.addEventListener('click', (e) => { e.preventDefault(); showPage('spin-page'); if(!wheel.innerHTML.includes('wheel-center')) createWheel(); });
+        navAdsTask.addEventListener('click', (e) => { e.preventDefault(); showPage('ads-task-page'); checkAndResetAdsCounters(); });
         navTask.addEventListener('click', (e) => { e.preventDefault(); showPage('task-page'); initializeTaskPage(); });
         navAccount.addEventListener('click', (e) => { e.preventDefault(); showPage('account-page'); showAccountSubPage(null); });
         
-        spinNowBtn.addEventListener('click', handleSpin);
+        startTaskBtn.addEventListener('click', handleStartTaskClick);
         withdrawBtn.addEventListener('click', () => showAccountSubPage('withdraw-form-container'));
         depositBtn.addEventListener('click', () => showAccountSubPage('deposit-form-container'));
         withdrawBackBtn.addEventListener('click', () => showAccountSubPage(null));
@@ -1309,8 +1510,6 @@
         // --- Start The App ---
         initializeApp();
     });
-    
-    
 </script>
 </body>
 </html>
