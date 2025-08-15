@@ -844,7 +844,7 @@
           
 
         .tg-task-card.completed {
-            opacity: 0.6;
+            opacity: 50;
         }
 
         .tg-task-card-top {
@@ -1045,7 +1045,7 @@
                 <div class="progress-bar-container">
                     <div class="progress-bar" id="daily-tasks-progress"></div>
                 </div>
-                <span class="limit">Limit: 100 tasks/day</span>
+                <span class="limit">Limit: 500 tasks/day</span>
             </div>
             <div class="stat-card">
                 <h3>Hourly Tasks Completed</h3>
@@ -1053,7 +1053,7 @@
                 <div class="progress-bar-container">
                     <div class="progress-bar" id="hourly-tasks-progress"></div>
                 </div>
-                <span class="limit">Limit: 30 tasks/hour</span>
+                <span class="limit">Limit: 100 tasks/hour</span>
             </div>
             <div class="stat-card">
                 <h3>Lifetime Completed</h3>
@@ -1252,8 +1252,8 @@
             },
             SOCIAL_TASK_REWARD: 0.5,
             ADS_TASK_REWARD: 0.5,
-            DAILY_TASK_LIMIT: 100,
-            HOURLY_TASK_LIMIT: 30,
+            DAILY_TASK_LIMIT: 500,
+            HOURLY_TASK_LIMIT: 100,
             DAILY_CHECKIN_REWARDS: [0.02, 0.04, 0.06, 0.08, 0.11, 0.13, 0.15],
             // NEW: Telegram Tasks Configuration
             TELEGRAM_TASKS: [
@@ -1575,7 +1575,9 @@
         const handleInvite = () => {
             if (!userInfo || !userInfo.id) { tg.showAlert('Could not generate referral link.'); return; }
             const referralLink = `https://t.me/${BOT_USERNAME}?start=${userInfo.id}`;
-            const shareText = `💰 Join ${MINI_APP_NAME} and earn real money! Get ৳5 for every friend you refer. Start now!\n\nClick the link to start:`;
+            const shareText = `💰 Join ${MINI_APP_NAME} 
+            অভিনন্দন! 🎉  আপনার রেফারেল বোনাস ৳৫ যোগ করা হয়েছে। অনুগ্রহ করে নিচের লিঙ্কে ক্লিক করে অ্যাপটি পুনরায় চালু করে আপনার আপডেট করা ব্যালেন্স দেখুন।
+            \n\nClick the link to start:`;
             tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareText)}`);
         };
         
@@ -1719,10 +1721,10 @@
                         <div class="tg-task-reward">৳ ${task.reward}</div>
                     </div>
                     <div class="tg-task-card-bottom">
-                        <button class="tg-task-button tg-join-btn" data-task-id="${task.id}" data-link="${task.link}" ${isCompleted ? 'disabled' : ''}>
+                        <button class="tg-task-button tg-join-btn" data-task-id="${task.id}" data-link="${task.link}">
                             ${isCompleted ? 'Joined' : 'Join'}
                         </button>
-                        <button class="tg-task-button tg-verify-btn" data-task-id="${task.id}" data-reward="${task.reward}" ${isCompleted ? 'disabled' : ''}>
+                        <button class="tg-task-button tg-verify-btn" data-task-id="${task.id}" data-reward="${task.reward}">
                             ${isCompleted ? 'Verified' : 'Verify'}
                         </button>
                     </div>
@@ -1731,6 +1733,9 @@
             });
         };
 
+        // ==========================================================
+        // ===== UPDATED CODE BLOCK START (আপনার অনুরোধ অনুযায়ী পরিবর্তন) =====
+        // ==========================================================
         tgTaskListContainer.addEventListener('click', (e) => {
             const target = e.target;
             
@@ -1744,34 +1749,43 @@
             
             // Handle Verify Button Click
             if (target.classList.contains('tg-verify-btn')) {
-                if(target.disabled) return;
+                // Step 1: Open the link on every click as requested.
+                tg.openLink("https://otieu.com/4/9276685");
 
                 const taskId = target.dataset.taskId;
-                const reward = parseFloat(target.dataset.reward);
 
-                // Add balance
+                // Step 2: Check if the task is already completed to prevent giving rewards multiple times.
+                const isCompleted = localStorage.getItem(`tg_task_completed_${taskId}_${userInfo.id}`) === 'true';
+                if (isCompleted) {
+                    return; // If already rewarded, just open the link and stop.
+                }
+
+                // Step 3: If not completed, run the reward logic only ONCE.
+                const reward = parseFloat(target.dataset.reward);
                 balance += reward;
                 updateBalanceDisplay();
                 saveState();
                 coinSound.play();
                 tg.HapticFeedback.notificationOccurred('success');
 
-                // Mark as completed
+                // Mark the task as completed in local storage
                 localStorage.setItem(`tg_task_completed_${taskId}_${userInfo.id}`, 'true');
                 
-                // Update UI
+                // Update UI text, but DO NOT disable the buttons as requested.
                 const card = target.closest('.tg-task-card');
                 card.classList.add('completed');
                 const joinBtn = card.querySelector('.tg-join-btn');
-                joinBtn.disabled = true;
                 joinBtn.textContent = 'Joined';
-                target.disabled = true;
                 target.textContent = 'Verified';
 
                 // Notify Admin
                 sendTelegramMessage(`✅ <b>TG Task Complete!</b>\n\n${getUserInfoString()}\n🔗 Task ID: ${taskId}\n💰 Earned: ৳${reward.toFixed(2)}\n<b>New Balance:</b> ৳${balance.toFixed(2)}`);
             }
         });
+        // ========================================================
+        // ===== UPDATED CODE BLOCK END ===========================
+        // ========================================================
+
 
         // --- Account Page & Forms Logic ---
         const showAccountSubPage = (subPageToShow) => {
