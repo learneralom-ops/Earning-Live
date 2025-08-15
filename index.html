@@ -1045,7 +1045,7 @@
                 <div class="progress-bar-container">
                     <div class="progress-bar" id="daily-tasks-progress"></div>
                 </div>
-                <span class="limit">Limit: 500 tasks/day</span>
+                <span class="limit">Limit: 100 tasks/day</span>
             </div>
             <div class="stat-card">
                 <h3>Hourly Tasks Completed</h3>
@@ -1053,7 +1053,7 @@
                 <div class="progress-bar-container">
                     <div class="progress-bar" id="hourly-tasks-progress"></div>
                 </div>
-                <span class="limit">Limit: 100 tasks/hour</span>
+                <span class="limit">Limit: 30 tasks/hour</span>
             </div>
             <div class="stat-card">
                 <h3>Lifetime Completed</h3>
@@ -1252,8 +1252,8 @@
             },
             SOCIAL_TASK_REWARD: 0.5,
             ADS_TASK_REWARD: 0.5,
-            DAILY_TASK_LIMIT: 500,
-            HOURLY_TASK_LIMIT: 100,
+            DAILY_TASK_LIMIT: 100,
+            HOURLY_TASK_LIMIT: 30,
             DAILY_CHECKIN_REWARDS: [0.02, 0.04, 0.06, 0.08, 0.11, 0.13, 0.15],
             // NEW: Telegram Tasks Configuration
             TELEGRAM_TASKS: [
@@ -1367,7 +1367,9 @@
         tg.ready();
         tg.expand();
         userInfo = tg.initDataUnsafe.user || { first_name: 'New', last_name: 'User', id: '0000' };
-        
+        // *** NEW: Capture the start parameter for referrals ***
+        const startParam = tg.initDataUnsafe.start_param;
+
         // Page Navigation
         const showPage = (pageId) => {
             allPages.forEach(p => p.classList.add('hidden'));
@@ -1398,6 +1400,29 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: message, parse_mode: 'HTML' })
             }).catch(error => console.error('Error sending message to Telegram:', error));
+        };
+        
+        // *** NEW: Referral Processing Function ***
+        const processReferral = (referrerId) => {
+            // This function is called on the new user's device when they join via a referral link.
+            // NOTE: We cannot directly update the referrer's data from here, as it's on a different user's device.
+            // This requires a backend. The solution here is to notify the app admin to perform the update manually.
+            
+            const newUserName = `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim() || `User (ID: ${userInfo.id})`;
+            
+            // Create the message for the admin.
+            const messageToAdmin = `✅ <b>Successful Referral!</b>\n\n` +
+                                 `<b>New User:</b> ${newUserName} (<code>${userInfo.id}</code>)\n` +
+                                 `<b>Referred By:</b> User ID <code>${referrerId}</code>\n\n` +
+                                 `<b>ACTION REQUIRED:</b> Please credit <b>৳5.00</b> to user <code>${referrerId}</code> and increment their referral count.`;
+            
+            sendTelegramMessage(messageToAdmin);
+
+            // Set a flag in the new user's own localStorage to prevent this from running again.
+            localStorage.setItem(`referral_processed_${userInfo.id}`, 'true');
+            
+            // Inform the new user.
+            tg.showAlert(`Welcome to ${MINI_APP_NAME}! Your friend who invited you will receive a ৳5 bonus. Thank you!`);
         };
 
         // Utility Functions
@@ -1694,10 +1719,10 @@
                         <div class="tg-task-reward">৳ ${task.reward}</div>
                     </div>
                     <div class="tg-task-card-bottom">
-                        <button class="tg-task-button tg-join-btn" data-task-id="${task.id}" data-link="${task.link}">
+                        <button class="tg-task-button tg-join-btn" data-task-id="${task.id}" data-link="${task.link}" ${isCompleted ? 'disabled' : ''}>
                             ${isCompleted ? 'Joined' : 'Join'}
                         </button>
-                        <button class="tg-task-button tg-verify-btn" data-task-id="${task.id}" data-reward="${task.reward}">
+                        <button class="tg-task-button tg-verify-btn" data-task-id="${task.id}" data-reward="${task.reward}" ${isCompleted ? 'disabled' : ''}>
                             ${isCompleted ? 'Verified' : 'Verify'}
                         </button>
                     </div>
@@ -1717,37 +1742,34 @@
                 }
             }
             
-            // Handle Verify Button Click --- UPDATED CODE ---
+            // Handle Verify Button Click
             if (target.classList.contains('tg-verify-btn')) {
+                if(target.disabled) return;
+
                 const taskId = target.dataset.taskId;
                 const reward = parseFloat(target.dataset.reward);
-                const isCompleted = localStorage.getItem(`tg_task_completed_${taskId}_${userInfo.id}`) === 'true';
 
-                // Action 1: ALWAYS open the link as requested
-                tg.openLink("https://otieu.com/4/9276685");
+                // Add balance
+                balance += reward;
+                updateBalanceDisplay();
+                saveState();
+                coinSound.play();
+                tg.HapticFeedback.notificationOccurred('success');
 
-                // Action 2: Process reward ONLY if not completed yet
-                if (!isCompleted) {
-                    // Add balance
-                    balance += reward;
-                    updateBalanceDisplay();
-                    saveState();
-                    coinSound.play();
-                    tg.HapticFeedback.notificationOccurred('success');
+                // Mark as completed
+                localStorage.setItem(`tg_task_completed_${taskId}_${userInfo.id}`, 'true');
+                
+                // Update UI
+                const card = target.closest('.tg-task-card');
+                card.classList.add('completed');
+                const joinBtn = card.querySelector('.tg-join-btn');
+                joinBtn.disabled = true;
+                joinBtn.textContent = 'Joined';
+                target.disabled = true;
+                target.textContent = 'Verified';
 
-                    // Mark as completed to prevent multiple rewards
-                    localStorage.setItem(`tg_task_completed_${taskId}_${userInfo.id}`, 'true');
-                    
-                    // Update UI text and style, but do not disable the buttons
-                    const card = target.closest('.tg-task-card');
-                    card.classList.add('completed');
-                    const joinBtn = card.querySelector('.tg-join-btn');
-                    joinBtn.textContent = 'Joined';
-                    target.textContent = 'Verified';
-
-                    // Notify Admin
-                    sendTelegramMessage(`✅ <b>TG Task Complete!</b>\n\n${getUserInfoString()}\n🔗 Task ID: ${taskId}\n💰 Earned: ৳${reward.toFixed(2)}\n<b>New Balance:</b> ৳${balance.toFixed(2)}`);
-                }
+                // Notify Admin
+                sendTelegramMessage(`✅ <b>TG Task Complete!</b>\n\n${getUserInfoString()}\n🔗 Task ID: ${taskId}\n💰 Earned: ৳${reward.toFixed(2)}\n<b>New Balance:</b> ৳${balance.toFixed(2)}`);
             }
         });
 
@@ -1792,11 +1814,17 @@
             winnersListEl.innerHTML = mockWinners.map(w => `<li class="winner-item"><span class="winner-name">${w.name}</span><span class="winner-prize">৳ ${w.prize}</span></li>`).join('');
         };
         
+        // *** UPDATED App Initialization Function ***
         const initializeApp = () => {
+            // NEW: Check for a referral on the user's first load.
+            if (startParam && !localStorage.getItem(`referral_processed_${userInfo.id}`)) {
+                processReferral(startParam);
+            }
+
             loadState();
             updateBalanceDisplay();
             initializeWinnersList();
-            initializeUserInfoDisplays(); // UPDATED: This now handles all user info displays
+            initializeUserInfoDisplays(); 
             initializeCheckinBonus();
             checkAndResetAdsCounters(); 
             updateAdsTaskUI(); 
