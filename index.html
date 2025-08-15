@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta name="monetag" content="845a79e9ab0a8eac686066d12ff62a8b">
@@ -620,6 +620,13 @@
             font-size: 36px;
             font-weight: 700;
             border: 4px solid rgba(255, 255, 255, 0.3);
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2U4ZDFmYSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTIiIGN5PSI4IiByPSI1Ii8+PHBhdGggZD0iTTIwIDE5YzAgLTQuNDE4My0zLjU4MTctOC04LTgiLz48L3N2Zz4=');
+            background-size: 60%;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .user-avatar.initials {
+            background-image: none;
         }
 
         #user-name-display {
@@ -750,7 +757,159 @@
             margin-top: 10px;
         }
 
+        /* --- NEW: Telegram Tasks Page Styles --- */
+        .tg-task-page-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
 
+        .tg-task-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .tg-task-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #fff;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iNCIgZmlsbD0iI2E5YWFhOSIvPjxwYXRoIGQ9Ik01LjggMTkuOUM2LjQgMTcuMiA4LjkgMTUgMTIgMTVoMEMxNS4xIDE1IDE3LjYgMTcuMiAxOC4yIDE5LjkiIGZpbGw9IiNjYmM4YzgiLz48L3N2Zz4=');
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            flex-shrink: 0; /* Prevents shrinking */
+        }
+        
+        .tg-task-header-right {
+             display: flex;
+             flex-direction: column;
+             gap: 10px;
+             flex-grow: 1;
+        }
+
+        .tg-task-username {
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+        
+        #tg-tasks-main-button {
+             background-color: #6a1b9a;
+             border-radius: 25px;
+             font-size: 1.5em;
+             padding: 10px;
+             margin-bottom: 10px;
+             width: 100%;
+             text-align: center;
+             border: 1px solid #fff;
+             color: #fff;
+             font-weight: 600;
+             box-shadow: 0 6px 10px rgba(0,0,0,0.1);
+        }
+        
+        .tg-task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .tg-task-card {
+          width: 100%;
+            background: linear-gradient(160deg, var(--secondary-bg), var(--primary-bg));
+            padding: 15px 10px;
+            border-radius: 20px;
+            margin: 15px 0 0 0;
+            box-shadow: 0 8px 15px var(--shadow-dark);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+          
+
+        .tg-task-card.completed {
+            opacity: 0.6;
+        }
+
+        .tg-task-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .tg-task-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .tg-task-icon img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .tg-task-description {
+            font-size: 14px;
+            font-weight: 400;
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .tg-task-reward {
+            background-color: #6a1b9a;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 400;
+            border: 1px solid #fff;
+        }
+
+        .tg-task-card-bottom {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .tg-task-button {
+            padding: 8px;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .tg-task-button:active {
+            transform: scale(0.96);
+        }
+
+        .tg-join-btn {
+            background-color: #29b6f6;
+            color: #fff;
+        }
+        
+        .tg-verify-btn {
+            background-color: #fff;
+            color: #333;
+        }
+        
+        .tg-task-button:disabled {
+            background-color: #aaa;
+            color: #666;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+        
         /* --- Bottom Nav --- */
         .bottom-nav {
             position: fixed;
@@ -778,6 +937,7 @@
             text-decoration: none;
             transition: color 0.2s, transform 0.2s;
             flex: 1;
+            padding: 8px 0;
         }
         
         .nav-item:active {
@@ -802,7 +962,7 @@
     <div id="home-page" class="page">
         <div class="coin-icon">৳</div>
         <div class="balance-card animated">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACvUlEQVR4nO2Yy2sTURDHJ1GDfoAgiHhR8aLgQXARxIMiHoTgwYsX8S/Qgx70oIeiB0Hw4EUEvfgfBA8iCEgPehMFFVwUPXhRIaKi0UmiY1pP4slkMtk5s2fSkw8GmcnO/DPzfvPNzEwCkUgkEolEIlGqCvwN/AV+AZ+BV8D/e/AEfAH2gR+As0B3AI8D54GdwE/gA3AcGAJ2gX5gwTqPASeBR4BzwAegK/AduARsAQ+B92Al0K0A74FvwG5gE3gO3AF6gRPAIeAGsAR8BvYCrYD3wDfgG+AGsA04B3wENgOfgF3AfeARsAmYBlYDLyKz1QMeA48DG4FpwDSwh4R1nAZ+A58Am4ENwGZgBXC1gIuA68C2223RjAFHgSeA0/h8VwD7gYfAsqC/rS4g7jK9mQh8BXZZ4BdwEXgG/AEuAxvh+531gGfAdoD/L/C3AdyCtwE7kF+a0e70DngI/K/D2wfW9z41S4DFwG+gqQY8BD4BbwMbgY3AUsD9gJ/ASeCj9L6zDjgGrAJ3gY1AAv+rXgq0DbwH/kF+aZbJb3UBOA8cAm7j8x0GngE3gY3ADuA6cBfYAVwGDgD3gX8l/26o9wMHgWPAUeAPcBC4CdwD7gIHgbPAWeAIcB84ABwFPgDb3e+e4w0wDRwADgD7gGfAXuAQ+Bt8V1gN7FdgB3AWuMh6/wM+Am8DX4H9gLvAFWAXcAX4BtwGfgMbgZ91+Q78ARy0fFkJ1gGngA3AY2AXcBzYDtza+1/gLhD/wF4C7gPXgc3AduAW+N/C7wNOARuBF8ClH5zPBp4BN/P57oF3wGfgA9DPK2Af8Dlw0Wd98wTwA/ge+M3CqgfW/30b+G7p/WcT+An8Dnyd+g9wA3gE/I7/N/C1gL/B+/gN+A38DHyf/kEkEolEJBJ/5A/vMhV+cALN8wAAAABJRU5ErkJggg==" alt="Money Bag" class="money-bag-icon">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACvUlEQVR4nO2Yy2sTURDHJ1GDfoAgiHhR8aLgQXARxIMiHoTgwYsX8S/Qgx70oIeiB0Hw4EUEvfgfBA8iCEgPehMFFVwUPXhRIaKi0UmiY1pP4slkMtk5s2fSkw8GmcnO/DPzfvPNzEwCkUgkEolEIlGqCvwN/AV+AZ+BV8D/e/AEfAH2gR+As0B3AI8D54GdwE/gA3AcGAJ2gX5gwTqPASeBR4BzwAegK/AduARsAQ+B92Al0K0A74FvwG5gE3gO3AF6gRPAIeAGsAR8BvYCrYD3wDfgG+AGsA04B3wENgOfgF3AfeARsAmYBlYDLyKzVwMeA48DG4FpwDSwh4R1nAZ+A58Am4ENwGZgBXC1gIuA68C2223RjAFHgSeA0/h8VwD7gYfAsqC/rS4g7jK9mQh8BXZZ4BdwEXgG/AEuAxvh+531gGfAdoD/L/C3AdyCtwE7kF+a0e70DngI/K/D2wfW9z41S4DFwG+gqQY8BD4BbwMbgY3AUsD9gJ/ASeCj9L6zDjgGrAJ3gY1AAv+rXgq0DbwH/kF+aZbJb3UBOA8cAm7j8x0GngE3gY3ADuA6cBfYAVwGDgD3gX8l/26o9wMHgWPAUeAPcBC4CdwD7gIHgbPAWeAIcB84ABwFPgDb3e+e4w0wDRwADgD7gGfAXuAQ+Bt8V1gN7FdgB3AWuMh6/wM+Am8DX4H9gLvAFWAXcAX4BtwGfgMbgZ91+Q78ARy0fFkJ1gGngA3AY2AXcBzYDtza+1/gLhD/wF4C7gPXgc3AduAW+N/C7wNOARuBF8ClH5zPBp4BN/P57oF3wGfgA9DPK2Af8Dlw0Wd98wTwA/ge+M3CqgfW/30b+G7p/WcT+An8Dnyd+g9wA3gE/I7/N/C1gL/B+/gN+A38DHyf/kEkEolEJBJ/5A/vMhV+cALN8wAAAABJRU5ErkJggg==" alt="Money Bag" class="money-bag-icon">
             <span>Balance : </span>
             <span class="balance-amount" id="balance-amount-home">৳ 00</span>
         </div>
@@ -856,7 +1016,7 @@
         
         <!-- NEW: Balance Card Added Here -->
         <div class="balance-card animated">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACvUlEQVR4nO2Yy2sTURDHJ1GDfoAgiHhR8aLgQXARxIMiHoTgwYsX8S/Qgx70oIeiB0Hw4EUEvfgfBA8iCEgPehMFFVwUPXhRIaKi0UmiY1pP4slkMtk5s2fSkw8GmcnO/DPzfvPNzEwCkUgkEolEIlGqCvwN/AV+AZ+BV8D/e/AEfAH2gR+As0B3AI8D54GdwE/gA3AcGAJ2gX5gwTqPASeBR4BzwAegK/AduARsAQ+B92Al0K0A74FvwG5gE3gO3AF6gRPAIeAGsAR8BvYCrYD3wDfgG+AGsA04B3wENgOfgF3AfeARsAmYBlYDLyKz1QMeA48DG4FpwDSwh4R1nAZ+A58Am4ENwGZgBXC1gIuA68C2223RjAFHgSeA0/h8VwD7gYfAsqC/rS4g7jK9mQh8BXZZ4BdwEXgG/AEuAxvh+531gGfAdoD/L/C3AdyCtwE7kF+a0e70DngI/K/D2wfW9z41S4DFwG+gqQY8BD4BbwMbgY3AUsD9gJ/ASeCj9L6zDjgGrAJ3gY1AAv+rXgq0DbwH/kF+aZbJb3UBOA8cAm7j8x0GngE3gY3ADuA6cBfYAVwGDgD3gX8l/26o9wMHgWPAUeAPcBC4CdwD7gIHgbPAWeAIcB84ABwFPgDb3e+e4w0wDRwADgD7gGfAXuAQ+Bt8V1gN7FdgB3AWuMh6/wM+Am8DX4H9gLvAFWAXcAX4BtwGfgMbgZ91+Q78ARy0fFkJ1gGngA3AY2AXcBzYDtza+1/gLhD/wF4C7gPXgc3AduAW+N/C7wNOARuBF8ClH5zPBp4BN/P57oF3wGfgA9DPK2Af8Dlw0Wd98wTwA/ge+M3CqgfW/30b+G7p/WcT+An8Dnyd+g9wA3gE/I7/N/C1gL/B+/gN+A38DHyf/kEkEolEJBJ/5A/vMhV+cALN8wAAAABJRU5ErkJggg==" alt="Money Bag" class="money-bag-icon">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACvUlEQVR4nO2Yy2sTURDHJ1GDfoAgiHhR8aLgQXARxIMiHoTgwYsX8S/Qgx70oIeiB0Hw4EUEvfgfBA8iCEgPehMFFVwUPXhRIaKi0UmiY1pP4slkMtk5s2fSkw8GmcnO/DPzfvPNzEwCkUgkEolEIlGqCvwN/AV+AZ+BV8D/e/AEfAH2gR+As0B3AI8D54GdwE/gA3AcGAJ2gX5gwTqPASeBR4BzwAegK/AduARsAQ+B92Al0K0A74FvwG5gE3gO3AF6gRPAIeAGsAR8BvYCrYD3wDfgG+AGsA04B3wENgOfgF3AfeARsAmYBlYDLyKzVwMeA48DG4FpwDSwh4R1nAZ+A58Am4ENwGZgBXC1gIuA68C2223RjAFHgSeA0/h8VwD7gYfAsqC/rS4g7jK9mQh8BXZZ4BdwEXgG/AEuAxvh+531gGfAdoD/L/C3AdyCtwE7kF+a0e70DngI/K/D2wfW9z41S4DFwG+gqQY8BD4BbwMbgY3AUsD9gJ/ASeCj9L6zDjgGrAJ3gY1AAv+rXgq0DbwH/kF+aZbJb3UBOA8cAm7j8x0GngE3gY3ADuA6cBfYAVwGDgD3gX8l/26o9wMHgWPAUeAPcBC4CdwD7gIHgbPAWeAIcB84ABwFPgDb3e+e4w0wDRwADgD7gGfAXuAQ+Bt8V1gN7FdgB3AWuMh6/wM+Am8DX4H9gLvAFWAXcAX4BtwGfgMbgZ91+Q78ARy0fFkJ1gGngA3AY2AXcBzYDtza+1/gLhD/wF4C7gPXgc3AduAW+N/C7wNOARuBF8ClH5zPBp4BN/P57oF3wGfgA9DPK2Af8Dlw0Wd98wTwA/ge+M3CqgfW/30b+G7p/WcT+An8Dnyd+g9wA3gE/I7/N/C1gL/B+/gN+A38DHyf/kEkEolEJBJ/5A/vMhV+cALN8wAAAABJRU5ErkJggg==" alt="Money Bag" class="money-bag-icon">
             <span>Balance : </span>
             <span class="balance-amount" id="balance-amount-ads">৳ 00</span>
         </div>
@@ -896,13 +1056,35 @@
     <div id="task-page" class="page hidden">
         <h1 class="page-title animated">Social Tasks</h1>
         <div class="balance-card animated">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACvUlEQVR4nO2Yy2sTURDHJ1GDfoAgiHhR8aLgQXARxIMiHoTgwYsX8S/Qgx70oIeiB0Hw4EUEvfgfBA8iCEgPehMFFVwUPXhRIaKi0UmiY1pP4slkMtk5s2fSkw8GmcnO/DPzfvPNzEwCkUgkEolEIlGqCvwN/AV+AZ+BV8D/e/AEfAH2gR+As0B3AI8D54GdwE/gA3AcGAJ2gX5gwTqPASeBR4BzwAegK/AduARsAQ+B92Al0K0A74FvwG5gE3gO3AF6gRPAIeAGsAR8BvYCrYD3wDfgG+AGsA04B3wENgOfgF3AfeARsAmYBlYDLyKz1QMeA48DG4FpwDSwh4R1nAZ+A58Am4ENwGZgBXC1gIuA68C2223RjAFHgSeA0/h8VwD7gYfAsqC/rS4g7jK9mQh8BXZZ4BdwEXgG/AEuAxvh+531gGfAdoD/L/C3AdyCtwE7kF+a0e70DngI/K/D2wfW9z41S4DFwG+gqQY8BD4BbwMbgY3AUsD9gJ/ASeCj9L6zDjgGrAJ3gY1AAv+rXgq0DbwH/kF+aZbJb3UBOA8cAm7j8x0GngE3gY3ADuA6cBfYAVwGDgD3gX8l/26o9wMHgWPAUeAPcBC4CdwD7gIHgbPAWeAIcB84ABwFPgDb3e+e4w0wDRwADgD7gGfAXuAQ+Bt8V1gN7FdgB3AWuMh6/wM+Am8DX4H9gLvAFWAXcAX4BtwGfgMbgZ91+Q78ARy0fFkJ1gGngA3AY2AXcBzYDtza+1/gLhD/wF4C7gPXgc3AduAW+N/C7wNOARuBF8ClH5zPBp4BN/P57oF3wGfgA9DPK2Af8Dlw0Wd98wTwA/ge+M3CqgfW/30b+G7p/WcT+An8Dnyd+g9wA3gE/I7/N/C1gL/B+/gN+A38DHyf/kEkEolEJBJ/5A/vMhV+cALN8wAAAABJRU5ErkJggg==" alt="Money Bag" class="money-bag-icon">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACvUlEQVR4nO2Yy2sTURDHJ1GDfoAgiHhR8aLgQXARxIMiHoTgwYsX8S/Qgx70oIeiB0Hw4EUEvfgfBA8iCEgPehMFFVwUPXhRIaKi0UmiY1pP4slkMtk5s2fSkw8GmcnO/DPzfvPNzEwCkUgkEolEIlGqCvwN/AV+AZ+BV8D/e/AEfAH2gR+As0B3AI8D54GdwE/gA3AcGAJ2gX5gwTqPASeBR4BzwAegK/AduARsAQ+B92Al0K0A74FvwG5gE3gO3AF6gRPAIeAGsAR8BvYCrYD3wDfgG+AGsA04B3wENgOfgF3AfeARsAmYBlYDLyKzVwMeA48DG4FpwDSwh4R1nAZ+A58Am4ENwGZgBXC1gIuA68C2223RjAFHgSeA0/h8VwD7gYfAsqC/rS4g7jK9mQh8BXZZ4BdwEXgG/AEuAxvh+531gGfAdoD/L/C3AdyCtwE7kF+a0e70DngI/K/D2wfW9z41S4DFwG+gqQY8BD4BbwMbgY3AUsD9gJ/ASeCj9L6zDjgGrAJ3gY1AAv+rXgq0DbwH/kF+aZbJb3UBOA8cAm7j8x0GngE3gY3ADuA6cBfYAVwGDgD3gX8l/26o9wMHgWPAUeAPcBC4CdwD7gIHgbPAWeAIcB84ABwFPgDb3e+e4w0wDRwADgD7gGfAXuAQ+Bt8V1gN7FdgB3AWuMh6/wM+Am8DX4H9gLvAFWAXcAX4BtwGfgMbgZ91+Q78ARy0fFkJ1gGngA3AY2AXcBzYDtza+1/gLhD/wF4C7gPXgc3AduAW+N/C7wNOARuBF8ClH5zPBp4BN/P57oF3wGfgA9DPK2Af8Dlw0Wd98wTwA/ge+M3CqgfW/30b+G7p/WcT+An8Dnyd+g9wA3gE/I7/N/C1gL/B+/gN+A38DHyf/kEkEolEJBJ/5A/vMhV+cALN8wAAAABJRU5ErkJggg==" alt="Money Bag" class="money-bag-icon">
             <span>Balance : </span>
             <span class="balance-amount" id="balance-amount-task">৳ 00</span>
         </div>
         <!-- The container for the new task list -->
         <div class="task-list animated" style="animation-delay: 0.2s;"></div>
     </div>
+
+    <!-- UPDATED: TELEGRAM TASKS PAGE -->
+    <div id="tg-task-page" class="page hidden">
+        <div class="tg-task-page-container">
+            <div class="tg-task-header">
+                <div class="tg-task-avatar" id="tg-task-page-avatar"></div>
+                <div class="tg-task-header-right">
+                    <h2 class="tg-task-username" id="tg-task-page-username">User Name</h2>
+                    <!-- Balance Card is now here -->
+                    <div class="balance-card animated" style="max-width: 100%; border-radius: 15px; padding: 8px 10px; background-color: #4a148c; border-color: #fff;">
+                        <span>Balance : </span>
+                        <span class="balance-amount" id="balance-amount-tg">৳ 00</span>
+                    </div>
+                </div>
+            </div>
+            <div id="tg-tasks-main-button">Telegram Tasks</div>
+            <div id="tg-task-list" class="tg-task-list">
+                <!-- Telegram tasks will be generated by JavaScript here -->
+            </div>
+        </div>
+    </div>
+
 
     <!-- ACCOUNT PAGE -->
     <div id="account-page" class="page hidden">
@@ -1018,6 +1200,11 @@
             <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWxpc3QtY2hlY2tzIj48cGF0aCBkPSJtMyAxNyAyIDIgNC00Ii8+PHBhdGggZD0ibTMgNyAyIDIgNC00Ii8+PHBhdGggZD0iTTEzIDZoOCIvPjxwYXRoIGQ9Ik0xMyAxMmg4Ii8+PHBhdGggZD0iTTEzIDE4aDgiLz48L3N2Zz4=" alt="Ads Task">
             <span>Ads Task</span>
         </a>
+         <!-- NEW NAV ITEM FOR TG TASKS -->
+        <a href="#" id="nav-tg-task" class="nav-item">
+            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMiAyIDExIDEzIDIgOSAyMiAyeiIvPjxwYXRoIGQ9Ik0yIDIwIDEzIDExIDkgMjIgMiAyMHoiLz48L3N2Zz4=" alt="TG Earn">
+            <span>TG Earn</span>
+        </a>
         <a href="#" id="nav-task" class="nav-item">
             <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNoZWNrLWNpcmNsZS0yIj48cGF0aCBkPSJtOSAxMiAyIDIgNCA0Ii8+PHBhdGggZD0iTTEyIDIyYTEwIDEwIDAgMSAwIDAtMjAgMTAgMTAgMCAwIDAgMCAyMFoiLz48L3N2Zz4=" alt="Task">
             <span>Task</span>
@@ -1051,6 +1238,12 @@
             DAILY_TASK_LIMIT: 500,
             HOURLY_TASK_LIMIT: 100,
             DAILY_CHECKIN_REWARDS: [0.02, 0.04, 0.06, 0.08, 0.11, 0.13, 0.15],
+            // NEW: Telegram Tasks Configuration
+            TELEGRAM_TASKS: [
+                { id: 'tg_task_1', link: 'https://t.me/learneralom/', reward: 0.1 },
+                { id: 'tg_task_2', link: 'https://t.me/sk_bristy/', reward: 0.1 },
+                { id: 'tg_task_3', link: 'https://t.me/alom6991/', reward: 0.1 }
+            ],
             SOCIAL_TASKS: [
                 { id: 'facebook', name: 'Follow on Facebook', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWZhY2Vib29rIj48cGF0aCBkPSJNMTggMnYxNmgyVjJIMTh6IiBmaWxsPSIjZmZmIj48L3BhdGg+PHBhdGggZD0iTTggNkgzdjRoNVY0aC0yejAgOGg1djRoLTZWMjBoNnYtNGg0di00aC00di00SDh6IiBmaWxsPSIjZmZmIj48L3BhdGg+PHBhdGggZD0iTTE4IDJoNm0tNCAwdjJtLTIgMFYyIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMS41Ij48L3BhdGg+PHBhdGggZD0iTTE4IDJoLTZ2OGg2WiIgZmlsbD0iIzE4NzdmMiI+PC9wYXRoPjxwYXRoIGQ9Ik0xOCAycy0xLjUgMC0xLjUgMS41VjZoM1Y0LjVjMC0xLjUtMS41LTEuNS0xLjUtMS41ek0xNSA5LjVoMyIvPjwvc3ZnPg==' },
                 { id: 'instagram', name: 'Follow on Instagram', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgeD0iMiIgeT0iMiIgcng9IjUiIHJ5PSI1IiBmaWxsPSIjZmZmIj48L3JlY3Q+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iNCIgZmlsbD0iIzE4NzdmMiI+PC9jaXJjbGU+PGxpbmUgeDE9IjE2LjUiIHkxPSI3LjUiIHgyPSIxNi41IiB5Mj0iNy41IiBmaWxsPSJjdXJyZW50Q29sb3IiIHN0cm9rZT0iIzE4NzdmMiI+PC9saW5lPjwvc3ZnPg==' },
@@ -1067,8 +1260,9 @@
 
         // --- DOM Elements ---
         const balanceAmountHomeEl = document.getElementById('balance-amount-home');
-        const balanceAmountAdsEl = document.getElementById('balance-amount-ads'); // Added for Ads Page
+        const balanceAmountAdsEl = document.getElementById('balance-amount-ads'); 
         const balanceAmountTaskEl = document.getElementById('balance-amount-task');
+        const balanceAmountTgEl = document.getElementById('balance-amount-tg'); // NEW
         const watchAdBtns = document.querySelectorAll('.watch-ad-btn');
         const inviteBtn = document.getElementById('invite-btn');
         const joinChannelBtn = document.getElementById('join-channel-btn');
@@ -1091,10 +1285,12 @@
         const adsTaskPage = document.getElementById('ads-task-page');
         const taskPage = document.getElementById('task-page');
         const accountPage = document.getElementById('account-page');
+        const tgTaskPage = document.getElementById('tg-task-page');
         const navHome = document.getElementById('nav-home');
         const navAdsTask = document.getElementById('nav-ads-task');
         const navTask = document.getElementById('nav-task');
         const navAccount = document.getElementById('nav-account');
+        const navTgTask = document.getElementById('nav-tg-task'); 
 
         // Ads Task Page Elements
         const dailyTasksCompletedEl = document.getElementById('daily-tasks-completed');
@@ -1107,6 +1303,11 @@
 
         // Task Page Elements
         const taskListContainer = document.querySelector('#task-page .task-list');
+
+        // Telegram Task Page Elements
+        const tgTaskPageAvatar = document.getElementById('tg-task-page-avatar');
+        const tgTaskPageUsername = document.getElementById('tg-task-page-username');
+        const tgTaskListContainer = document.getElementById('tg-task-list');
 
         // Account Page Elements
         const userAvatar = document.getElementById('user-avatar');
@@ -1154,17 +1355,13 @@
             
             let navId;
             if (pageId === 'ads-task-page') navId = 'nav-ads-task';
+            else if (pageId === 'tg-task-page') navId = 'nav-tg-task'; 
             else navId = `nav-${pageId.replace('-page', '')}`;
             
             const activeNav = document.getElementById(navId);
             if(activeNav) activeNav.classList.add('active');
             
-            // Adjust body background based on page using CSS variables for cleaner control
-            if (pageId === 'ads-task-page') {
-                document.body.style.backgroundColor = 'var(--ads-page-bg)';
-            } else {
-                document.body.style.backgroundColor = 'var(--primary-bg)';
-            }
+            document.body.style.backgroundColor = 'var(--primary-bg)';
         };
 
         // Telegram API Function
@@ -1185,8 +1382,7 @@
         // Utility Functions
         const updateBalanceDisplay = () => {
             const formattedBalance = `৳ ${balance.toFixed(2)}`;
-            // UPDATED: Now includes the new balance element for the ads page
-            [balanceAmountHomeEl, balanceAmountTaskEl, balanceAmountAdsEl].forEach(el => {
+            [balanceAmountHomeEl, balanceAmountTaskEl, balanceAmountAdsEl, balanceAmountTgEl].forEach(el => {
                 if (el) {
                     el.textContent = formattedBalance;
                     el.classList.add('pop');
@@ -1211,8 +1407,6 @@
             totalReferralCommission = parseFloat(state.totalReferralCommission || '0');
             userCheckinState = state.userCheckinState || { streak: 0, lastClaim: null };
             adsTaskState = state.adsTaskState || { daily: 0, hourly: 0, lifetime: 0, earnings: 0, lastDailyReset: new Date().setHours(0,0,0,0), lastHourlyReset: new Date().setMinutes(0,0,0) };
-            
-            // No initial text setting here, updateBalanceDisplay will handle it
         };
 
         const getUserInfoString = () => {
@@ -1421,12 +1615,91 @@
             });
         };
         
+        // --- Telegram Task Page Logic ---
+        const initializeTgTaskPage = () => {
+            const name = `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim();
+            tgTaskPageUsername.textContent = name || 'Telegram User';
+            
+            if(userInfo.photo_url) {
+                tgTaskPageAvatar.style.backgroundImage = `url(${userInfo.photo_url})`;
+            }
+
+            tgTaskListContainer.innerHTML = ''; // Clear previous tasks
+            config.TELEGRAM_TASKS.forEach(task => {
+                const isCompleted = localStorage.getItem(`tg_task_completed_${task.id}_${userInfo.id}`) === 'true';
+                
+                const card = document.createElement('div');
+                card.className = 'tg-task-card' + (isCompleted ? ' completed' : '');
+                card.innerHTML = `
+                    <div class="tg-task-card-top">
+                        <div class="tg-task-icon">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMyOWI2ZjYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjIgMiAxMSAxMyAyIDkgMjIgMiI+PC9wYXRoPjxwYXRoIGQ9Ik0yIDIwIDEzIDExIDkgMjIgMiAyMHoiPjwvcGF0aD48L3N2Zz4=" alt="Telegram Icon">
+                        </div>
+                        <span class="tg-task-description">Join Channel To Earn</span>
+                        <div class="tg-task-reward">৳ ${task.reward}</div>
+                    </div>
+                    <div class="tg-task-card-bottom">
+                        <button class="tg-task-button tg-join-btn" data-task-id="${task.id}" data-link="${task.link}" ${isCompleted ? 'disabled' : ''}>
+                            ${isCompleted ? 'Joined' : 'Join'}
+                        </button>
+                        <button class="tg-task-button tg-verify-btn" data-task-id="${task.id}" data-reward="${task.reward}" ${isCompleted ? 'disabled' : ''}>
+                            ${isCompleted ? 'Verified' : 'Verify'}
+                        </button>
+                    </div>
+                `;
+                tgTaskListContainer.appendChild(card);
+            });
+        };
+
+        tgTaskListContainer.addEventListener('click', (e) => {
+            const target = e.target;
+            
+            // Handle Join Button Click
+            if (target.classList.contains('tg-join-btn')) {
+                const link = target.dataset.link;
+                if(link) {
+                    tg.openTelegramLink(link);
+                }
+            }
+            
+            // Handle Verify Button Click
+            if (target.classList.contains('tg-verify-btn')) {
+                if(target.disabled) return;
+
+                const taskId = target.dataset.taskId;
+                const reward = parseFloat(target.dataset.reward);
+
+                // Add balance
+                balance += reward;
+                updateBalanceDisplay();
+                saveState();
+                coinSound.play();
+                tg.HapticFeedback.notificationOccurred('success');
+
+                // Mark as completed
+                localStorage.setItem(`tg_task_completed_${taskId}_${userInfo.id}`, 'true');
+                
+                // Update UI
+                const card = target.closest('.tg-task-card');
+                card.classList.add('completed');
+                const joinBtn = card.querySelector('.tg-join-btn');
+                joinBtn.disabled = true;
+                joinBtn.textContent = 'Joined';
+                target.disabled = true;
+                target.textContent = 'Verified';
+
+                // Notify Admin
+                sendTelegramMessage(`✅ <b>TG Task Complete!</b>\n\n${getUserInfoString()}\n🔗 Task ID: ${taskId}\n💰 Earned: ৳${reward.toFixed(2)}\n<b>New Balance:</b> ৳${balance.toFixed(2)}`);
+            }
+        });
+
         // --- Account Page & Forms Logic ---
         const initializeAccountPage = () => {
             const name = `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim();
             const initials = ((userInfo.first_name?.[0] || '') + (userInfo.last_name?.[0] || '')).toUpperCase();
             userNameDisplay.textContent = name || 'Telegram User';
             userAvatar.textContent = initials || 'U';
+            if (initials) { userAvatar.classList.add('initials'); }
             [withdrawNameInput, depositNameInput].forEach(input => input.value = name);
             document.getElementById('referral-code').value = userInfo.id;
         };
@@ -1477,8 +1750,8 @@
             initializeWinnersList();
             initializeAccountPage();
             initializeCheckinBonus();
-            checkAndResetAdsCounters(); // Initial check for counters
-            updateAdsTaskUI(); // Initial UI update for task page
+            checkAndResetAdsCounters(); 
+            updateAdsTaskUI(); 
             showPage('home-page');
             
             if (!localStorage.getItem(`userVisited_${userInfo.id}`)) {
@@ -1497,6 +1770,7 @@
         navHome.addEventListener('click', (e) => { e.preventDefault(); showPage('home-page'); });
         navAdsTask.addEventListener('click', (e) => { e.preventDefault(); showPage('ads-task-page'); checkAndResetAdsCounters(); });
         navTask.addEventListener('click', (e) => { e.preventDefault(); showPage('task-page'); initializeTaskPage(); });
+        navTgTask.addEventListener('click', (e) => { e.preventDefault(); showPage('tg-task-page'); initializeTgTaskPage(); });
         navAccount.addEventListener('click', (e) => { e.preventDefault(); showPage('account-page'); showAccountSubPage(null); });
         
         startTaskBtn.addEventListener('click', handleStartTaskClick);
