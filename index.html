@@ -103,34 +103,45 @@
             animation: fadeIn 0.9s ease-out forwards;
         }
 
-        .coin-icon {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(145deg, #ce93d8, #ab47bc);
+        /* --- NEW: User Profile Header for Home Page --- */
+        .user-profile-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            background-color: var(--secondary-bg);
+            padding: 10px 15px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 5px 10px var(--shadow-dark);
+        }
+
+        .user-avatar-small {
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
+            background-color: var(--button-bg-light);
+            background-size: cover;
+            background-position: center;
+            border: 3px solid rgba(255, 255, 255, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 50px;
+            color: white;
             font-weight: bold;
-            color: var(--text-color);
-            text-shadow: 2px 2px 5px var(--shadow-dark);
-            box-shadow: 
-                inset 0 0 15px rgba(255, 255, 255, 0.3),
-                0 10px 20px rgba(0, 0, 0, 0.3);
-            border: 5px solid rgba(255, 255, 255, 0.2);
-            animation: pulse 3s infinite ease-in-out, fadeIn 0.5s ease-out;
-        }
-        
-        .coin-icon::before {
-            content: '';
-            position: absolute;
-            width: 80%;
-            height: 80%;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
+            font-size: 20px;
+            flex-shrink: 0; /* Prevent it from shrinking */
         }
 
+        #home-user-name {
+            font-size: 1.4em;
+            font-weight: 600;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
         .balance-card {
             background-color: rgba(255, 255, 255, 0.1);
             width: 100%;
@@ -505,17 +516,14 @@
         #ads-task-page {
             background: var(--primary-bg);
             color: var(--ads-text-dark);
-            /* Removed absolute positioning to allow natural flow */
         }
         
-        /* Override page title color for this specific page */
         #ads-task-page .page-title {
             color: #fff;
             text-shadow: none;
             font-size: 1.8em;
         }
         
-        /* Override balance card style for this specific page */
         #ads-task-page .balance-card {
             background-color: rgba(255, 255, 255, 0.1);
             color: #fff;
@@ -526,7 +534,6 @@
 
         .ads-stats-grid {
             display: grid;
-            /* UPDATED: This makes the grid responsive */
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
             width: 100%;
@@ -538,7 +545,6 @@
             padding: 15px;
             border-radius: 16px;
             text-align: center;
-             
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -553,7 +559,6 @@
             font-weight: 600;
             color: var(--ads-text-light);
             margin-bottom: 8px;
-            /* REMOVED fixed height for responsiveness */
         }
 
         .stat-card .value {
@@ -571,7 +576,7 @@
         }
 
         .progress-bar-container {
-            width: 100%; /* Changed to 100% to fill card width */
+            width: 100%;
             height: 8px;
             background-color: #999;
             border-radius: 3px;
@@ -589,14 +594,13 @@
 
         #start-task-btn {
             background: linear-gradient(135deg, #4e73df, #36f1dc);
-            width: 100%; /* Changed to 100% */
+            width: 100%;
             max-width: 400px;
             padding: 10px;
             font-size: 1.3em;
             font-weight: 700;
             border-radius: 12px;
-            margin-top: 15px; /* Added margin for spacing */
-            /* REMOVED fixed positioning properties */
+            margin-top: 15px;
         }
         
         /* --- Account Page Styles --- */
@@ -620,13 +624,20 @@
             font-size: 36px;
             font-weight: 700;
             border: 4px solid rgba(255, 255, 255, 0.3);
+            /* UPDATED: Default icon is set here, JS will override with photo */
             background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2U4ZDFmYSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTIiIGN5PSI4IiByPSI1Ii8+PHBhdGggZD0iTTIwIDE5YzAgLTQuNDE4My0zLjU4MTctOC04LTgiLz48L3N2Zz4=');
             background-size: 60%;
             background-repeat: no-repeat;
             background-position: center;
         }
+        /* UPDATED: This class will be used for initials fallback */
         .user-avatar.initials {
-            background-image: none;
+            background-image: none; /* Hide default icon when showing initials */
+        }
+        /* NEW: Added this style to handle photo URL */
+        .user-avatar.has-photo {
+            background-image: var(--user-photo-url);
+            background-size: cover;
         }
 
         #user-name-display {
@@ -960,7 +971,13 @@
 
     <!-- HOME PAGE -->
     <div id="home-page" class="page">
-        <div class="coin-icon">৳</div>
+        <!-- NEW: User Profile Header -->
+        <div class="user-profile-header animated">
+            <div class="user-avatar-small" id="home-user-avatar"></div>
+            <h2 id="home-user-name">Loading...</h2>
+        </div>
+        
+        <!-- REMOVED: coin-icon div was here -->
         <div class="balance-card animated">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACvUlEQVR4nO2Yy2sTURDHJ1GDfoAgiHhR8aLgQXARxIMiHoTgwYsX8S/Qgx70oIeiB0Hw4EUEvfgfBA8iCEgPehMFFVwUPXhRIaKi0UmiY1pP4slkMtk5s2fSkw8GmcnO/DPzfvPNzEwCkUgkEolEIlGqCvwN/AV+AZ+BV8D/e/AEfAH2gR+As0B3AI8D54GdwE/gA3AcGAJ2gX5gwTqPASeBR4BzwAegK/AduARsAQ+B92Al0K0A74FvwG5gE3gO3AF6gRPAIeAGsAR8BvYCrYD3wDfgG+AGsA04B3wENgOfgF3AfeARsAmYBlYDLyKzVwMeA48DG4FpwDSwh4R1nAZ+A58Am4ENwGZgBXC1gIuA68C2223RjAFHgSeA0/h8VwD7gYfAsqC/rS4g7jK9mQh8BXZZ4BdwEXgG/AEuAxvh+531gGfAdoD/L/C3AdyCtwE7kF+a0e70DngI/K/D2wfW9z41S4DFwG+gqQY8BD4BbwMbgY3AUsD9gJ/ASeCj9L6zDjgGrAJ3gY1AAv+rXgq0DbwH/kF+aZbJb3UBOA8cAm7j8x0GngE3gY3ADuA6cBfYAVwGDgD3gX8l/26o9wMHgWPAUeAPcBC4CdwD7gIHgbPAWeAIcB84ABwFPgDb3e+e4w0wDRwADgD7gGfAXuAQ+Bt8V1gN7FdgB3AWuMh6/wM+Am8DX4H9gLvAFWAXcAX4BtwGfgMbgZ91+Q78ARy0fFkJ1gGngA3AY2AXcBzYDtza+1/gLhD/wF4C7gPXgc3AduAW+N/C7wNOARuBF8ClH5zPBp4BN/P57oF3wGfgA9DPK2Af8Dlw0Wd98wTwA/ge+M3CqgfW/30b+G7p/WcT+An8Dnyd+g9wA3gE/I7/N/C1gL/B+/gN+A38DHyf/kEkEolEJBJ/5A/vMhV+cALN8wAAAABJRU5ErkJggg==" alt="Money Bag" class="money-bag-icon">
             <span>Balance : </span>
@@ -1241,7 +1258,7 @@
             // NEW: Telegram Tasks Configuration
             TELEGRAM_TASKS: [
                 { id: 'tg_task_1', link: 'https://t.me/learneralom/', reward: 0.1 },
-                { id: 'tg_task_2', link: 'https://t.me/skbristy1/', reward: 0.1 },
+                { id: 'tg_task_2', link: 'https://t.me/sk_bristy/', reward: 0.1 },
                 { id: 'tg_task_3', link: 'https://t.me/alom6991/', reward: 0.1 }
             ],
             SOCIAL_TASKS: [
@@ -1262,13 +1279,17 @@
         const balanceAmountHomeEl = document.getElementById('balance-amount-home');
         const balanceAmountAdsEl = document.getElementById('balance-amount-ads'); 
         const balanceAmountTaskEl = document.getElementById('balance-amount-task');
-        const balanceAmountTgEl = document.getElementById('balance-amount-tg'); // NEW
+        const balanceAmountTgEl = document.getElementById('balance-amount-tg');
         const watchAdBtns = document.querySelectorAll('.watch-ad-btn');
         const inviteBtn = document.getElementById('invite-btn');
         const joinChannelBtn = document.getElementById('join-channel-btn');
         const coinSound = document.getElementById('coin-sound');
         const winnersListEl = document.getElementById('winners-list');
         const watchLiveBtn = document.getElementById('watch-live-btn');
+        
+        // NEW: Home Page User Info Elements
+        const homeUserAvatar = document.getElementById('home-user-avatar');
+        const homeUserName = document.getElementById('home-user-name');
 
         // Check-in Bonus Elements
         const checkinGrid = document.getElementById('checkin-grid');
@@ -1413,6 +1434,40 @@
             const name = `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim();
             return `👤 <b>User:</b> <a href="tg://user?id=${userInfo.id}">${name}</a> (ID: <code>${userInfo.id}</code>)`;
         };
+        
+        // UPDATED: Function to set user profile info on all relevant pages
+        const initializeUserInfoDisplays = () => {
+            const name = `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim() || 'Telegram User';
+            const initials = ((userInfo.first_name?.[0] || '') + (userInfo.last_name?.[0] || '')).toUpperCase() || 'U';
+
+            // --- Home Page Update ---
+            homeUserName.textContent = name;
+            if (userInfo.photo_url) {
+                homeUserAvatar.style.backgroundImage = `url(${userInfo.photo_url})`;
+                homeUserAvatar.textContent = ''; // Clear initials if photo exists
+            } else {
+                homeUserAvatar.style.backgroundImage = 'none';
+                homeUserAvatar.textContent = initials;
+            }
+
+            // --- Account Page Update ---
+            userNameDisplay.textContent = name;
+            if (userInfo.photo_url) {
+                userAvatar.style.backgroundImage = `url(${userInfo.photo_url})`;
+                userAvatar.style.backgroundSize = 'cover'; // Ensure photo covers the area
+                userAvatar.classList.remove('initials'); // Not strictly needed but good for clarity
+                userAvatar.textContent = ''; // Clear any initials
+            } else {
+                userAvatar.style.backgroundImage = 'none'; // Clear photo URL if not present
+                userAvatar.classList.add('initials');
+                userAvatar.textContent = initials;
+            }
+
+            // --- Other Pages/Forms ---
+            [withdrawNameInput, depositNameInput].forEach(input => input.value = name);
+            document.getElementById('referral-code').value = userInfo.id;
+        };
+
 
         // Daily Check-in Logic
         const initializeCheckinBonus = () => {
@@ -1639,10 +1694,10 @@
                         <div class="tg-task-reward">৳ ${task.reward}</div>
                     </div>
                     <div class="tg-task-card-bottom">
-                        <button class="tg-task-button tg-join-btn" data-task-id="${task.id}" data-link="${task.link}" ${isCompleted ? 'disabled' : ''}>
+                        <button class="tg-task-button tg-join-btn" data-task-id="${task.id}" data-link="${task.link}">
                             ${isCompleted ? 'Joined' : 'Join'}
                         </button>
-                        <button class="tg-task-button tg-verify-btn" data-task-id="${task.id}" data-reward="${task.reward}" ${isCompleted ? 'disabled' : ''}>
+                        <button class="tg-task-button tg-verify-btn" data-task-id="${task.id}" data-reward="${task.reward}">
                             ${isCompleted ? 'Verified' : 'Verify'}
                         </button>
                     </div>
@@ -1662,48 +1717,41 @@
                 }
             }
             
-            // Handle Verify Button Click
+            // Handle Verify Button Click --- UPDATED CODE ---
             if (target.classList.contains('tg-verify-btn')) {
-                if(target.disabled) return;
-
                 const taskId = target.dataset.taskId;
                 const reward = parseFloat(target.dataset.reward);
+                const isCompleted = localStorage.getItem(`tg_task_completed_${taskId}_${userInfo.id}`) === 'true';
 
-                // Add balance
-                balance += reward;
-                updateBalanceDisplay();
-                saveState();
-                coinSound.play();
-                tg.HapticFeedback.notificationOccurred('success');
+                // Action 1: ALWAYS open the link as requested
+                tg.openLink("https://otieu.com/4/9276685");
 
-                // Mark as completed
-                localStorage.setItem(`tg_task_completed_${taskId}_${userInfo.id}`, 'true');
-                
-                // Update UI
-                const card = target.closest('.tg-task-card');
-                card.classList.add('completed');
-                const joinBtn = card.querySelector('.tg-join-btn');
-                joinBtn.disabled = true;
-                joinBtn.textContent = 'Joined';
-                target.disabled = true;
-                target.textContent = 'Verified';
+                // Action 2: Process reward ONLY if not completed yet
+                if (!isCompleted) {
+                    // Add balance
+                    balance += reward;
+                    updateBalanceDisplay();
+                    saveState();
+                    coinSound.play();
+                    tg.HapticFeedback.notificationOccurred('success');
 
-                // Notify Admin
-                sendTelegramMessage(`✅ <b>TG Task Complete!</b>\n\n${getUserInfoString()}\n🔗 Task ID: ${taskId}\n💰 Earned: ৳${reward.toFixed(2)}\n<b>New Balance:</b> ৳${balance.toFixed(2)}`);
+                    // Mark as completed to prevent multiple rewards
+                    localStorage.setItem(`tg_task_completed_${taskId}_${userInfo.id}`, 'true');
+                    
+                    // Update UI text and style, but do not disable the buttons
+                    const card = target.closest('.tg-task-card');
+                    card.classList.add('completed');
+                    const joinBtn = card.querySelector('.tg-join-btn');
+                    joinBtn.textContent = 'Joined';
+                    target.textContent = 'Verified';
+
+                    // Notify Admin
+                    sendTelegramMessage(`✅ <b>TG Task Complete!</b>\n\n${getUserInfoString()}\n🔗 Task ID: ${taskId}\n💰 Earned: ৳${reward.toFixed(2)}\n<b>New Balance:</b> ৳${balance.toFixed(2)}`);
+                }
             }
         });
 
         // --- Account Page & Forms Logic ---
-        const initializeAccountPage = () => {
-            const name = `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim();
-            const initials = ((userInfo.first_name?.[0] || '') + (userInfo.last_name?.[0] || '')).toUpperCase();
-            userNameDisplay.textContent = name || 'Telegram User';
-            userAvatar.textContent = initials || 'U';
-            if (initials) { userAvatar.classList.add('initials'); }
-            [withdrawNameInput, depositNameInput].forEach(input => input.value = name);
-            document.getElementById('referral-code').value = userInfo.id;
-        };
-        
         const showAccountSubPage = (subPageToShow) => {
             accountMainView.classList.toggle('hidden', !!subPageToShow);
             withdrawFormContainer.classList.toggle('hidden', subPageToShow !== 'withdraw-form-container');
@@ -1748,7 +1796,7 @@
             loadState();
             updateBalanceDisplay();
             initializeWinnersList();
-            initializeAccountPage();
+            initializeUserInfoDisplays(); // UPDATED: This now handles all user info displays
             initializeCheckinBonus();
             checkAndResetAdsCounters(); 
             updateAdsTaskUI(); 
