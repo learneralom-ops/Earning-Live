@@ -102,6 +102,45 @@
         .animated {
             animation: fadeIn 0.9s ease-out forwards;
         }
+        
+        /* --- NEW: VPN Modal Styles --- */
+        #vpn-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+        }
+        #vpn-modal-content {
+            background: var(--secondary-bg);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+            box-shadow: 0 10px 25px var(--shadow-dark);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            animation: fadeIn 0.4s ease-out;
+        }
+        #vpn-modal-content h2 {
+            font-size: 1.6em;
+            margin-bottom: 10px;
+        }
+        #vpn-modal-content p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        #vpn-download-btn {
+            background: linear-gradient(135deg, #2ed573, #1e90ff);
+            width: 100%;
+        }
+
 
         /* --- NEW: User Profile Header for Home Page --- */
         .user-profile-header {
@@ -956,6 +995,66 @@
         #admin-reset-user { background-color: #f39c12; }
         #admin-save-winners { background: #8e44ad; } /* New button style */
         
+        /* NEW: Admin Switch Toggle Styles */
+        .switch-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(0,0,0,0.1);
+            padding: 10px 15px;
+            border-radius: 10px;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #555;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+        input:checked + .slider {
+            background-color: #2ed573;
+        }
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2ed573;
+        }
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+        .slider.round {
+            border-radius: 34px;
+        }
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
         
         /* --- Bottom Nav --- */
         .bottom-nav {
@@ -1004,6 +1103,16 @@
     </style>
 </head>
 <body>
+
+    <!-- NEW: VPN PROMPT MODAL -->
+    <div id="vpn-modal-overlay" class="hidden">
+        <div id="vpn-modal-content">
+            <h2>VPN প্রয়োজন</h2>
+            <p>এই অ্যাপটি ব্যবহার করার জন্য, অনুগ্রহ করে আমাদের প্রস্তাবিত VPN টি ডাউনলোড এবং কানেক্ট করুন।</p>
+            <button id="vpn-download-btn" class="action-button">VPN ডাউনলোড করুন</button>
+        </div>
+    </div>
+
 
     <!-- HOME PAGE -->
     <div id="home-page" class="page">
@@ -1236,6 +1345,18 @@
     <div id="admin-page" class="page hidden">
         <h1 class="page-title animated">🔐 Admin Panel</h1>
         
+         <!-- NEW: VPN Check Control Section -->
+        <div class="admin-section animated">
+            <h2>ভিপিএন চেক কন্ট্রোল</h2>
+            <div class="switch-container">
+                <label for="vpn-check-toggle">ভিপিএন চেক চালু/বন্ধ করুন</label>
+                <label class="switch">
+                    <input type="checkbox" id="vpn-check-toggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
         <div class="admin-section animated">
             <h2>Manage User Data</h2>
             <div class="form-group">
@@ -1273,15 +1394,15 @@
     <!-- Bottom Navigation Bar -->
     <nav class="bottom-nav">
         <a href="#" id="nav-home" class="nav-item active">
-            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWhvbWUiPjxwYXRoIGQ9Im0zIDkgOS03IDkgN3YxMWEyIDIgMCAwIDEtMiAyaC0xNGEyIDIgMCAwIDEtMi0yWiIvPjxwb2x5bGluZSBwb2ludHM9IjkgMjIgOSAxMiAxNSAxMiAxNSAyMiIvPjwvc3ZnPg==" alt="Home">
+            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWhvbWUiPjxwYXRoIGQ9Im0zIDkgOS03IDkgN3YxMWEyIDIgMCAwIDEtMiAyaC0xNGEyIDIgMCAwIDEtMi0yWiIvPjxwb2x5bGluZSBwb2ludHM9IjkgMjIgOSAxMiAxNSAxMiAxNSAyMiIvPjwvc3ZnPg==" alt="Home">
             <span>Home</span>
         </a>
         <a href="#" id="nav-ads-task" class="nav-item">
-            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWxpc3QtY2hlY2tzIj48cGF0aCBkPSJtMyAxNyAyIDIgNC00Ii8+PHBhdGggZD0ibTMgNyAyIDIgNC00Ii8+PHBhdGggZD0iTTEzIDZoOCIvPjxwYXRoIGQ9Ik0xMyAxMmg4Ii8+PHBhdGggZD0iTTEzIDE4aDgiLz48L3N2Zz4=" alt="Ads Task">
+            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWxpc3QtY2hlY2tzIj48cGF0aCBkPSJtMyAxNyAyIDIgNC00Ii8+PHBhdGggZD0ibTMgNyAyIDIgNC00Ii8+PHBhdGggZD0iTTEzIDZoOCIvPjxwYXRoIGQ9Ik0xMyAxMmg4Ii8+PHBhdGggZD0iTTEzIDE4aDgiLz48L3N2Zz4=" alt="Ads Task">
             <span>Ads Task</span>
         </a>
         <a href="#" id="nav-tg-task" class="nav-item">
-            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMiAyIDExIDEzIDIgOSAyMiAyeiIvPjxwYXRoIGQ9Ik0yIDIwIDEzIDExIDkgMjIgMiAyMHoiLz48L3N2Zz4=" alt="TG Earn">
+            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMiAyIDExIDEzIDIgOSAyMiAyeiIvPjxwYXRoIGQ9Ik0yIDIwIDEzIDExIDkgMjIgMiAyMHoiLz48L3N2Zz4=" alt="TG Earn">
             <span>TG Earn</span>
         </a>
         <a href="#" id="nav-task" class="nav-item">
@@ -1289,13 +1410,13 @@
             <span>Task</span>
         </a>
         <a href="#" id="nav-account" class="nav-item">
-            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXVzZXItY2lyY2xlIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTAiIHI9IjMiLz48cGF0aCBkPSJtNyAxOC43IDUuNDE3LTEuMTY0QTIgMiAwIDAgMSA3IDE4LjdaTTE3IDE4LjdMIDE3IDE4LjdhIDIgMiAwIDAgMCAtMS4xNjQgMS4xNjRMMTcgMTguN1oiLz48L3N2Zz4=" alt="Account">
+            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXVzZXItY2lyY2xlIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTAiIHI9IjMiLz48cGF0aCBkPSJtNyAxOC43IDUuNDE3LTEuMTY0QTIgMiAwIDAgMSA3IDE4LjdaTTE3IDE4LjdMIDE3IDE4LjdhIDIgMiAwIDAgMCAtMS4xNjQgMS4xNjRMMTcgMTguN1oiLz48L3N2Zz4=" alt="Account">
             <span>Account</span>
         </a>
         <!-- NEW: ADMIN NAV ITEM (Initially Hidden) -->
         <a href="#" id="nav-admin" class="nav-item hidden">
-            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXNoaWVsZC1hbGVydCI+PHBhdGggZD0iTTEyIDIycy04LTQtOC0xMFY1bDEwLTQgOCAyLTV2MTAiLz48bGluZSB4MT0iMTIiIHgyPSIxMiIgeTE9IjgiIHkyPSIxMiIvPjxsaW5lIHgxPSIxMiIgeDI9IjEyLjAxIiB5MT0iMTYiIHkyPSIxNiIvPjwvc3ZnPg==" alt="Admin">
-            <span>?</span>
+            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXNoaWVsZC1hbGVydCI+PHBhdGggZD0iTTEyIDIycy04LTQtOC0xMFY1bDEwLTQgOCAyLTV2MTAiLz48bGluZSB4MT0iMTIiIHgyPSIxMiIgeTE9IjgiIHkyPSIxMiIvPjxsaW5lIHgxPSIxMiIgeDI9IjEyLjAxIiB5MT0iMTYiIHkyPSIxNiIvPjwvc3ZnPg==" alt="Admin">
+            <span>Admin</span>
         </a>
     </nav>
 
@@ -1428,8 +1549,13 @@
         const adminAddBalanceBtn = document.getElementById('admin-add-balance');
         const adminSubtractBalanceBtn = document.getElementById('admin-subtract-balance');
         const adminResetUserBtn = document.getElementById('admin-reset-user');
-        const adminWinnersInput = document.getElementById('admin-winners-input'); // New
-        const adminSaveWinnersBtn = document.getElementById('admin-save-winners'); // New
+        const adminWinnersInput = document.getElementById('admin-winners-input'); 
+        const adminSaveWinnersBtn = document.getElementById('admin-save-winners');
+        
+        // --- NEW: VPN MODAL ELEMENTS ---
+        const vpnModalOverlay = document.getElementById('vpn-modal-overlay');
+        const vpnDownloadBtn = document.getElementById('vpn-download-btn');
+        const vpnCheckToggle = document.getElementById('vpn-check-toggle');
         
         // State Management
         let balance = 0;
@@ -1465,9 +1591,12 @@
             const activeNav = document.getElementById(navId);
             if(activeNav) activeNav.classList.add('active');
             
-            // Populate admin textarea when admin page is shown
+            // Populate admin elements when admin page is shown
             if (pageId === 'admin-page') {
                 initializeWinnersList();
+                // Set VPN toggle switch state from localStorage
+                const vpnStatus = localStorage.getItem('vpn_check_status') === 'ON';
+                vpnCheckToggle.checked = vpnStatus;
             }
             
             document.body.style.backgroundColor = 'var(--primary-bg)';
@@ -1744,7 +1873,7 @@
                 const isCompleted = localStorage.getItem(`tg_task_completed_${task.id}_${userInfo.id}`) === 'true';
                 const card = document.createElement('div');
                 card.className = 'tg-task-card' + (isCompleted ? ' completed' : '');
-                card.innerHTML = `<div class="tg-task-card-top"><div class="tg-task-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMyOWI2ZjYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjIgMiAxMSAxMyAyIDkgMjIgMiI+PC9wYXRoPjxwYXRoIGQ9Ik0yIDIwIDEzIDExIDkgMjIgMiAyMHoiPjwvcGF0aD48L3N2Zz4=" alt="Telegram Icon"></div><span class="tg-task-description">Join Channel To Earn</span><div class="tg-task-reward">৳ ${task.reward}</div></div><div class="tg-task-card-bottom"><button class="tg-task-button tg-join-btn" data-task-id="${task.id}" data-link="${task.link}">${isCompleted ? 'Joined' : 'Join'}</button><button class="tg-task-button tg-verify-btn" data-task-id="${task.id}" data-reward="${task.reward}">${isCompleted ? 'Verified' : 'Verify'}</button></div>`;
+                card.innerHTML = `<div class="tg-task-card-top"><div class="tg-task-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMyOWI2ZjYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjIgMiAxMSAxMyAyIDkgMjIgMiI+PC9wYXRoPjxwYXRoIGQ9Ik0yIDIwIDEzIDExIDkgMjIgMiAyMHoiPjwvcGF0aD48L3N2Zz4=" alt="Telegram Icon"></div><span class="tg-task-description">Join Channel To Earn</span><div class="tg-task-reward">৳ ${task.reward}</div></div><div class="tg-task-card-bottom"><button class="tg-task-button tg-join-btn" data-task-id="${task.id}" data-link="${task.link}">${isCompleted ? 'Joined' : 'Join'}</button><button class="tg-task-button tg-verify-btn" data-task-id="${task.id}" data-reward="${task.reward}">${isCompleted ? 'Verified' : 'Verify'}</button></div>`;
                 tgTaskListContainer.appendChild(card);
             });
         };
@@ -1912,7 +2041,7 @@
             adminWinnersInput.value = winnersData.map(w => `${w.name},${w.prize}`).join('\n');
         };
         
-        const initializeApp = () => {
+        const runAppInitialization = () => {
             if (ADMIN_USER_IDS.includes(String(userInfo.id))) {
                 navAdmin.classList.remove('hidden');
             }
@@ -1921,7 +2050,7 @@
             }
             loadState();
             updateBalanceDisplay();
-            initializeWinnersList(); // This now handles both home and admin areas
+            initializeWinnersList();
             initializeUserInfoDisplays(); 
             initializeCheckinBonus();
             checkAndResetAdsCounters(); 
@@ -1931,6 +2060,19 @@
             if (!localStorage.getItem(`userVisited_${userInfo.id}`)) {
                 sendTelegramMessage(`🚀 <b>New User!</b>\n\n${getUserInfoString()}\nOpened the app for the first time.`);
                 localStorage.setItem(`userVisited_${userInfo.id}`, 'true');
+            }
+        };
+
+        const initializeApp = () => {
+            // Check VPN status from localStorage
+            const vpnCheckStatus = localStorage.getItem('vpn_check_status');
+            
+            if (vpnCheckStatus === 'ON') {
+                vpnModalOverlay.classList.remove('hidden');
+                // The rest of the app will initialize only after the user clicks the VPN download button.
+            } else {
+                // If VPN check is off, initialize the app immediately.
+                runAppInitialization();
             }
         };
 
@@ -1960,7 +2102,23 @@
         adminAddBalanceBtn.addEventListener('click', () => handleAdminActions('add'));
         adminSubtractBalanceBtn.addEventListener('click', () => handleAdminActions('subtract'));
         adminResetUserBtn.addEventListener('click', () => handleAdminActions('reset'));
-        adminSaveWinnersBtn.addEventListener('click', handleSaveWinners); // New
+        adminSaveWinnersBtn.addEventListener('click', handleSaveWinners);
+
+        // NEW: VPN Modal and Admin Toggle Listeners
+        vpnDownloadBtn.addEventListener('click', () => {
+            const vpnLink = 'https://t.me/LearnerAlom/139?single';
+            tg.openTelegramLink(vpnLink);
+            vpnModalOverlay.classList.add('hidden');
+            // After the user interacts, start the rest of the app.
+            runAppInitialization();
+        });
+        
+        vpnCheckToggle.addEventListener('change', () => {
+            const status = vpnCheckToggle.checked ? 'ON' : 'OFF';
+            localStorage.setItem('vpn_check_status', status);
+            tg.showAlert(`VPN Check is now ${status}`);
+        });
+
 
         // --- Start The App ---
         initializeApp();
@@ -1968,3 +2126,4 @@
 </script>
 </body>
 </html>
+```
