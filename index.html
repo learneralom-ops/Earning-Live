@@ -51,7 +51,7 @@
             min-height: 100vh;
             padding: 20px 20px 100px 20px;
             overflow-x: hidden;
-            transition: background-color 0.3s ease;
+            transition: background-color: 0.3s ease;
         }
 
         .page {
@@ -457,7 +457,7 @@
             background-color: var(--secondary-bg);
             padding: 10px 15px;
             border-radius: 15px;
-            transition: background-color 0.3s, opacity 0.3s;
+            transition: background-color: 0.3s, opacity: 0.3s;
             box-shadow: 0 4px 8px var(--shadow-dark);
         }
 
@@ -1277,7 +1277,7 @@
             <span>Task</span>
         </a>
         <a href="#" id="nav-account" class="nav-item">
-            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXVzZXItY2lyY2xlIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTAiIHI9IjMiLz48cGF0aCBkPSJtNyAxOC43IDUuNDE3LTEuMTY0QTIgMiAwIDAgMSA3IDE4LjdaTTE3IDE4LjdMIDE3IDE4LjdhIDIgMiAwIDAgMCAtMS4xNjQgMS4xNjRMMTcgMTguN1oiLz48L3N2Zz4=" alt="Account">
+            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXVzZXItY2lyY2xlIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTAiIHI9IjMiLz48cGF0aCBkPSJtNyAxOC43IDUuNDE3LTEuMTY0QTIgMiAwIDAgMSA3IDE4LjdaTTE3IDE4LjdMIDE3IDE4LjdhIDIgMiAwIDAgMCAtMS4xNjQgMS4xNjRMMTcgMTguN1oiLz48L3N2Zz4=" alt="Account">
             <span>Account</span>
         </a>
         <!-- NEW: ADMIN NAV ITEM (Initially Hidden) -->
@@ -1301,10 +1301,9 @@
         
         // ===================================================================
         // ★★★ ADMIN CONFIGURATION ★★★
-        // আপনার Telegram User ID এখানে যোগ করুন। 
-        // আপনি চাইলে একাধিক অ্যাডমিন যোগ করতে পারেন, যেমন: ['ID_1', 'ID_2']
+        // শুধুমাত্র এই তালিকায় থাকা Telegram ID থেকেই অ্যাডমিন প্যানেল দেখা যাবে।
         // ===================================================================
-        const ADMIN_USER_IDS = ['5812860406']; // <-- এখানে আপনার User ID দিন
+        const ADMIN_USER_IDS = ['5812860406']; 
         
 
         let config = {
@@ -1765,9 +1764,9 @@
             const amount = parseFloat(withdrawAmountInput.value);
             if (amount < 500) { tg.showAlert('Minimum withdrawal is 500 Taka.'); return; }
             if (amount > balance) { tg.showAlert('Insufficient balance.'); return; }
-            const MINIMUM_REFERRALS = 20;
+            const MINIMUM_REFERRALS = 10;
             if (totalReferrals < MINIMUM_REFERRALS) {
-                tg.showAlert(`আপনাকে অন্তত জনকে রেফার করতে হবে ${MINIMUM_REFERRALS} Withdraw করার জন্য আপনাকে মিনিমাম জনকে রেফার করতে হবে তানাহলে আপনি Withdraw করতে পারবেন না।.`);
+                tg.showAlert(`আপনাকে মিনিমাম ${MINIMUM_REFERRALS} জনকে রেফার করতে হবে তানাহলে আপনি Withdraw করতে পারবেন না।`);
                 return;
             }
             const formData = new FormData(withdrawForm);
