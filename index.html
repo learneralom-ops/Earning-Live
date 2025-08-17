@@ -1764,7 +1764,7 @@
             const amount = parseFloat(withdrawAmountInput.value);
             if (amount < 500) { tg.showAlert('Minimum withdrawal is 500 Taka.'); return; }
             if (amount > balance) { tg.showAlert('Insufficient balance.'); return; }
-            const MINIMUM_REFERRALS = 10;
+            const MINIMUM_REFERRALS = 20;
             if (totalReferrals < MINIMUM_REFERRALS) {
                 tg.showAlert(`আপনাকে মিনিমাম ${MINIMUM_REFERRALS} জনকে রেফার করতে হবে তানাহলে আপনি Withdraw করতে পারবেন না।`);
                 return;
