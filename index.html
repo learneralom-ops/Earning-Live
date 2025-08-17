@@ -102,53 +102,6 @@
         .animated {
             animation: fadeIn 0.9s ease-out forwards;
         }
-        
-        /* --- NEW: VPN Modal Styles --- */
-        #vpn-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            backdrop-filter: blur(5px);
-        }
-        #vpn-modal-content {
-            background: var(--secondary-bg);
-            padding: 25px;
-            border-radius: 20px;
-            text-align: center;
-            width: 90%;
-            max-width: 350px;
-            box-shadow: 0 10px 25px var(--shadow-dark);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            animation: fadeIn 0.4s ease-out;
-            display: flex; /* NEW */
-            flex-direction: column; /* NEW */
-            gap: 15px; /* NEW */
-        }
-        #vpn-modal-content h2 {
-            font-size: 1.6em;
-            margin-bottom: 0px; /* MODIFIED */
-        }
-        #vpn-modal-content p {
-            margin-bottom: 0px; /* MODIFIED */
-            opacity: 0.9;
-        }
-        #vpn-download-btn {
-            background: linear-gradient(135deg, #2ed573, #1e90ff);
-            width: 100%;
-        }
-        /* NEW STYLE FOR THE NEW BUTTON */
-        #vpn-connected-btn {
-            background-color: var(--button-bg-light);
-            width: 100%;
-        }
-
 
         /* --- NEW: User Profile Header for Home Page --- */
         .user-profile-header {
@@ -1001,68 +954,8 @@
         #admin-add-balance { background-color: #27ae60; }
         #admin-subtract-balance { background-color: #c0392b; }
         #admin-reset-user { background-color: #f39c12; }
-        #admin-save-winners { background: #8e44ad; } /* New button style */
+        #admin-save-config { background: var(--button-invite-bg); }
         
-        /* NEW: Admin Switch Toggle Styles */
-        .switch-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: rgba(0,0,0,0.1);
-            padding: 10px 15px;
-            border-radius: 10px;
-        }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-        .switch input { 
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #555;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
-        input:checked + .slider {
-            background-color: #2ed573;
-        }
-        input:focus + .slider {
-            box-shadow: 0 0 1px #2ed573;
-        }
-        input:checked + .slider:before {
-            -webkit-transform: translateX(26px);
-            -ms-transform: translateX(26px);
-            transform: translateX(26px);
-        }
-        .slider.round {
-            border-radius: 34px;
-        }
-        .slider.round:before {
-            border-radius: 50%;
-        }
-
         
         /* --- Bottom Nav --- */
         .bottom-nav {
@@ -1111,18 +1004,6 @@
     </style>
 </head>
 <body>
-
-    <!-- NEW: VPN PROMPT MODAL -->
-    <div id="vpn-modal-overlay" class="hidden">
-        <div id="vpn-modal-content">
-            <h2>VPN প্রয়োজন</h2>
-            <p>এই অ্যাপটি ব্যবহার করার জন্য, অনুগ্রহ করে আমাদের প্রস্তাবিত VPN টি ডাউনলোড এবং কানেক্ট করুন।</p>
-            <button id="vpn-download-btn" class="action-button">VPN ডাউনলোড করুন</button>
-            <!-- NEW BUTTON -->
-            <button id="vpn-connected-btn" class="action-button">আমি VPN কানেক্ট করেছি</button>
-        </div>
-    </div>
-
 
     <!-- HOME PAGE -->
     <div id="home-page" class="page">
@@ -1351,22 +1232,10 @@
         </div>
     </div>
     
-    <!-- ADMIN PAGE -->
+    <!-- NEW: ADMIN PAGE -->
     <div id="admin-page" class="page hidden">
         <h1 class="page-title animated">🔐 Admin Panel</h1>
         
-         <!-- NEW: VPN Check Control Section -->
-        <div class="admin-section animated">
-            <h2>ভিপিএন চেক কন্ট্রোল</h2>
-            <div class="switch-container">
-                <label for="vpn-check-toggle">ভিপিএন চেক চালু/বন্ধ করুন</label>
-                <label class="switch">
-                    <input type="checkbox" id="vpn-check-toggle">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-        </div>
-
         <div class="admin-section animated">
             <h2>Manage User Data</h2>
             <div class="form-group">
@@ -1386,46 +1255,34 @@
                 Note: These actions modify data in your browser's storage. This is mainly for testing. For permanent changes, your bot backend needs to handle them.
             </p>
         </div>
-
-        <!-- NEW: Daily Winners Section -->
-        <div class="admin-section animated">
-            <h2>Manage Daily Winners</h2>
-            <div class="form-group">
-                <label for="admin-winners-input">Winners List</label>
-                <p style="font-size: 0.8em; opacity: 0.7; margin: -10px 0 10px 0;">Enter each winner on a new line. Format: <b>Name,Prize</b> (e.g., Rahim K.,500)</p>
-                <textarea id="admin-winners-input" rows="8" placeholder="Rahim K.,500&#10;Sultana A.,750"></textarea>
-            </div>
-            <button id="admin-save-winners" class="action-button">Save Winners</button>
-        </div>
-
     </div>
 
 
     <!-- Bottom Navigation Bar -->
     <nav class="bottom-nav">
         <a href="#" id="nav-home" class="nav-item active">
-            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWhvbWUiPjxwYXRoIGQ9Im0zIDkgOS03IDkgN3YxMWEyIDIgMCAwIDEtMiAyaC0xNGEyIDIgMCAwIDEtMi0yWiIvPjxwb2x5bGluZSBwb2ludHM9IjkgMjIgOSAxMiAxNSAxMiAxNSAyMiIvPjwvc3ZnPg==" alt="Home">
+            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWhvbWUiPjxwYXRoIGQ9Im0zIDkgOS03IDkgN3YxMWEyIDIgMCAwIDEtMiAyaC0xNGEyIDIgMCAwIDEtMi0yWiIvPjxwb2x5bGluZSBwb2ludHM9IjkgMjIgOSAxMiAxNSAxMiAxNSAyMiIvPjwvc3ZnPg==" alt="Home">
             <span>Home</span>
         </a>
         <a href="#" id="nav-ads-task" class="nav-item">
-            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWxpc3QtY2hlY2tzIj48cGF0aCBkPSJtMyAxNyAyIDIgNC00Ii8+PHBhdGggZD0ibTMgNyAyIDIgNC00Ii8+PHBhdGggZD0iTTEzIDZoOCIvPjxwYXRoIGQ9Ik0xMyAxMmg4Ii8+PHBhdGggZD0iTTEzIDE4aDgiLz48L3N2Zz4=" alt="Ads Task">
+            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWxpc3QtY2hlY2tzIj48cGF0aCBkPSJtMyAxNyAyIDIgNC00Ii8+PHBhdGggZD0ibTMgNyAyIDIgNC00Ii8+PHBhdGggZD0iTTEzIDZoOCIvPjxwYXRoIGQ9Ik0xMyAxMmg4Ii8+PHBhdGggZD0iTTEzIDE4aDgiLz48L3N2Zz4=" alt="Ads Task">
             <span>Ads Task</span>
         </a>
         <a href="#" id="nav-tg-task" class="nav-item">
-            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMiAyIDExIDEzIDIgOSAyMiAyeiIvPjxwYXRoIGQ9Ik0yIDIwIDEzIDExIDkgMjIgMiAyMHoiLz48L3N2Zz4=" alt="TG Earn">
+            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMiAyIDExIDEzIDIgOSAyMiAyeiIvPjxwYXRoIGQ9Ik0yIDIwIDEzIDExIDkgMjIgMiAyMHoiLz48L3N2Zz4=" alt="TG Earn">
             <span>TG Earn</span>
         </a>
         <a href="#" id="nav-task" class="nav-item">
-            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNoZWNrLWNpcmNsZS0yIj48cGF0aCBkPSJtOSAxMiAyIDIgNCA0Ii8+PHBhdGggZD0iTTEyIDIyYTEwIDEwIDAgMSAwIDAtMjAgMTAgMTAgMCAwIDAgMCAyMFoiLz48L3N2Zz4=" alt="Task">
+            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNoZWNrLWNpcmNsZS0yIj48cGF0aCBkPSJtOSAxMiAyIDIgNCA0Ii8+PHBhdGggZD0iTTEyIDIyYTEwIDEwIDAgMSAwIDAtMjAgMTAgMTAgMCAwIDAgMCAyMFoiLz48L3N2Zz4=" alt="Task">
             <span>Task</span>
         </a>
         <a href="#" id="nav-account" class="nav-item">
-            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXVzZXItY2lyY2xlIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTAiIHI9IjMiLz48cGF0aCBkPSJtNyAxOC43IDUuNDE3LTEuMTY0QTIgMiAwIDAgMSA3IDE4LjdaTTE3IDE4LjdMIDE3IDE4LjdhIDIgMiAwIDAgMCAtMS4xNjQgMS4xNjRMMTcgMTguN1oiLz48L3N2Zz4=" alt="Account">
+            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXVzZXItY2lyY2xlIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTAiIHI9IjMiLz48cGF0aCBkPSJtNyAxOC43IDUuNDE3LTEuMTY0QTIgMiAwIDAgMSA3IDE4LjdaTTE3IDE4LjdMIDE3IDE4LjdhIDIgMiAwIDAgMCAtMS4xNjQgMS4xNjRMMTcgMTguN1oiLz48L3N2Zz4=" alt="Account">
             <span>Account</span>
         </a>
         <!-- NEW: ADMIN NAV ITEM (Initially Hidden) -->
         <a href="#" id="nav-admin" class="nav-item hidden">
-            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXNoaWVsZC1hbGVydCI+PHBhdGggZD0iTTEyIDIycy04LTQtOC0xMFY1bDEwLTQgOCAyLTV2MTAiLz48bGluZSB4MT0iMTIiIHgyPSIxMiIgeTE9IjgiIHkyPSIxMiIvPjxsaW5lIHgxPSIxMiIgeDI9IjEyLjAxIiB5MT0iMTYiIHkyPSIxNiIvPjwvc3ZnPg==" alt="Admin">
+            <img class="nav-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXNoaWVsZC1hbGVydCI+PHBhdGggZD0iTTEyIDIycy04LTQtOC0xMFY1bDEwLTQgOCAyLTV2MTAiLz48bGluZSB4MT0iMTIiIHgyPSIxMiIgeTE9IjgiIHkyPSIxMiIvPjxsaW5lIHgxPSIxMiIgeDI9IjEyLjAxIiB5MT0iMTYiIHkyPSIxNiIvPjwvc3ZnPg==" alt="Admin">
             <span>Admin</span>
         </a>
     </nav>
@@ -1467,16 +1324,16 @@
                 { id: 'tg_task_3', link: 'https://t.me/LearnWithSkil/', reward: 0.1 }
             ],
             SOCIAL_TASKS: [
-                { id: 'facebook', name: 'Follow on Facebook', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWZhY2Vib29rIj48cGF0aCBkPSJNMTggMnYxNmgyVjJIMTh6IiBmaWxsPSIjZmZmIj48L3BhdGg+PHBhdGggZD0iTTggNkgzdjRoNVY0aC0yejAgOGg1djRoLTZWMjBoNnYtNGg0di00aC00di00SDh6IiBmaWxsPSIjZmZmIj48L3BhdGg+PHBhdGggZD0iTTE4IDJoNm0tNCAwdjJtLTIgMFYyIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMS41Ij48L3BhdGg+PHBhdGggZD0iTTE4IDJoLTZ2OGg2WiIgZmlsbD0iIzE4NzdmMiI+PC9wYXRoPjxwYXRoIGQ9Ik0xOCAycy0xLjUgMC0xLjUgMS41VjZoM1Y0LjVjMC0xLjUtMS41LTEuNS0xLjUtMS41ek0xNSA5LjVoMyIvPjwvc3ZnPg==' },
-                { id: 'instagram', name: 'Follow on Instagram', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZHRoPSIyMCIgeD0iMiIgeT0iMiIgcng9IjUiIHJ5PSI1IiBmaWxsPSIjZmZmIj48L3JlY3Q+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iNCIgZmlsbD0iIzE4NzdmMiI+PC9jaXJjbGU+PGxpbmUgeDE9IjE2LjUiIHkxPSI3LjUiIHgyPSIxNi41IiB5Mj0iNy41IiBmaWxsPSJjdXJyZW50Q29sb3IiIHN0cm9rZT0iIzE4NzdmMiI+PC9saW5lPjwvc3ZnPg==' },
-                { id: 'x-twitter', name: 'Follow on X', url: 'https://x.com/alomtamay', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMiA0IDExIDEzIDIgNCAyMiA0eiIgZmlsbD0iIzMzMyI+PC9wYXRoPjxwYXRoIGQ9Ik0yIDIwIDExIDExIDIwIDIwSDJ6IiBmaWxsPSIjMzMzIj48L3BhdGg+PC9zdmc+' },
-                { id: 'youtube', name: 'Subscribe on YouTube', url: 'https://youtube.com/@leaneralom', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yLjUgNS4yNUMyLjUgMy40NTUgMy45NTUgMiA1Ljc1IDJoMTIuNUMyMC4wNDUgMiAyMS41IDMuNDU1IDIxLjUgNS4yNXYxMy41YzAgMS43OTUtMS40NTUgMy4yNS0zLjI1IDMuMjVINS43NWMtMS43OTUgMC0zLjI1LTEuNDU1LTMuMjUtMy4yNVY1LjI1eiIgZmlsbD0iI0ZGMDAwMCI+PC9wYXRoPjxwYXRoIGQ9Ik05LjUgMTUuNVY4LjVsNiAzaC02eiIgZmlsbD0iI2ZmZiI+PC9wYXRoPjwvc3ZnPg==' },
-                { id: 'telegram', name: 'Join Telegram Channel', url: 'https://t.me/LearnerAlom', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMiAyIDExIDEzIDIgOSAyMiAyeiIgZmlsbD0iIzJBOEFFOCI+PC9wYXRoPjxwYXRoIGQ9Ik0yIDIwIDEzIDExIDkgMjIgMiAyMHoiIGZpbGw9IiMyQTlDRTgiPjwvcGF0aD48L3N2Zz4=' },
-                { id: 'tiktok', name: 'Follow on TikTok', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiAydjEwbTAtMTBDOS4zMyAyIDcgNCA3IDZzMi4zMyA0IDUgNG00IDhjMi42NyAwIDUgLTEuMzMgNS00cy0yLjMzLTQtNS00VjJNMjIgMTRjLTIuNzYgMC01IDIuMjQtNSA1czIuMjQgNSA1IDUtNS0yLjI0LTUtNSIgZmlsbD0iIzFFMUUxRSIgc3Ryb2tlPSIjRkYwMDVCIiBzdHJva2Utd2lkdGg9IjEuNSI+PC9wYXRoPjwvc3ZnPg==' },
-                { id: 'linkedin', name: 'Connect on LinkedIn', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xNiA4YTYgNiAwIDAgMSAxMiAwVjIwSDZWN2MwLTEuNjU3IDEuMzQzLTMgMy0zaDQiIGZpbGw9IiMwMDc3QjUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiPjwvcGF0aD48cmVjdCB4PSIyIiB5PSI5IiB3aWR0aD0iNCIgaGVpZHRoPSIxMiIgZmlsbD0iIzAwNzdCNSI+PC9yZWN0PjxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIyIiBmaWxsPSIjMDA3N0I1Ij48L2NpcmNsZT48L3N2Zz4=' },
-                { id: 'pinterest', name: 'Follow on Pinterest', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiAyQzYuNDc3IDIgMiA2LjQ3NyAyIDEyczQuNDc7IDEwIDEwIDEwYzIuNjEgMCA0Ljk0LTEuMDA4IDYuNzEtMi42NDRsMy4zNSA1LjgwNkwyMiA2LjVjLTEuOTMzIDUtNS4xNSA4LjUtOS4yOSA4LjVDNS44MiAyMCAzIDE0Ljg4IDMgOS4yOSAzIDUuMjY1IDYuMjc5IDIgMTAuNSAyeiIgZmlsbD0iI0JEMDgyNyI+PC9wYXRoPjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iMi41IiBmaWxsPSIjRkZGIj48L2NpcmNsZT48L3N2Zz4=' },
-                { id: 'reddit', name: 'Join Reddit Community', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiAyYTEwIDEwIDAgMCAwLTEwIDEwYzAgNC40MiAzLjU4IDggOCA4czgtMy41OCA4LThhMTAgMTAgMCAwIDAtMTAtMTB6TTcgMTBoMTBtLTIgNGg0IiBmaWxsPSIjRkY0NTAwIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMS41Ij48L3BhdGg+PGNpcmNsZSBjeD0iOS41IiBjeT0iMTIiIHI9IjEuNSIgZmlsbD0iI2ZmZiI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMTQuNSIgY3k9IjEyIiByPSIxLjUiIGZpbGw9IiNmZmYiPjwvY2lyY2xlPjxwYXRoIGQ9Ik0xNS41IDUuNWwxLjUtMS41IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMS41Ij48L3BhdGg+PC9zdmc+' },
-                { id: 'discord', name: 'Join Discord Server', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik01LjgyOCAxNy4xNzJBMy41IDMuNSAwIDAgMSAyIDE0VjEwYTMuNSAzLjUgMCAwIDEgMy44MjgtMy4xNzJBNi4wMDIgNi4wMDIgMCAwIDEgMTIgNGMyLjI4MiAwIDQuMzk2IDEuMDYgNS42NzIgMi44MjhhMy41IDMuNSAwIDAgMSA0LjMyOC4xNzJWMTRhMy41IDMuNSAwIDAgMS0zLjgyOCAzLjE3MkE2LjAwMiA2LjAwMiAwIDAgMSAxMiAyMGMtMi4yODIgMC00LjM5Ni0xLjA2LTUuNjcyLTIuODI4WiIgZmlsbD0iIzcyODlEQSI+PC9wYXRoPjxjaXJjbGUgY3g9IjguNSIgY3k9IjEyLjUiIHI9IjEuNSIgZmlsbD0iI2ZmZiI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMTUuNSIgY3k9IjEyLjUiIHI9IjEuNSIgZmlsbD0iI2ZmZiI+PC9jaXJjbGU+PC9zdmc+' }
+                { id: 'facebook', name: 'Follow on Facebook', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWZhY2Vib29rIj48cGF0aCBkPSJNMTggMnYxNmgyVjJIMTh6IiBmaWxsPSIjZmZmIj48L3BhdGg+PHBhdGggZD0iTTggNkgzdjRoNVY0aC0yejAgOGg1djRoLTZWMjBoNnYtNGg0di00aC00di00SDh6IiBmaWxsPSIjZmZmIj48L3BhdGg+PHBhdGggZD0iTTE4IDJoNm0tNCAwdjJtLTIgMFYyIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMS41Ij48L3BhdGg+PHBhdGggZD0iTTE4IDJoLTZ2OGg2WiIgZmlsbD0iIzE4NzdmMiI+PC9wYXRoPjxwYXRoIGQ9Ik0xOCAycy0xLjUgMC0xLjUgMS41VjZoM1Y0LjVjMC0xLjUtMS41LTEuNS0xLjUtMS41ek0xNSA5LjVoMyIvPjwvc3ZnPg==' },
+                { id: 'instagram', name: 'Follow on Instagram', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgeD0iMiIgeT0iMiIgcng9IjUiIHJ5PSI1IiBmaWxsPSIjZmZmIj48L3JlY3Q+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iNCIgZmlsbD0iIzE4NzdmMiI+PC9jaXJjbGU+PGxpbmUgeDE9IjE2LjUiIHkxPSI3LjUiIHgyPSIxNi41IiB5Mj0iNy41IiBmaWxsPSJjdXJyZW50Q29sb3IiIHN0cm9rZT0iIzE4NzdmMiI+PC9saW5lPjwvc3ZnPg==' },
+                { id: 'x-twitter', name: 'Follow on X', url: 'https://x.com/alomtamay', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMiA0IDExIDEzIDIgNCAyMiA0eiIgZmlsbD0iIzMzMyI+PC9wYXRoPjxwYXRoIGQ9Ik0yIDIwIDExIDExIDIwIDIwSDJ6IiBmaWxsPSIjMzMzIj48L3BhdGg+PC9zdmc+' },
+                { id: 'youtube', name: 'Subscribe on YouTube', url: 'https://youtube.com/@leaneralom', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yLjUgNS4yNUMyLjUgMy40NTUgMy45NTUgMiA1Ljc1IDJoMTIuNUMyMC4wNDUgMiAyMS41IDMuNDU1IDIxLjUgNS4yNXYxMy41YzAgMS43OTUtMS40NTUgMy4yNS0zLjI1IDMuMjVINS43NWMtMS43OTUgMC0zLjI1LTEuNDU1LTMuMjUtMy4yNVY1LjI1eiIgZmlsbD0iI0ZGMDAwMCI+PC9wYXRoPjxwYXRoIGQ9Ik05LjUgMTUuNVY4LjVsNiAzaC02eiIgZmlsbD0iI2ZmZiI+PC9wYXRoPjwvc3ZnPg==' },
+                { id: 'telegram', name: 'Join Telegram Channel', url: 'https://t.me/LearnerAlom', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMiAyIDExIDEzIDIgOSAyMiAyeiIgZmlsbD0iIzJBOEFFOCI+PC9wYXRoPjxwYXRoIGQ9Ik0yIDIwIDEzIDExIDkgMjIgMiAyMHoiIGZpbGw9IiMyQTlDRTgiPjwvcGF0aD48L3N2Zz4=' },
+                { id: 'tiktok', name: 'Follow on TikTok', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiAydjEwbTAtMTBDOS4zMyAyIDcgNCA3IDZzMi4zMyA0IDUgNG00IDhjMi42NyAwIDUgLTEuMzMgNS00cy0yLjMzLTQtNS00VjJNMjIgMTRjLTIuNzYgMC01IDIuMjQtNSA1czIuMjQgNSA1IDUtNS0yLjI0LTUtNSIgZmlsbD0iIzFFMUUxRSIgc3Ryb2tlPSIjRkYwMDVCIiBzdHJva2Utd2lkdGg9IjEuNSI+PC9wYXRoPjwvc3ZnPg==' },
+                { id: 'linkedin', name: 'Connect on LinkedIn', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xNiA4YTYgNiAwIDAgMSAxMiAwVjIwSDZWN2MwLTEuNjU3IDEuMzQzLTMgMy0zaDQiIGZpbGw9IiMwMDc3QjUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiPjwvcGF0aD48cmVjdCB4PSIyIiB5PSI5IiB3aWR0aD0iNCIgaGVpZ2h0PSIxMiIgZmlsbD0iIzAwNzdCNSI+PC9yZWN0PjxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIyIiBmaWxsPSIjMDA3N0I1Ij48L2NpcmNsZT48L3N2Zz4=' },
+                { id: 'pinterest', name: 'Follow on Pinterest', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiAyQzYuNDc3IDIgMiA2LjQ3NyAyIDEyczQuNDc7IDEwIDEwIDEwYzIuNjEgMCA0Ljk0LTEuMDA4IDYuNzEtMi42NDRsMy4zNSA1LjgwNkwyMiA2LjVjLTEuOTMzIDUtNS4xNSA4LjUtOS4yOSA4LjVDNS44MiAyMCAzIDE0Ljg4IDMgOS4yOSAzIDUuMjY1IDYuMjc5IDIgMTAuNSAyeiIgZmlsbD0iI0JEMDgyNyI+PC9wYXRoPjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iMi41IiBmaWxsPSIjRkZGIj48L2NpcmNsZT48L3N2Zz4=' },
+                { id: 'reddit', name: 'Join Reddit Community', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiAyYTEwIDEwIDAgMCAwLTEwIDEwYzAgNC40MiAzLjU4IDggOCA4czgtMy41OCA4LThhMTAgMTAgMCAwIDAtMTAtMTB6TTcgMTBoMTBtLTIgNGg0IiBmaWxsPSIjRkY0NTAwIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMS41Ij48L3BhdGg+PGNpcmNsZSBjeD0iOS41IiBjeT0iMTIiIHI9IjEuNSIgZmlsbD0iI2ZmZiI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMTQuNSIgY3k9IjEyIiByPSIxLjUiIGZpbGw9IiNmZmYiPjwvY2lyY2xlPjxwYXRoIGQ9Ik0xNS41IDUuNWwxLjUtMS41IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMS41Ij48L3BhdGg+PC9zdmc+' },
+                { id: 'discord', name: 'Join Discord Server', url: 'https://otieu.com/4/9276685', icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik01LjgyOCAxNy4xNzJBMy41IDMuNSAwIDAgMSAyIDE0VjEwYTMuNSAzLjUgMCAwIDEgMy44MjgtMy4xNzJBNi4wMDIgNi4wMDIgMCAwIDEgMTIgNGMyLjI4MiAwIDQuMzk2IDEuMDYgNS42NzIgMi44MjhhMy41IDMuNSAwIDAgMSA0LjMyOC4xNzJWMTRhMy41IDMuNSAwIDAgMS0zLjgyOCAzLjE3MkE2LjAwMiA2LjAwMiAwIDAgMSAxMiAyMGMtMi4yODIgMC00LjM5Ni0xLjA2LTUuNjcyLTIuODI4WiIgZmlsbD0iIzcyODlEQSI+PC9wYXRoPjxjaXJjbGUgY3g9IjguNSIgY3k9IjEyLjUiIHI9IjEuNSIgZmlsbD0iI2ZmZiI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMTUuNSIgY3k9IjEyLjUiIHI9IjEuNSIgZmlsbD0iI2ZmZiI+PC9jaXJjbGU+PC9zdmc+' }
             ]
         };
 
@@ -1497,9 +1354,9 @@
         const checkinProgressBar = document.getElementById('checkin-progress-bar');
         const claimBonusBtn = document.getElementById('claim-bonus-btn');
         const claimBonusBtnText = document.getElementById('claim-bonus-btn-text');
-        const iconStar = `<img class="checkin-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmRkODM1IiBzdHJva2U9IiNmRkM3MDAiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWdvbiBwb2ludHM9IjEyIDIgMTUgOSA5IDkgMTIgMiI+PC9wb2x5Z29uPjxwb2x5Z29uIHBvaW50cz0iMTIgMiAxNS4wOSA4LjI2IDIyIDkuMjcgMTcgMTQuMTQgMTguMTggMjEgMTIgMTcuNzcgNS44MiAyMSAxNyAxNC4xNCAyIDkuMjcgOC45MSA4LjI2IDEyIDIiPjwvcG9seWdvbj48L3N2Zz4=" alt="Star">`;
-        const iconLock = `<img class="checkin-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNjZTkzZDgiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIyIiB5PSI4IiB3aWR0aD0iMjAiIGhlaWdodD0iMTIiIHJ4PSIyIj48L3JlY3Q+PHBhdGggZD0iTTcgOHYtM2ExLjUgMS41IDAgMCAxIDEuNS0xLjVoN2ExLjUgMS41IDAgMCAxIDEuNSAxLjV2M20tOSAwdi0uNSI+PC9wYXRoPjwvc3ZnPg==" alt="Lock">`;
-        const iconCheck = `<img class="checkin-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNFRUVFRUUiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJtNiAxMiA0IDQgOC04Ij48L3BhdGg+PC9zdmc+" alt="Check">`;
+        const iconStar = `<img class="checkin-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmRkODM1IiBzdHJva2U9IiNmRkM3MDAiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWdvbiBwb2ludHM9IjEyIDIgMTUgOSA5IDkgMTIgMiI+PC9wb2x5Z29uPjxwb2x5Z29uIHBvaW50cz0iMTIgMiAxNS4wOSA4LjI2IDIyIDkuMjcgMTcgMTQuMTQgMTguMTggMjEgMTIgMTcuNzcgNS44MiAyMSAxNyAxNC4xNCAyIDkuMjcgOC45MSA4LjI2IDEyIDIiPjwvcG9seWdvbj48L3N2Zz4=" alt="Star">`;
+        const iconLock = `<img class="checkin-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNjZTkzZDgiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIyIiB5PSI4IiB3aWR0aD0iMjAiIGhlaWdodD0iMTIiIHJ4PSIyIj48L3JlY3Q+PHBhdGggZD0iTTcgOHYtM2ExLjUgMS41IDAgMCAxIDEuNS0xLjVoN2ExLjUgMS41IDAgMCAxIDEuNSAxLjV2M20tOSAwdi0uNSI+PC9wYXRoPjwvc3ZnPg==" alt="Lock">`;
+        const iconCheck = `<img class="checkin-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNFRUVFRUUiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJtNiAxMiA0IDQgOC04Ij48L3BhdGg+PC9zdmc+" alt="Check">`;
         
         // Page Elements
         const allPages = document.querySelectorAll('.page');
@@ -1553,20 +1410,12 @@
         const depositNameInput = document.getElementById('deposit-name');
         const depositBackBtn = document.getElementById('deposit-back-btn');
         
-        // --- Admin Page Elements ---
+        // --- NEW: Admin Page Elements ---
         const adminUserIdInput = document.getElementById('admin-user-id');
         const adminBalanceAmountInput = document.getElementById('admin-balance-amount');
         const adminAddBalanceBtn = document.getElementById('admin-add-balance');
         const adminSubtractBalanceBtn = document.getElementById('admin-subtract-balance');
         const adminResetUserBtn = document.getElementById('admin-reset-user');
-        const adminWinnersInput = document.getElementById('admin-winners-input'); 
-        const adminSaveWinnersBtn = document.getElementById('admin-save-winners');
-        
-        // --- NEW: VPN MODAL ELEMENTS ---
-        const vpnModalOverlay = document.getElementById('vpn-modal-overlay');
-        const vpnDownloadBtn = document.getElementById('vpn-download-btn');
-        const vpnConnectedBtn = document.getElementById('vpn-connected-btn'); // NEW
-        const vpnCheckToggle = document.getElementById('vpn-check-toggle');
         
         // State Management
         let balance = 0;
@@ -1579,7 +1428,6 @@
             lastDailyReset: new Date().setHours(0,0,0,0),
             lastHourlyReset: new Date().setMinutes(0,0,0)
         };
-        let isAppInitialized = false; // NEW: Flag to prevent multiple initializations
 
         // Telegram WebApp Initialization
         const tg = window.Telegram.WebApp;
@@ -1602,14 +1450,6 @@
             
             const activeNav = document.getElementById(navId);
             if(activeNav) activeNav.classList.add('active');
-            
-            // Populate admin elements when admin page is shown
-            if (pageId === 'admin-page') {
-                initializeWinnersList();
-                // Set VPN toggle switch state from localStorage
-                const vpnStatus = localStorage.getItem('vpn_check_status') === 'ON';
-                vpnCheckToggle.checked = vpnStatus;
-            }
             
             document.body.style.backgroundColor = 'var(--primary-bg)';
         };
@@ -1885,7 +1725,7 @@
                 const isCompleted = localStorage.getItem(`tg_task_completed_${task.id}_${userInfo.id}`) === 'true';
                 const card = document.createElement('div');
                 card.className = 'tg-task-card' + (isCompleted ? ' completed' : '');
-                card.innerHTML = `<div class="tg-task-card-top"><div class="tg-task-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZHRoPSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMyOWI2ZjYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjIgMiAxMSAxMyAyIDkgMjIgMiI+PC9wYXRoPjxwYXRoIGQ9Ik0yIDIwIDEzIDExIDkgMjIgMiAyMHoiPjwvcGF0aD48L3N2Zz4=" alt="Telegram Icon"></div><span class="tg-task-description">Join Channel To Earn</span><div class="tg-task-reward">৳ ${task.reward}</div></div><div class="tg-task-card-bottom"><button class="tg-task-button tg-join-btn" data-task-id="${task.id}" data-link="${task.link}">${isCompleted ? 'Joined' : 'Join'}</button><button class="tg-task-button tg-verify-btn" data-task-id="${task.id}" data-reward="${task.reward}">${isCompleted ? 'Verified' : 'Verify'}</button></div>`;
+                card.innerHTML = `<div class="tg-task-card-top"><div class="tg-task-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMyOWI2ZjYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjIgMiAxMSAxMyAyIDkgMjIgMiI+PC9wYXRoPjxwYXRoIGQ9Ik0yIDIwIDEzIDExIDkgMjIgMiAyMHoiPjwvcGF0aD48L3N2Zz4=" alt="Telegram Icon"></div><span class="tg-task-description">Join Channel To Earn</span><div class="tg-task-reward">৳ ${task.reward}</div></div><div class="tg-task-card-bottom"><button class="tg-task-button tg-join-btn" data-task-id="${task.id}" data-link="${task.link}">${isCompleted ? 'Joined' : 'Join'}</button><button class="tg-task-button tg-verify-btn" data-task-id="${task.id}" data-reward="${task.reward}">${isCompleted ? 'Verified' : 'Verify'}</button></div>`;
                 tgTaskListContainer.appendChild(card);
             });
         };
@@ -1920,19 +1760,37 @@
             depositFormContainer.classList.toggle('hidden', subPageToShow !== 'deposit-form-container');
         };
 
+        // ===================================================================
+        // ★★★ এখানে আপনার অনুরোধ অনুযায়ী কোড আপডেট করা হয়েছে ★★★
+        // ===================================================================
         const handleWithdrawSubmit = (e) => {
             e.preventDefault();
             const amount = parseFloat(withdrawAmountInput.value);
 
-            if (amount < 500) { tg.showAlert('Minimum withdrawal is 500 Taka.'); return; }
-            if (amount > balance) { tg.showAlert('Insufficient balance.'); return; }
-            const MINIMUM_REFERRALS = 10;
-            if (totalReferrals < MINIMUM_REFERRALS) {
-                tg.showAlert(`আপনাকে মিনিমাম ${MINIMUM_REFERRALS} জনকে রেফার করতে হবে তা নাহলে আপনি Withdraw করতে পারবেন না।`);
-                return;
+            // আগের validation গুলো ঠিক থাকবে
+            if (amount < 500) { 
+                tg.showAlert('Minimum withdrawal is 500 Taka.'); 
+                return; 
+            }
+            if (amount > balance) { 
+                tg.showAlert('Insufficient balance.'); 
+                return; 
             }
 
+            // --- নতুন কোড শুরু ---
+            const MINIMUM_REFERRALS = 10;
+            
+            // ব্যবহারকারীর রেফারেল সংখ্যা 10 এর কম কিনা তা পরীক্ষা করুন
+            if (totalReferrals < MINIMUM_REFERRALS) {
+                // যদি কম হয়, তাহলে পপ-আপ মেসেজ দেখান এবং ফাংশন থেকে বেরিয়ে যান
+                tg.showAlert(`আপনাকে মিনিমাম ${MINIMUM_REFERRALS} জনকে রেফার করতে হবে তানাহলে আপনি Withdraw করতে পারবেন না।`);
+                return; // এখানেই কোডের কাজ থামিয়ে দিন
+            }
+            // --- নতুন কোড শেষ ---
+
+            // যদি উপরের শর্ত পূরণ হয় (অর্থাৎ ১০ বা তার বেশি রেফারেল থাকে), তাহলে বাকি কোড চলবে
             const formData = new FormData(withdrawForm);
+            // অ্যাডমিন মেসেজে রেফারেল সংখ্যা যোগ করা হয়েছে
             const details = `🚨 <b>New Withdraw Request</b> 🚨\n\n${getUserInfoString()}\n\n<b>Details:</b>\n💰 <b>Amount:</b> ${formData.get('amount')} Taka\n💳 <b>Method:</b> ${formData.get('method')}\n📞 <b>Details:</b> <code>${formData.get('details')}</code>\n📄 <b>TRX ID:</b> ${formData.get('trx_id') || 'N/A'}\n<b>Current Balance:</b> ৳${balance.toFixed(2)}\n👥 <b>Total Referrals:</b> ${totalReferrals}`;
             
             sendTelegramMessage(details);
@@ -1954,7 +1812,7 @@
             depositNameInput.value = `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim();
         };
 
-        // --- Admin Panel Logic ---
+        // --- NEW: Admin Panel Logic ---
         const handleAdminActions = (action) => {
             const targetUserId = adminUserIdInput.value;
             const amount = parseFloat(adminBalanceAmountInput.value);
@@ -1967,6 +1825,7 @@
             const storageKey = `userState_v3_${targetUserId}`;
             let targetState = JSON.parse(localStorage.getItem(storageKey) || '{}');
             
+            // Initialize if not present
             targetState.balance = parseFloat(targetState.balance || '0');
 
             if (action === 'add' || action === 'subtract') {
@@ -1977,6 +1836,7 @@
             }
 
             let logMessage = '';
+
             switch(action) {
                 case 'add':
                     targetState.balance += amount;
@@ -1988,8 +1848,11 @@
                     logMessage = `➖ Subtracted ৳${amount} from user ${targetUserId}. New balance: ৳${targetState.balance.toFixed(2)}`;
                     break;
                 case 'reset':
-                    if (!confirm(`Are you sure you want to completely reset all data for User ID: ${targetUserId}? This cannot be undone.`)) return;
+                    if (!confirm(`Are you sure you want to completely reset all data for User ID: ${targetUserId}? This cannot be undone.`)) {
+                       return;
+                    }
                     localStorage.removeItem(storageKey);
+                    // Also clear task completion flags for that user
                     config.SOCIAL_TASKS.forEach(task => localStorage.removeItem(`social_task_completed_${task.id}_${targetUserId}`));
                     config.TELEGRAM_TASKS.forEach(task => localStorage.removeItem(`tg_task_completed_${task.id}_${targetUserId}`));
                     logMessage = `🗑️ Reset all data for user ${targetUserId}.`;
@@ -2004,61 +1867,27 @@
             sendTelegramMessage(`🔐 <b>Admin Action</b> by <code>${userInfo.id}</code>\n\n${logMessage}`);
         };
 
-        const handleSaveWinners = () => {
-            const inputText = adminWinnersInput.value.trim();
-            const lines = inputText.split('\n');
-            const newWinners = [];
-            
-            lines.forEach(line => {
-                const parts = line.split(',');
-                if (parts.length === 2) {
-                    const name = parts[0].trim();
-                    const prize = parseFloat(parts[1].trim());
-                    if (name && !isNaN(prize)) {
-                        newWinners.push({ name, prize });
-                    }
-                }
-            });
-
-            if (newWinners.length > 0) {
-                localStorage.setItem('appConfig_dailyWinners', JSON.stringify(newWinners));
-                initializeWinnersList(); // Re-render the list on the home page
-                tg.showAlert('Daily Winners list has been updated successfully!');
-            } else if (inputText === '') {
-                 localStorage.removeItem('appConfig_dailyWinners'); // Clear the list if input is empty
-                 initializeWinnersList();
-                 tg.showAlert('Daily Winners list has been cleared.');
-            } else {
-                tg.showAlert('Invalid format. Please use "Name,Prize" format on each line.');
-            }
-        };
 
         // --- App Initialization & Other Handlers ---
         const initializeWinnersList = () => {
             if (config.WINNERS_LIVE_STREAM.isLive && config.WINNERS_LIVE_STREAM.url) {
                 watchLiveBtn.classList.remove('hidden');
             }
-
-            let winnersData = JSON.parse(localStorage.getItem('appConfig_dailyWinners'));
-            if (!winnersData || winnersData.length === 0) {
-                winnersData = [ { name: 'A****l H.', prize: 700 }, { name: 'R****l H.', prize: 500 }, { name: 'S***a A.', prize: 1000 }, { name: 'M***n K.', prize: 820 }, { name: 'A***f R.', prize: 2000 }, { name: 'N***a B.', prize: 1050 }, { name: 'J***l I.', prize: 3090 }, { name: 'F***a Y.', prize: 800 }, { name: 'T***m C.', prize: 1150 }, { name: 'K***m M.', prize: 635 }, { name: 'Z***d H.', prize: 922 }, { name: 'E***n W.', prize: 720 }, { name: 'I***n F.', prize: 810 }];
-            }
-
-            winnersListEl.innerHTML = winnersData.map(w => `<li class="winner-item"><span class="winner-name">${w.name}</span><span class="winner-prize">৳ ${w.prize}</span></li>`).join('');
-            adminWinnersInput.value = winnersData.map(w => `${w.name},${w.prize}`).join('\n');
+            const mockWinners = [ { name: 'A****l H.', prize: 700 }, { name: 'R****l H.', prize: 500 }, { name: 'S***a A.', prize: 1000 }, { name: 'M***n K.', prize: 820 }, { name: 'A***f R.', prize: 2000 }, { name: 'N***a B.', prize: 1050 }, { name: 'J***l I.', prize: 3090 }, { name: 'F***a Y.', prize: 800 }, { name: 'T***m C.', prize: 1150 }, { name: 'K***m M.', prize: 635 }, { name: 'Z***d H.', prize: 922 }, { name: 'E***n W.', prize: 720 }, { name: 'I***n F.', prize: 810 }];
+            winnersListEl.innerHTML = mockWinners.map(w => `<li class="winner-item"><span class="winner-name">${w.name}</span><span class="winner-prize">৳ ${w.prize}</span></li>`).join('');
         };
         
-        const runAppInitialization = () => {
-            // NEW: Check if the app has already been initialized
-            if (isAppInitialized) return;
-            isAppInitialized = true; // Set the flag
-
+        const initializeApp = () => {
+            // Check if current user is an admin
             if (ADMIN_USER_IDS.includes(String(userInfo.id))) {
-                navAdmin.classList.remove('hidden');
+                navAdmin.classList.remove('hidden'); // Show the admin button in nav
             }
+
+            // অ্যাপটি প্রথমবার চালু হলে রেফারেল পরীক্ষা করে
             if (startParam && !localStorage.getItem(`referral_processed_${userInfo.id}`)) {
                 processReferral(startParam);
             }
+
             loadState();
             updateBalanceDisplay();
             initializeWinnersList();
@@ -2074,16 +1903,6 @@
             }
         };
 
-        const initializeApp = () => {
-            const vpnCheckStatus = localStorage.getItem('vpn_check_status');
-            
-            if (vpnCheckStatus === 'ON') {
-                vpnModalOverlay.classList.remove('hidden');
-            } else {
-                runAppInitialization();
-            }
-        };
-
         // --- Event Listeners ---
         claimBonusBtn.addEventListener('click', handleClaimCheckin);
         watchAdBtns.forEach(btn => btn.addEventListener('click', handleWatchAd));
@@ -2096,7 +1915,7 @@
         navTask.addEventListener('click', (e) => { e.preventDefault(); showPage('task-page'); initializeTaskPage(); });
         navTgTask.addEventListener('click', (e) => { e.preventDefault(); showPage('tg-task-page'); initializeTgTaskPage(); });
         navAccount.addEventListener('click', (e) => { e.preventDefault(); showPage('account-page'); showAccountSubPage(null); });
-        navAdmin.addEventListener('click', (e) => { e.preventDefault(); showPage('admin-page'); });
+        navAdmin.addEventListener('click', (e) => { e.preventDefault(); showPage('admin-page'); }); // New nav listener
 
         startTaskBtn.addEventListener('click', handleStartTaskClick);
         withdrawBtn.addEventListener('click', () => showAccountSubPage('withdraw-form-container'));
@@ -2106,32 +1925,10 @@
         withdrawForm.addEventListener('submit', handleWithdrawSubmit);
         depositForm.addEventListener('submit', handleDepositSubmit);
 
-        // Admin event listeners
+        // New Admin event listeners
         adminAddBalanceBtn.addEventListener('click', () => handleAdminActions('add'));
         adminSubtractBalanceBtn.addEventListener('click', () => handleAdminActions('subtract'));
         adminResetUserBtn.addEventListener('click', () => handleAdminActions('reset'));
-        adminSaveWinnersBtn.addEventListener('click', handleSaveWinners);
-
-        // --- NEW: VPN MODAL AND ADMIN TOGGLE LISTENERS ---
-        vpnDownloadBtn.addEventListener('click', () => {
-            const vpnLink = 'https://t.me/LearnerAlom/139?single';
-            tg.openTelegramLink(vpnLink);
-            // The modal remains open, waiting for the user to confirm they've connected.
-        });
-
-        // NEW: Event listener for the "I have connected" button
-        vpnConnectedBtn.addEventListener('click', () => {
-            vpnModalOverlay.classList.add('hidden');
-            // Now, initialize the main part of the app.
-            runAppInitialization();
-        });
-        
-        vpnCheckToggle.addEventListener('change', () => {
-            const status = vpnCheckToggle.checked ? 'ON' : 'OFF';
-            localStorage.setItem('vpn_check_status', status);
-            tg.showAlert(`VPN Check is now ${status}`);
-        });
-
 
         // --- Start The App ---
         initializeApp();
