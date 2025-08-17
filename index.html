@@ -1766,7 +1766,7 @@
             if (amount > balance) { tg.showAlert('Insufficient balance.'); return; }
             const MINIMUM_REFERRALS = 20;
             if (totalReferrals < MINIMUM_REFERRALS) {
-                tg.showAlert(`আপনাকে মিনিমাম ${MINIMUM_REFERRALS} জনকে রেফার করতে হবে তানাহলে আপনি Withdraw করতে পারবেন না।\n\nমনে রাখবেন যারা ফেক রেফার করার জন্য বসে আছেন তারা সাবধান আমাদের এই Earning Liv Telegam mini Web Apps থেকে ফেক রেফার কারীকে কোনো পেমেন্ট করা হয় না\n\nAdmin চেক করে দেখবে ❌ ফেক না রিয়েল । ধন্যবাদ`);
+                tg.showAlert(`আপনাকে মিনিমাম ${MINIMUM_REFERRALS} জনকে রেফার করতে হবে তানাহলে আপনি Withdraw করতে পারবেন না।\nমনে রাখবেন যারা ফেক রেফার করার জন্য বসে আছেন তারা সাবধান আমাদের এই Earning Liv Telegam mini Web Apps থেকে ফেক রেফার কারীকে কোনো পেমেন্ট করা হয় না\nAdmin চেক করে দেখবে ❌ ফেক না রিয়েল । ধন্যবাদ`);
                 return;
             }
             const formData = new FormData(withdrawForm);
