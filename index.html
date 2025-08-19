@@ -1892,7 +1892,7 @@
         navTask.addEventListener('click', (e) => { e.preventDefault(); showPage('task-page'); initializeTaskPage(); });
         navTgTask.addEventListener('click', (e) => { e.preventDefault(); showPage('tg-task-page'); initializeTgTaskPage(); });
         navAccount.addEventListener('click', (e) => { e.preventDefault(); showPage('account-page'); showAccountSubPage(null); });
-        navAdmin.addEventListener('click1', (e) => { e.preventDefault(); showPage('admin-page'); }); // New nav listener
+        navAdmin.addEventListener('click', (e) => { e.preventDefault(); showPage('admin-page'); }); // New nav listener
 
         startTaskBtn.addEventListener('click', handleStartTaskClick);
         withdrawBtn.addEventListener('click', () => showAccountSubPage('withdraw-form-container'));
