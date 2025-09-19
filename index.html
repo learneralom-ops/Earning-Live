@@ -625,6 +625,16 @@
         }
         window.showAlert = showAlert;
 
+
+
+try {
+    const userCredential = await signInAnonymously(auth);
+    console.log("Signed in anonymously:", userCredential.user.uid);
+} catch (err) {
+    console.error("Anonymous Sign-in Error:", err);
+}
+        
+        
     </script>
 </body>
 </html>
