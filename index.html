@@ -193,10 +193,11 @@
   authDomain: "earning-live-a7ccf.firebaseapp.com",
   databaseURL: "https://earning-live-a7ccf-default-rtdb.firebaseio.com",
   projectId: "earning-live-a7ccf",
-  storageBucket: "earning-live-a7ccf.firebasestorage.app",
+  storageBucket: "earning-live-a7ccf.appspot.com",  // এখানে ঠিক করলাম
   messagingSenderId: "35728161414",
   appId: "1:35728161414:web:3ef10dca272f32e275af07"
 };
+
         
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
@@ -367,18 +368,34 @@
         }
 
         async function handleSignup() {
-            const name = document.getElementById('signup-name').value;
-            const email = document.getElementById('signup-email').value;
-            const password = document.getElementById('signup-password').value;
-            if (!name || !email || !password) return showAlert("Please fill in all fields.");
-            loader.style.display = 'flex';
-            try {
-                await createUserWithEmailAndPassword(auth, email, password);
-            } catch (error) {
-                showAlert(error.message);
-                loader.style.display = 'none';
-            }
-        }
+    const name = document.getElementById('signup-name').value;
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+    if (!name || !email || !password) return showAlert("Please fill in all fields.");
+    loader.style.display = 'flex';
+    try {
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCred.user;
+        const ownReferralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+        await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            name: name,
+            email: email,
+            balance: 50,
+            referralCode: ownReferralCode,
+            referredBy: null,
+            lastNotificationCheck: new Date(),
+            createdAt: serverTimestamp(),
+            dailyAdCount: 0,
+            lastAdWatchDate: new Date().toISOString().split('T')[0],
+            isBlocked: false
+        });
+    } catch (error) {
+        showAlert(error.message);
+        loader.style.display = 'none';
+    }
+}
+
 
         async function handleLogin() {
             const email = document.getElementById('login-email').value;
@@ -571,23 +588,23 @@
                 return showAlert("You have reached your viewing limit for today.");
             }
             
-            if (typeof window.show_9391539 !== 'function') {
+            if (typeof window.show_8954258 !== 'function') {
                 return showAlert("The service is currently unavailable. Please try again later.");
             }
             
             let adPromise;
             switch(taskType) {
                 case 'interstitial':
-                    adPromise = window.show_9391539();
+                    adPromise = window.show_8954258();
                     break;
                 case 'popup':
-                    adPromise = window.show_9391539('pop');
+                    adPromise = window.show_8954258('pop');
                     break;
                 case 'inApp':
-                    adPromise = window.show_9391539({ type: 'inApp', inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false } });
+                    adPromise = window.show_8954258({ type: 'inApp', inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false } });
                     break;
                 case 'miniApp':
-                    adPromise = window.show_9391539();
+                    adPromise = window.show_8954258();
                     break;
                 default:
                     return;
@@ -625,16 +642,6 @@
         }
         window.showAlert = showAlert;
 
-
-
-try {
-    const userCredential = await signInAnonymously(auth);
-    console.log("Signed in anonymously:", userCredential.user.uid);
-} catch (err) {
-    console.error("Anonymous Sign-in Error:", err);
-}
-        
-        
     </script>
 </body>
 </html>
