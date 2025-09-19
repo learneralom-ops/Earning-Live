@@ -256,30 +256,22 @@
             }
         }
 
-        async function fetchUserData() {
-            if (!currentUser) return;
-            const userRef = doc(db, "users", currentUser.uid);
-            try {
-                const userSnap = await getDoc(userRef);
-                if (userSnap.exists()) {
-                    userData = userSnap.data();
-                } else {
-                    const ownReferralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-                    const defaultUserData = {
-                        uid: currentUser.uid, name: currentUser.email.split('@')[0], email: currentUser.email,
-                        balance: 50, referralCode: ownReferralCode, referredBy: null,
-                        lastNotificationCheck: new Date(),
-                        createdAt: serverTimestamp(),
-                        dailyAdCount: 0, lastAdWatchDate: new Date().toISOString().split('T')[0], isBlocked: false
-                    };
-                    await setDoc(userRef, defaultUserData);
-                    userData = defaultUserData;
-                }
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-                showAlert("There was an error loading user data.");
-            }
+        async function fetchUserData(uid) {
+    try {
+        const userRef = doc(db, "users", uid);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+            return userSnap.data();
+        } else {
+            console.error("⚠️ Firestore document পাওয়া যায়নি:", uid);
+            throw new Error("User document does not exist in Firestore.");
         }
+    } catch (error) {
+        console.error("🔥 Firestore fetch error:", error.message);
+        throw error; // আসল error দেখাবে
+    }
+}
+
 
         async function fetchAppConfig() {
             const configRef = doc(db, "config", "main");
