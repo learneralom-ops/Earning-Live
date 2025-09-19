@@ -186,454 +186,171 @@
             <button id="alert-ok-btn" class="btn-accent px-6 py-2 rounded-lg">OK</button>
         </div>
     </div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-    <script type="module">
-        const firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyBTvCfQIxHz-6z2UIJ4jkS60wZHa3Zwuqo",
   authDomain: "earning-live-a7ccf.firebaseapp.com",
   databaseURL: "https://earning-live-a7ccf-default-rtdb.firebaseio.com",
   projectId: "earning-live-a7ccf",
-  storageBucket: "earning-live-a7ccf.appspot.com",  // এখানে ঠিক করলাম
+  storageBucket: "earning-live-a7ccf.appspot.com",
   messagingSenderId: "35728161414",
   appId: "1:35728161414:web:3ef10dca272f32e275af07"
 };
 
-        
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+let currentUser = null;
+let userData = null;
+let appConfig = {};
 
-        let currentUser = null;
-        let userData = null;
-        let appConfig = {};
+// Loader, UI references
+const loader = document.getElementById('loader');
+const coinBalanceEl = document.getElementById('coin-balance');
+const walletCoinBalanceEl = document.getElementById('wallet-coin-balance');
+const profileNameEl = document.getElementById('profile-name');
+const profileEmailEl = document.getElementById('profile-email');
+const referralCodeEl = document.getElementById('referral-code');
+const minWithdrawalInfoEl = document.getElementById('min-withdrawal-info');
+const coinValueInfoEl = document.getElementById('coin-value-info');
+const withdrawMethodSelect = document.getElementById('withdraw-method');
+const notificationDot = document.getElementById('notification-dot');
+const adsLeftCountEl = document.getElementById('ads-left-count');
+const paymentDetailsContainer = document.getElementById('payment-details-container');
 
-        const loader = document.getElementById('loader');
-        const coinBalanceEl = document.getElementById('coin-balance');
-        const walletCoinBalanceEl = document.getElementById('wallet-coin-balance');
-        const profileNameEl = document.getElementById('profile-name');
-        const profileEmailEl = document.getElementById('profile-email');
-        const referralCodeEl = document.getElementById('referral-code');
-        const minWithdrawalInfoEl = document.getElementById('min-withdrawal-info');
-        const coinValueInfoEl = document.getElementById('coin-value-info');
-        const withdrawMethodSelect = document.getElementById('withdraw-method');
-        const notificationDot = document.getElementById('notification-dot');
-        const adsLeftCountEl = document.getElementById('ads-left-count');
-        const paymentDetailsContainer = document.getElementById('payment-details-container');
+window.onload = () => {
+  lucide.createIcons();
+  setupEventListeners();
+  showMainPage('auth-section');
+  loader.style.display = 'none';
+  onAuthStateChanged(auth, handleAuthStateChange);
+};
 
-        window.onload = () => {
-            lucide.createIcons();
-            setupEventListeners();
-            showMainPage('auth-section');
-            loader.style.display = 'none';
-            onAuthStateChanged(auth, handleAuthStateChange);
-        };
-
-        async function handleAuthStateChange(user) {
-            if (user) {
-                loader.style.display = 'flex';
-                currentUser = user;
-                await fetchUserData();
-                if (userData.isBlocked) {
-                    showAlert("Your account has been blocked.");
-                    await signOut(auth);
-                    loader.style.display = 'none';
-                    return;
-                }
-                await fetchAppConfig();
-                await checkNewNotifications();
-                updateUI();
-                showMainPage('app-container');
-                navigateTo('home-page');
-                loader.style.display = 'none';
-            } else {
-                currentUser = null;
-                userData = null;
-                showMainPage('auth-section');
-            }
-        }
-
-        async function fetchUserData(uid) {
-    try {
-        const userRef = doc(db, "users", uid);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-            return userSnap.data();
-        } else {
-            console.error("⚠️ Firestore document পাওয়া যায়নি:", uid);
-            throw new Error("User document does not exist in Firestore.");
-        }
-    } catch (error) {
-        console.error("🔥 Firestore fetch error:", error.message);
-        throw error; // আসল error দেখাবে
-    }
-}
-
-
-        async function fetchAppConfig() {
-            const configRef = doc(db, "config", "main");
-            try {
-                const configSnap = await getDoc(configRef);
-                appConfig = configSnap.exists() ? configSnap.data() : { minWithdrawal: 5000, paymentMethods: ["UPI", "Paytm"], dailyAdLimit: 10, coinValueCoins: 1000, coinValueInr: 10 };
-            } catch (error) {
-                console.error("Error fetching app config:", error);
-            }
-        }
-        
-        function updateUI() {
-            if (!userData) return;
-            const balance = userData.balance || 0;
-            coinBalanceEl.textContent = balance;
-            walletCoinBalanceEl.textContent = balance;
-            profileNameEl.textContent = userData.name || 'No Name';
-            profileEmailEl.textContent = userData.email || 'No Email';
-            referralCodeEl.textContent = userData.referralCode || '...';
-            minWithdrawalInfoEl.textContent = `${appConfig.minWithdrawal || 5000} Coins`;
-            coinValueInfoEl.textContent = `${appConfig.coinValueCoins || 1000} Coins = ₹${appConfig.coinValueInr || 10}`;
-            withdrawMethodSelect.innerHTML = '';
-            (appConfig.paymentMethods || []).forEach(method => {
-                const option = document.createElement('option');
-                option.value = method;
-                option.textContent = method;
-                withdrawMethodSelect.appendChild(option);
-            });
-            updateDynamicPaymentFields();
-            updateAdsLeftCount();
-        }
-
-        function updateAdsLeftCount() {
-            const today = new Date().toISOString().split('T')[0];
-            if (userData.lastAdWatchDate !== today) {
-                userData.dailyAdCount = 0;
-            }
-            const adsLeft = Math.max(0, (appConfig.dailyAdLimit || 10) - userData.dailyAdCount);
-            adsLeftCountEl.textContent = adsLeft;
-        }
-
-        function updateDynamicPaymentFields() {
-            const selectedMethod = withdrawMethodSelect.value.toLowerCase();
-            let placeholder = "Detail Daalein";
-            if (selectedMethod.includes('upi')) placeholder = "Apni UPI ID Daalein";
-            if (selectedMethod.includes('paytm')) placeholder = "Apna Paytm Number Daalein";
-            paymentDetailsContainer.innerHTML = `<input id="payment-detail-input" type="text" placeholder="${placeholder}" class="w-full p-3 rounded-lg input-field">`;
-        }
-
-        function showMainPage(pageId) {
-            document.querySelectorAll('.main-page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-        }
-
-        function navigateTo(pageId) {
-            document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active', 'text-accent');
-                if (link.dataset.page === pageId) link.classList.add('active', 'text-accent');
-            });
-        }
-        window.navigateTo = navigateTo;
-
-        function setupEventListeners() {
-            document.getElementById('show-signup').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('login-view').classList.add('hidden'); document.getElementById('signup-view').classList.remove('hidden'); });
-            document.getElementById('show-login').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('signup-view').classList.add('hidden'); document.getElementById('login-view').classList.remove('hidden'); });
-            document.getElementById('signup-btn').addEventListener('click', handleSignup);
-            document.getElementById('login-btn').addEventListener('click', handleLogin);
-            document.getElementById('logout-btn').addEventListener('click', handleLogout);
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const pageId = link.dataset.page;
-                    if (pageId === 'wallet-page') loadWithdrawalHistory();
-                    navigateTo(pageId);
-                });
-            });
-            document.getElementById('notification-bell').addEventListener('click', () => { navigateTo('notifications-page'); loadNotifications(); });
-            document.getElementById('copy-code-btn').addEventListener('click', copyReferralCode);
-            document.getElementById('share-btn').addEventListener('click', shareReferralCode);
-            document.getElementById('withdraw-btn').addEventListener('click', handleWithdrawal);
-            document.getElementById('home-withdraw-btn').addEventListener('click', () => navigateTo('wallet-page'));
-            document.getElementById('apply-referral-btn').addEventListener('click', handleApplyReferralCode);
-            withdrawMethodSelect.addEventListener('change', updateDynamicPaymentFields);
-        }
-
-        async function handleSignup() {
-    const name = document.getElementById('signup-name').value;
-    const email = document.getElementById('signup-email').value;
-    const password = document.getElementById('signup-password').value;
-    if (!name || !email || !password) return showAlert("Please fill in all fields.");
+// ✅ ঠিক করা handleAuthStateChange
+async function handleAuthStateChange(user) {
+  if (user) {
     loader.style.display = 'flex';
-    try {
-        const userCred = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCred.user;
-        const ownReferralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-        await setDoc(doc(db, "users", user.uid), {
-            uid: user.uid,
-            name: name,
-            email: email,
-            balance: 50,
-            referralCode: ownReferralCode,
-            referredBy: null,
-            lastNotificationCheck: new Date(),
-            createdAt: serverTimestamp(),
-            dailyAdCount: 0,
-            lastAdWatchDate: new Date().toISOString().split('T')[0],
-            isBlocked: false
-        });
-    } catch (error) {
-        showAlert(error.message);
-        loader.style.display = 'none';
+    currentUser = user;
+
+    // এখন সঠিকভাবে ইউজার ডেটা ফেচ হবে
+    userData = await fetchUserData(user.uid);
+
+    if (userData.isBlocked) {
+      showAlert("Your account has been blocked.");
+      await signOut(auth);
+      loader.style.display = 'none';
+      return;
     }
+
+    await fetchAppConfig();
+    await checkNewNotifications();
+    updateUI();
+    showMainPage('app-container');
+    navigateTo('home-page');
+    loader.style.display = 'none';
+  } else {
+    currentUser = null;
+    userData = null;
+    showMainPage('auth-section');
+  }
 }
 
+// ✅ ঠিক করা fetchUserData
+async function fetchUserData(uid) {
+  try {
+    const userRef = doc(db, "users", uid);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      return userSnap.data(); // data return হবে
+    } else {
+      throw new Error("User document does not exist.");
+    }
+  } catch (error) {
+    console.error("🔥 Firestore fetch error:", error.message);
+    return null;
+  }
+}
 
-        async function handleLogin() {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            if (!email || !password) return showAlert("Please enter your email address and password.");
-            loader.style.display = 'flex';
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-            } catch (error) {
-                showAlert(error.message);
-                loader.style.display = 'none';
-            }
-        }
+// ✅ claimReward ফাংশন সম্পূর্ণ
+window.claimReward = async function(taskType) {
+  const today = new Date().toISOString().split('T')[0];
+  const userRef = doc(db, "users", currentUser.uid);
 
-        async function handleLogout() { await signOut(auth); }
-        
-        async function checkNewNotifications() {
-            const lastCheck = userData.lastNotificationCheck;
-            if (!lastCheck || typeof lastCheck.seconds === 'undefined') {
-                console.log("lastNotificationCheck is not a valid timestamp yet. Skipping check.");
-                return;
-            }
-            const q = query(collection(db, "notifications"), where("createdAt", ">", lastCheck), limit(1));
-            const querySnapshot = await getDocs(q);
-            notificationDot.style.display = querySnapshot.empty ? 'none' : 'block';
-        }
+  if (userData.lastAdWatchDate !== today) {
+    await updateDoc(userRef, { dailyAdCount: 0, lastAdWatchDate: today });
+    userData.dailyAdCount = 0;
+    userData.lastAdWatchDate = today;
+  }
 
-        async function loadNotifications() {
-            const listEl = document.getElementById('notifications-list');
-            listEl.innerHTML = '<p class="text-gray-400">Loading...</p>';
-            notificationDot.style.display = 'none';
-            const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
-            try {
-                const querySnapshot = await getDocs(q);
-                if (querySnapshot.empty) {
-                    listEl.innerHTML = '<p class="text-gray-400 text-center">Koi notifications nahi hain.</p>';
-                    return;
-                }
-                listEl.innerHTML = '';
-                querySnapshot.forEach(doc => {
-                    const msg = doc.data();
-                    const date = msg.createdAt ? msg.createdAt.toDate().toLocaleDateString() : 'N/A';
-                    listEl.innerHTML += `<div class="card-bg p-4 rounded-lg"><div class="flex justify-between items-center mb-1"><h3 class="font-bold">${msg.title}</h3><p class="text-xs text-gray-400">${date}</p></div><p class="text-sm text-gray-300">${msg.message}</p></div>`;
-                });
-                await updateDoc(doc(db, "users", currentUser.uid), { lastNotificationCheck: serverTimestamp() });
-            } catch (error) {
-                console.error("Error loading notifications:", error);
-                listEl.innerHTML = '<p class="text-red-400">Notifications load karne mein error aayi.</p>';
-            }
-        }
+  if (userData.dailyAdCount >= (appConfig.dailyAdLimit || 10)) {
+    return showAlert("You have reached your viewing limit for today.");
+  }
 
-        async function loadWithdrawalHistory() {
-            const historyList = document.getElementById('withdrawal-history-list');
-            historyList.innerHTML = '<p class="text-gray-400">History load ho rahi hai...</p>';
-            const q = query(collection(db, "withdrawals"), where("userId", "==", currentUser.uid));
-            try {
-                const querySnapshot = await getDocs(q);
-                if (querySnapshot.empty) {
-                    historyList.innerHTML = '<p class="text-gray-400">Aapne abhi tak koi withdrawal nahi kiya hai.</p>';
-                    return;
-                }
-                const withdrawals = [];
-                querySnapshot.forEach(doc => withdrawals.push(doc.data()));
-                withdrawals.sort((a, b) => (b.requestedAt?.seconds || 0) - (a.requestedAt?.seconds || 0));
-                historyList.innerHTML = '';
-                withdrawals.forEach(request => {
-                    const status = request.status;
-                    let statusColor = 'text-yellow-400';
-                    if (status === 'approved') statusColor = 'text-green-400';
-                    else if (status === 'rejected') statusColor = 'text-red-400';
-                    const date = request.requestedAt ? request.requestedAt.toDate().toLocaleDateString() : 'N/A';
-                    historyList.innerHTML += `<div class="card-bg p-3 rounded-lg flex items-center justify-between"><div><p class="font-semibold">${request.amount} Coins - ${request.method}</p><p class="text-xs text-gray-400">${date}</p></div><p class="font-bold ${statusColor} capitalize">${status}</p></div>`;
-                });
-            } catch (error) {
-                console.error("Error fetching withdrawal history: ", error);
-                historyList.innerHTML = '<p class="text-red-400">History load karne mein error aayi.</p>';
-            }
-        }
-        
-        async function handleApplyReferralCode() {
-            if (userData.referredBy) return showAlert("You have already used a referral code.");
-            const codeInput = document.getElementById('enter-referral-code');
-            const code = codeInput.value.trim().toUpperCase();
-            if (!code) return showAlert("Please enter a code.");
-            if (code === userData.referralCode) return showAlert("You cannot use your own code.");
-            loader.style.display = 'flex';
-            await applyReferralBonus(code, true);
-            codeInput.value = '';
-            loader.style.display = 'none';
-        }
+  if (typeof window.show_8954258 !== 'function') {
+    return showAlert("The service is currently unavailable. Please try again later.");
+  }
 
-        async function applyReferralBonus(referrerCode, isManualApply = false) {
-            const usersRef = collection(db, "users");
-            const q = query(usersRef, where("referralCode", "==", referrerCode));
-            try {
-                const querySnapshot = await getDocs(q);
-                if (!querySnapshot.empty) {
-                    const referrerDoc = querySnapshot.docs[0];
-                    const referrerRef = doc(db, "users", referrerDoc.id);
-                    const referrerData = referrerDoc.data();
-                    await updateDoc(referrerRef, { balance: (referrerData.balance || 0) + 100 });
-                    const newUserRef = doc(db, "users", currentUser.uid);
-                    await updateDoc(newUserRef, { balance: (userData.balance || 0) + 100, referredBy: referrerCode });
-                    userData.balance += 100; userData.referredBy = referrerCode;
-                    updateUI();
-                    if(isManualApply) showAlert("Code applied successfully! You have received 100 coins.");
-                } else {
-                    if(isManualApply) showAlert("Wrong referral code.");
-                }
-            } catch(error) {
-                console.error("Error applying referral bonus: ", error);
-                if(isManualApply) showAlert("An error inccurred while applying the code.");
-            }
-        }
+  let adPromise;
+  switch (taskType) {
+    case 'interstitial':
+      adPromise = window.show_8954258();
+      break;
+    case 'popup':
+      adPromise = window.show_8954258('pop');
+      break;
+    case 'inApp':
+      adPromise = window.show_8954258({ type: 'inApp' });
+      break;
+    case 'miniApp':
+      adPromise = window.show_8954258();
+      break;
+    default:
+      return;
+  }
 
-        async function updateBalance(amount) {
-            if (!currentUser) return;
-            const newBalance = (userData.balance || 0) + amount;
-            const userRef = doc(db, "users", currentUser.uid);
-            await updateDoc(userRef, { balance: newBalance });
-            userData.balance = newBalance;
-            updateUI();
-        }
+  adPromise.then(async () => {
+    const newCount = (userData.dailyAdCount || 0) + 1;
+    await updateDoc(userRef, { dailyAdCount: newCount });
+    userData.dailyAdCount = newCount;
 
-        async function handleWithdrawal() {
-            const amount = parseInt(document.getElementById('withdraw-amount').value);
-            const method = document.getElementById('withdraw-method').value;
-            const paymentDetailInput = document.getElementById('payment-detail-input');
-            const paymentDetail = paymentDetailInput ? paymentDetailInput.value.trim() : '';
-            const minWithdrawal = appConfig.minWithdrawal || 5000;
+    let rewardAmount = 0;
+    if (taskType === 'miniApp') rewardAmount = 100;
+    else if (taskType === 'interstitial') rewardAmount = 20;
+    else if (taskType === 'popup') rewardAmount = 15;
+    else if (taskType === 'inApp') rewardAmount = 10;
 
-            if (!amount || amount <= 0) return showAlert("Please enter a valid amount.");
-            if (amount < minWithdrawal) return showAlert(`Minimum withdrawal ${minWithdrawal} coins hai.`);
-            if (amount > userData.balance) return showAlert("Insufficient balance.");
-            if (!paymentDetail) return showAlert("Please enter payment details (Upi Id or Paytm number).");
+    await updateBalance(rewardAmount);
+    showAlert(`You earned ${rewardAmount} coins!`);
+  });
+};
 
-            try {
-                await updateBalance(-amount);
-                await addDoc(collection(db, "withdrawals"), {
-                    userId: currentUser.uid, userName: userData.name, userEmail: userData.email,
-                    amount: amount, method: method, paymentDetail: paymentDetail, status: "pending", requestedAt: serverTimestamp()
-                });
-                showAlert("Withdrawal request successfully submitted!");
-                document.getElementById('withdraw-amount').value = '';
-                paymentDetailInput.value = '';
-            } catch (error) {
-                showAlert("Error submitting request:" + error.message);
-                await updateBalance(amount);
-            }
-        }
+// updateBalance function
+async function updateBalance(amount) {
+  if (!currentUser) return;
+  const newBalance = (userData.balance || 0) + amount;
+  const userRef = doc(db, "users", currentUser.uid);
+  await updateDoc(userRef, { balance: newBalance });
+  userData.balance = newBalance;
+  updateUI();
+}
 
-        function copyReferralCode() {
-            const textToCopy = referralCodeEl.textContent;
-            const textArea = document.createElement("textarea");
-            textArea.style.position = 'fixed'; textArea.style.top = '-100px';
-            textArea.value = textToCopy;
-            document.body.appendChild(textArea);
-            textArea.focus(); textArea.select();
-            try {
-                document.execCommand('copy');
-                showAlert("Referral code copied!");
-            } catch (err) {
-                showAlert("Failed to copy code.");
-            }
-            document.body.removeChild(textArea);
-        }
-        
-        function shareReferralCode() {
-            const text = `Join Earning Live and earn money! Use my referral code to get a bonus: ${userData.referralCode}`;
-            if (navigator.share) {
-                navigator.share({ title: 'Join Earning Live!', text: text, url: window.location.href })
-                    .catch((error) => console.error("Share failed:", error));
-            } else {
-                copyReferralCode();
-                showAlert("The share feature is not available. The referral code has been copied instead!");
-            }
-        }
+// showAlert function
+function showAlert(message) {
+  const alertBox = document.getElementById('custom-alert');
+  const alertMsg = document.getElementById('alert-message');
+  alertMsg.textContent = message;
+  alertBox.classList.remove('hidden');
+  document.getElementById('alert-ok-btn').onclick = () => {
+    alertBox.classList.add('hidden');
+  };
+}
+</script>
 
-        window.claimReward = async function(taskType) {
-            const today = new Date().toISOString().split('T')[0];
-            const userRef = doc(db, "users", currentUser.uid);
 
-            if (userData.lastAdWatchDate !== today) {
-                await updateDoc(userRef, { dailyAdCount: 0, lastAdWatchDate: today });
-                userData.dailyAdCount = 0;
-                userData.lastAdWatchDate = today;
-            }
-
-            if (userData.dailyAdCount >= (appConfig.dailyAdLimit || 10)) {
-                return showAlert("You have reached your viewing limit for today.");
-            }
-            
-            if (typeof window.show_8954258 !== 'function') {
-                return showAlert("The service is currently unavailable. Please try again later.");
-            }
-            
-            let adPromise;
-            switch(taskType) {
-                case 'interstitial':
-                    adPromise = window.show_8954258();
-                    break;
-                case 'popup':
-                    adPromise = window.show_8954258('pop');
-                    break;
-                case 'inApp':
-                    adPromise = window.show_8954258({ type: 'inApp', inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false } });
-                    break;
-                case 'miniApp':
-                    adPromise = window.show_8954258();
-                    break;
-                default:
-                    return;
-            }
-
-            adPromise.then(async () => {
-                const newCount = (userData.dailyAdCount || 0) + 1;
-                await updateDoc(userRef, { dailyAdCount: newCount });
-                userData.dailyAdCount = newCount;
-                
-                let rewardAmount = 0;
-                if (taskType === 'miniApp') {
-                    rewardAmount = 100; // Mini App ka zyada reward
-                } else if (taskType !== 'inApp') {
-                    rewardAmount = 50;
-                }
-
-                if (rewardAmount > 0) {
-                    updateBalance(rewardAmount);
-                    showAlert(`Congratulations! You  ${rewardAmount} The Coins win.`);
-                }
-                updateAdsLeftCount();
-            }).catch(e => {
-                console.error("Ad error:", e);
-                showAlert('The block could not be displayed. Please try again later.');
-            });
-        }
-
-        function showAlert(message) {
-            document.getElementById('alert-message').textContent = message;
-            document.getElementById('custom-alert').classList.remove('hidden');
-            document.getElementById('alert-ok-btn').onclick = () => {
-                document.getElementById('custom-alert').classList.add('hidden');
-            };
-        }
-        window.showAlert = showAlert;
-
-    </script>
 </body>
 </html>
